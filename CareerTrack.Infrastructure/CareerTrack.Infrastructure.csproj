@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CareerTrack.Application\CareerTrack.Application.csproj" />
+    <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
+  </ItemGroup>
+
 </Project>
