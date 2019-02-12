@@ -21,6 +21,7 @@
     <ProjectReference Include="..\CareerTrack.Application\CareerTrack.Application.csproj" />
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
     <ProjectReference Include="..\CareerTrack.Infrastructure\CareerTrack.Infrastructure.csproj" />
+    <ProjectReference Include="..\CareerTrack.Persistance.Migrations\CareerTrack.Persistance.Migrations.csproj" />
   </ItemGroup>
 
 </Project>

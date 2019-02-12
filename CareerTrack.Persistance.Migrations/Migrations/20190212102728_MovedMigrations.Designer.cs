@@ -4,14 +4,16 @@ using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerTrack.Persistance.Migrations
 {
     [DbContext(typeof(CareerTrackDbContext))]
-    partial class CareerTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190212102728_MovedMigrations")]
+    partial class MovedMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +25,8 @@ namespace CareerTrack.Persistance.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Password");
 
                     b.Property<string>("UserName");
 

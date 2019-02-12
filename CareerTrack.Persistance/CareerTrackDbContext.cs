@@ -18,8 +18,8 @@ namespace CareerTrack.Persistance
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = EN614080\\SQLEXPRESS;Initial Catalog=CareerTrack;Integrated Security= True"
-                //,x => x.MigrationsAssembly("ClassLibrary2")
+            optionsBuilder.UseSqlServer("Data Source = EN614080\\SQLEXPRESS;Initial Catalog=CareerTrack;Integrated Security = True"
+                ,x => x.MigrationsAssembly("CareerTrack.Persistance.Migrations")
                 );
 
             base.OnConfiguring(optionsBuilder);
