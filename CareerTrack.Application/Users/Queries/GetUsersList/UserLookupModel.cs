@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 
 namespace CareerTrack.Application.Users.Queries.GetUsersList
 {

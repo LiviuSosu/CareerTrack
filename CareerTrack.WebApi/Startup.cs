@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Reflection;
 using CareerTrack.Application.Infrastructure;
 using CareerTrack.Application.Interfaces;
 using CareerTrack.Application.Users.Commands.CreateUser;
+using CareerTrack.Application.Users.Commands.DeleteUser;
+using CareerTrack.Application.Users.Commands.UpdateCustomer;
+using CareerTrack.Application.Users.Queries.GetUserDetail;
 using CareerTrack.Application.Users.Queries.GetUsersList;
 using CareerTrack.Common;
 using CareerTrack.Infrastructure;
@@ -20,8 +19,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace CareerTrack.WebApi
 {
@@ -46,6 +43,10 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
             services.AddMediatR(typeof(GetUsersListQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetUserDetailQuery).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateUserCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(UpdateUserCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(DeleteUserCommand).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>

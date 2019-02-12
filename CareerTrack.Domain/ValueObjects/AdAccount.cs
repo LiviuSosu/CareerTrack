@@ -2,7 +2,6 @@
 using CareerTrack.Domain.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace CareerTrack.Domain.ValueObjects
 {

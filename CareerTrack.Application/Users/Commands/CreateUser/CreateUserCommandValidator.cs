@@ -1,7 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CareerTrack.Application.Users.Commands.CreateUser
 {
@@ -9,7 +6,7 @@ namespace CareerTrack.Application.Users.Commands.CreateUser
     {
         public CreateUserCommandValidator()
         {
-            RuleFor(x => x.Id).Length(5).NotEmpty();
+            RuleFor(x => x.Id).NotEmpty();
             //add other rules here
         }
     }

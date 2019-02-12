@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using System;
 
-namespace CareerTrack.Application.Users.Commands.CreateUser
+namespace CareerTrack.Application.Users.Commands.UpdateCustomer
 {
-    public class CreateUserCommand : IRequest
+    public class UpdateUserCommand : IRequest
     {
         public Guid Id { get; set; }
+
         public string UserName { get; set; }
     }
 }
