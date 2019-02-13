@@ -1,7 +1,7 @@
 ﻿
 namespace CareerTrack.Application.Pagination
 {
-    public class PaginationModel
+    public class PagingModel
     {
         const int maxPageSize = 20;
 
@@ -11,7 +11,6 @@ namespace CareerTrack.Application.Pagination
 
         public int PageSize
         {
-
             get { return _pageSize; }
             set
             {
@@ -19,7 +18,7 @@ namespace CareerTrack.Application.Pagination
             }
         }
 
-        public string QueryFilter { get; set; }
+        public string QueryFilter { get; set; } = "";
 
         public string Field { get; set; }
 
