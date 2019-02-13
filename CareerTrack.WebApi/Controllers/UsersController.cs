@@ -1,4 +1,5 @@
-﻿using CareerTrack.Application.Users.Commands.CreateUser;
+﻿using CareerTrack.Application.Pagination;
+using CareerTrack.Application.Users.Commands.CreateUser;
 using CareerTrack.Application.Users.Commands.DeleteUser;
 using CareerTrack.Application.Users.Commands.UpdateCustomer;
 using CareerTrack.Application.Users.Queries.GetUserDetail;
@@ -16,9 +17,12 @@ namespace CareerTrack.WebApi.Controllers
     {
         // GET api/customers
         [HttpGet]
-        public async Task<ActionResult<UsersListViewModel>> GetAll()
+        public async Task<ActionResult<UsersListViewModel>> GetAll([FromQuery]PaginationModel paginationModel)
         {
-            return Ok(await Mediator.Send(new GetUsersListQuery()));
+            return Ok(await Mediator.Send(new GetUsersListQuery
+            {
+                Pagination = paginationModel
+            }));
         }
 
         // GET api/customers/5
