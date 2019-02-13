@@ -1,4 +1,5 @@
-﻿using CareerTrack.Application.Pagination;
+﻿using AutoMapper;
+using CareerTrack.Application.Pagination;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,12 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
     public class GetUsersListQueryHandler : IRequestHandler<GetUsersListQuery, UsersListViewModel>
     {
         private readonly CareerTrackDbContext _context;
+        private readonly IMapper _mapper;
 
         public GetUsersListQueryHandler(CareerTrackDbContext context)
         {
             _context = context;
+            //_mapper = mapper;
         }
 
         public async Task<UsersListViewModel> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
