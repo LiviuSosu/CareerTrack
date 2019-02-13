@@ -19,6 +19,11 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
 
         public async Task<UsersListViewModel> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
         {
+            if (string.IsNullOrWhiteSpace(request.PagingModel.QueryFilter))
+            {
+                request.PagingModel.QueryFilter = string.Empty;
+            }
+
             var viewModel = new UsersListViewModel
             {
                 Users = await _context.Users.Select(user =>
@@ -26,15 +31,15 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
                     {
                         Id = user.Id,
                         UserName = user.UserName
-                    }).Where(x => x.UserName.ToLower().Contains(request.Pagination.QueryFilter.ToLower()))
-                    .Skip((request.Pagination.PageNumber - 1) * request.Pagination.PageSize).Take(request.Pagination.PageSize)
+                    }).Where(x => x.UserName.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
+                    .Skip((request.PagingModel.PageNumber - 1) * request.PagingModel.PageSize).Take(request.PagingModel.PageSize)
                     .ToListAsync(cancellationToken)
             };
 
-            switch (request.Pagination.Field)
+            switch (request.PagingModel.Field)
             {
                 case "Username":
-                    if (request.Pagination.Order == Order.asc)
+                    if (request.PagingModel.Order == Order.asc)
                     {
                         viewModel.Users = viewModel.Users.OrderBy(user => user.UserName).ToList();
                     }

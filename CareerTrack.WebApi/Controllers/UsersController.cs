@@ -17,12 +17,9 @@ namespace CareerTrack.WebApi.Controllers
     {
         // GET api/customers
         [HttpGet]
-        public async Task<ActionResult<UsersListViewModel>> GetAll([FromQuery]PaginationModel paginationModel)
+        public async Task<ActionResult<UsersListViewModel>> GetAll([FromQuery]PagingModel paginationModel)
         {
-            return Ok(await Mediator.Send(new GetUsersListQuery
-            {
-                Pagination = paginationModel
-            }));
+            return Ok(await Mediator.Send(new GetUsersListQuery(paginationModel)));
         }
 
         // GET api/customers/5
