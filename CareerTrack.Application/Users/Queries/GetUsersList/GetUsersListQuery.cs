@@ -1,4 +1,4 @@
-﻿using CareerTrack.Application.Pagination;
+﻿using CareerTrack.Application.Paging;
 using MediatR;
 
 namespace CareerTrack.Application.Users.Queries.GetUsersList

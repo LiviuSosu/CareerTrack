@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CareerTrack.Application.Pagination;
+using CareerTrack.Application.Paging;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

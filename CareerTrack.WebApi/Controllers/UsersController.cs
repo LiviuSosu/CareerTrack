@@ -1,4 +1,4 @@
-﻿using CareerTrack.Application.Pagination;
+﻿using CareerTrack.Application.Paging;
 using CareerTrack.Application.Users.Commands.CreateUser;
 using CareerTrack.Application.Users.Commands.DeleteUser;
 using CareerTrack.Application.Users.Commands.UpdateCustomer;

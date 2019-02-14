@@ -1,8 +1,4 @@
-﻿using CareerTrack.Application.Pagination;
-using CareerTrack.Application.Users.Queries.GetUsersList;
-using CareerTrack.Domain.Entities;
-using CareerTrack.Persistance;
-using Microsoft.EntityFrameworkCore;
+﻿using CareerTrack.Application.Users.Queries.GetUsersList;
 using Shouldly;
 using System;
 using System.Threading;
@@ -11,41 +7,30 @@ using Xunit;
 
 namespace CareerTrack.Application.Tests.Users.Queries
 {
-    public class GetUsersListQueryHandlerTests
-    {
+    public class GetUsersListQueryHandlerTests : UsersTestsBase
+    {       
         [Fact]
-        public async Task GetUsersTest2()
+        public async Task GetFilteredUsersTest()
         {
-            var options = new DbContextOptionsBuilder<CareerTrackDbContext>()
-               .UseInMemoryDatabase(databaseName: "CareerTrackUsers")
-               .Options;
-
-            CareerTrackDbContext db = new CareerTrackDbContext(options);
-
-            db.Users.AddRange(new[] {
-                new User { Id = Guid.Parse("8464B045-6F16-4A73-7E41-08D690385B3B") , UserName = "AdamCogan" },
-                new User { Id = Guid.Parse("8FD637BF-53E6-41B9-7E42-08D690385B3B"), UserName = "JasonTaylor" },
-                new User { Id = Guid.Parse("FEA44EA2-1D4C-49BB-92A0-1AD6899CA220"), UserName = "BrendanRichards" },
-            });
-
-            db.SaveChanges();
-
             var sut = new GetUsersListQueryHandler(db);
+            pagingModel.QueryFilter = "D";
 
-            var pg = new PaginationModel
-            {
-                Field = "Username"
-            };
-            var ord = new Order();
-            pg.Order = ord;
-            pg.PageNumber = 1;
-            pg.PageSize = 2;
-            pg.QueryFilter = "d";
-            var result = await sut.Handle(new GetUsersListQuery() { Pagination = pg }, CancellationToken.None);
+            var result = await sut.Handle(new GetUsersListQuery(pagingModel), CancellationToken.None);
 
             result.ShouldBeOfType<UsersListViewModel>();
-
             result.Users.Count.ShouldBe(2);
+        }
+
+        [Fact, TestPriority(-5)]
+        public async Task GetFirstPageTest()
+        {
+            var sut = new GetUsersListQueryHandler(db);
+            pagingModel.PageSize = Int16.MaxValue;
+
+            var result = await sut.Handle(new GetUsersListQuery(pagingModel), CancellationToken.None);
+
+            result.ShouldBeOfType<UsersListViewModel>();
+            result.Users.Count.ShouldBe(3);
         }
     }
 }

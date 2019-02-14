@@ -22,7 +22,6 @@ namespace CareerTrack.Application.Users.Commands.CreateUser
         {
             var entity = new User
             {
-                Id = request.Id,
                 UserName = request.UserName
             };
 
