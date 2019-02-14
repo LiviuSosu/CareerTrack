@@ -50,7 +50,8 @@ namespace CareerTrack.WebApi
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("CareerTrackConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("CareerTrackConnection")
+                , x => x.MigrationsAssembly("CareerTrack.Persistance.Migrations")));
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
