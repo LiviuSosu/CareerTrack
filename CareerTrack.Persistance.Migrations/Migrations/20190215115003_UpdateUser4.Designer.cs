@@ -4,34 +4,22 @@ using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerTrack.Persistance.Migrations
 {
     [DbContext(typeof(CareerTrackDbContext))]
-    partial class CareerTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190215115003_UpdateUser4")]
+    partial class UpdateUser4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("CareerTrack.Domain.Entities.Article", b =>
-                {
-                    b.Property<Guid>("ArticleId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ArticleLink");
-
-                    b.Property<string>("ArticleName");
-
-                    b.HasKey("ArticleId");
-
-                    b.ToTable("Articles");
-                });
 
             modelBuilder.Entity("CareerTrack.Domain.Entities.User", b =>
                 {

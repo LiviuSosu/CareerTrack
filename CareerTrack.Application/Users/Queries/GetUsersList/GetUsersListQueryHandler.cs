@@ -32,8 +32,8 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
                 Users = await _context.Users.Select(user =>
                     new UserLookupModel
                     {
-                        Id = user.Id,
-                        UserName = user.UserName
+                        Id = user.UserId,
+                        //UserName = user.UserName
                     }).Where(x => x.UserName.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
                     .Skip((request.PagingModel.PageNumber - 1) * request.PagingModel.PageSize).Take(request.PagingModel.PageSize)
                     .ToListAsync(cancellationToken)

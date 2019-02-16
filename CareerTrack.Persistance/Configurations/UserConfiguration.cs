@@ -8,7 +8,7 @@ namespace CareerTrack.Persistance.Configurations
     {
         public void Configure(EntityTypeBuilder<User> builder)
         {
-            builder.HasKey(u=>u.Id);
+            builder.HasKey(u=>u.UserId);
         }
     }
 }

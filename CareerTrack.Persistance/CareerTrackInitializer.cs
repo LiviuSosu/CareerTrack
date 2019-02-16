@@ -1,6 +1,5 @@
 ﻿using CareerTrack.Domain.Entities;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace CareerTrack.Persistance
 {
@@ -16,27 +15,16 @@ namespace CareerTrack.Persistance
 
         public void SeedEverything(CareerTrackDbContext context)
         {
-            context.Database.EnsureCreated();
+            //context.Database.EnsureCreated();
 
-            if (context.Users.Any())
-            {
-                return; // Db has been seeded
-            }
-
-            SeedUsers(context);
+            //if (!context.Roles.Any())
+            //{
+            //    SeedRoles(context);
+            //}
         }
 
-        public void SeedUsers(CareerTrackDbContext context)
+        public void SeedRoles(CareerTrackDbContext context)
         {
-            //var users = new[]
-            //{
-            //    new User{ },
-            //    new User{ }
-            //};
-
-            //context.Users.AddRange(users);
-
-            //context.SaveChanges();
         }
     }
 }

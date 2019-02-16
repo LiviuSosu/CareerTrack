@@ -20,7 +20,7 @@ namespace CareerTrack.WebApi
                 try
                 {
                     var context = scope.ServiceProvider.GetService<CareerTrackDbContext>();
-                    context.Database.Migrate();
+                    //context.Database.Migrate();
 
                     CareerTrackInitializer.Initialize(context);
                 }
