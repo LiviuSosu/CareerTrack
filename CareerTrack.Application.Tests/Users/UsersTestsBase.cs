@@ -23,9 +23,9 @@ namespace CareerTrack.Application.Tests.Users.Queries
             try
             {
                 db.Users.AddRange(new[] {
-                new User { Id = Guid.Parse("8464B045-6F16-4A73-7E41-08D690385B3B") , UserName = "AdamCogan" },
-                new User { Id = Guid.Parse("8FD637BF-53E6-41B9-7E42-08D690385B3B"), UserName = "JasonTaylor" },
-                new User { Id = Guid.Parse("FEA44EA2-1D4C-49BB-92A0-1AD6899CA220"), UserName = "BrendanRichards" }
+                new User { Id = "8464B045-6F16-4A73-7E41-08D690385B3B", UserName = "AdamCogan" },
+                new User { Id = "8FD637BF-53E6-41B9-7E42-08D690385B3B", UserName = "JasonTaylor" },
+                new User { Id = "FEA44EA2-1D4C-49BB-92A0-1AD6899CA220", UserName = "BrendanRichards" }
                 });
 
                 db.SaveChanges();

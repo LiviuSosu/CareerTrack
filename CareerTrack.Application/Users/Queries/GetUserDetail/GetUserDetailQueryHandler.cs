@@ -28,8 +28,8 @@ namespace CareerTrack.Application.Users.Queries.GetUserDetail
 
             return new UserDetailModel
             {
-                Id = entity.Id,
-                UserName=entity.UserName
+                Id = entity.UserId,
+                //UserName=entity.UserName
             };
         }
     }

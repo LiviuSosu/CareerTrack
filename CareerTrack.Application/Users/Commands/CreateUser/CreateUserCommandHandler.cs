@@ -2,6 +2,9 @@
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,14 +23,19 @@ namespace CareerTrack.Application.Users.Commands.CreateUser
 
         public async Task<Unit> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
-            var entity = new User
-            {
-                UserName = request.UserName
-            };
+            var context = request.ServiceProvider.GetRequiredService<CareerTrackDbContext>();
 
-            _context.Users.Add(entity);
+            var userManager = request.ServiceProvider.GetRequiredService<UserManager<User>>();
+       
+            //User user = new User
+            //{
+            //    UserId = Guid.NewGuid(),
+            //    Email = "a4@b.com",
+            //    SecurityStamp = Guid.NewGuid().ToString(),
+            //    UserName = "Casper4",
+            //};
 
-            await _context.SaveChangesAsync(cancellationToken);
+            //await userManager.CreateAsync(user, "Password@123");
 
             return Unit.Value;
         }

@@ -15,7 +15,7 @@ namespace CareerTrack.Application.Users.Queries.GetUserDetail
             {
                 return user => new UserDetailModel
                 {
-                    Id = user.Id,
+                    Id = user.UserId,
                     UserName = user.UserName
                 };
             }
