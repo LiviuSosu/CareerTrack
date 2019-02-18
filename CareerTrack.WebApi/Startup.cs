@@ -174,6 +174,13 @@ namespace CareerTrack.WebApi
                         .AddRequirements(new ClaimRequirement("Admin"))
                         .Build()
                     );
+
+                options.AddPolicy("IsStdUser",
+                    policy => policy.AddAuthenticationSchemes("Bearer")
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(new ClaimRequirement("StdUser"))
+                        .Build()
+                    );
             });
         }
     }
