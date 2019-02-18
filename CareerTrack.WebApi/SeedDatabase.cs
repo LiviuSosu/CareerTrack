@@ -53,6 +53,7 @@ namespace CareerTrack.WebApi
                     UserName = "admin",
                 };
                 context.Users.AddAsync(user);
+                userManager.CreateAsync(user, "Password@123");
 
                 IdentityUserRole<string> identityUserRole = new IdentityUserRole<string>
                 {
@@ -62,7 +63,14 @@ namespace CareerTrack.WebApi
 
                 context.UserRoles.AddAsync(identityUserRole);
 
-                userManager.CreateAsync(user, "Password@123");
+                var userClaim = new IdentityUserClaim<string>
+                {
+                    UserId = user.Id,
+                    ClaimType = "AddArticles",
+                    ClaimValue = "Add Articles"
+                };
+
+                context.UserClaims.AddAsync(userClaim);
             }
         }
     }
