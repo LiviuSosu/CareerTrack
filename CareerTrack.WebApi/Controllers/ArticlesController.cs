@@ -1,6 +1,9 @@
 ﻿using CareerTrack.Application.Articles;
 using CareerTrack.Application.Articles.Commands.Delete;
 using CareerTrack.Application.Articles.Commands.Update;
+using CareerTrack.Application.Articles.Queries.GetArticleDetail;
+using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Paging;
 using CareerTrack.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -54,6 +57,21 @@ namespace CareerTrack.WebApi.Controllers
             await Mediator.Send(new DeleteArticleCommand { Id = id});
 
             return NoContent();
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> GetArticle(Guid id, [FromHeader]string Authorization)
+        {
+            
+            return Ok(await Mediator.Send(new GetArticleDetailQuery() { Id = id })) ;
+        }
+
+        [HttpGet]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<IActionResult> GetArticles([FromQuery]PagingModel paginationModel, [FromHeader]string Authorization)
+        {
+            return Ok(await Mediator.Send(new GetArticlesListQuery(paginationModel)));
         }
     }
 }
