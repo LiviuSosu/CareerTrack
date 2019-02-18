@@ -124,7 +124,6 @@ namespace CareerTrack.WebApi.Controllers
             var roles = await userManager.GetRolesAsync(user);
 
             result.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
-            //result.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
             foreach (var role in roleManager.Roles)
             {

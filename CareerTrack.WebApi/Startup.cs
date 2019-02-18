@@ -4,6 +4,8 @@ using System.Text;
 using CareerTrack.Application.Articles;
 using CareerTrack.Application.Articles.Commands.Delete;
 using CareerTrack.Application.Articles.Commands.Update;
+using CareerTrack.Application.Articles.Queries.GetArticleDetail;
+using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Infrastructure;
 using CareerTrack.Application.Interfaces;
@@ -63,6 +65,8 @@ namespace CareerTrack.WebApi
             services.AddMediatR(typeof(CreateArticleCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(UpdateArticleCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(DeleteArticleCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetArticleDetailQueryHandler).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
