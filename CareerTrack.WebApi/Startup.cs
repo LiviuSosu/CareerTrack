@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Reflection;
 using System.Text;
+using CareerTrack.Application.Articles;
+using CareerTrack.Application.Articles.Commands.Delete;
+using CareerTrack.Application.Articles.Commands.Update;
+using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Infrastructure;
 using CareerTrack.Application.Interfaces;
 using CareerTrack.Application.Users.Commands.CreateUser;
@@ -17,6 +21,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -55,6 +60,10 @@ namespace CareerTrack.WebApi
             services.AddMediatR(typeof(UpdateUserCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(DeleteUserCommand).GetTypeInfo().Assembly);
 
+            services.AddMediatR(typeof(CreateArticleCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(UpdateArticleCommand).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(DeleteArticleCommand).GetTypeInfo().Assembly);
+
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CareerTrackConnection")
@@ -71,42 +80,41 @@ namespace CareerTrack.WebApi
 
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(options =>
             {
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = false;
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = "http://oec.com",
-                    ValidIssuer = "http://oec.com",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecureKey"))
+                    ValidAudience = Common.Configuration.Audience,
+                    ValidIssuer = Common.Configuration.Issuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Configuration.SecretKey))
                 };
             });
 
+            services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
+
+            AddAuthentications(services);
 
             // Customise default API behavour
             services.Configure<ApiBehaviorOptions>(options =>
-                {
-                    options.SuppressModelStateInvalidFilter = true;
-                });
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-
-            //  services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -149,6 +157,19 @@ namespace CareerTrack.WebApi
                 {
                     spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
                 }
+            });
+        }
+
+        public void AddAuthentications(IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin",
+                    policy => policy.AddAuthenticationSchemes("Bearer")
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(new ClaimRequirement("Admin"))
+                        .Build()
+                    );
             });
         }
     }

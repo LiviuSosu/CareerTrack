@@ -8,10 +8,10 @@ namespace CareerTrack.Domain.Entities
     public class Article
     {
         [Key]
-        public Guid ArticleId { get; set; }
+        public Guid Id { get; set; }
 
-        public string ArticleName { get; set; }
+        public string Name { get; set; }
 
-        public string ArticleLink { get; set; }
+        public string Link { get; set; }
     }
 }

@@ -4,16 +4,14 @@ using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerTrack.Persistance.Migrations
 {
     [DbContext(typeof(CareerTrackDbContext))]
-    [Migration("20190215134035_TestArticle")]
-    partial class TestArticle
+    partial class CareerTrackDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,14 +21,14 @@ namespace CareerTrack.Persistance.Migrations
 
             modelBuilder.Entity("CareerTrack.Domain.Entities.Article", b =>
                 {
-                    b.Property<Guid>("ArticleId")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ArticleLink");
+                    b.Property<string>("Link");
 
-                    b.Property<string>("ArticleName");
+                    b.Property<string>("Name");
 
-                    b.HasKey("ArticleId");
+                    b.HasKey("Id");
 
                     b.ToTable("Articles");
                 });
