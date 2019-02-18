@@ -21,6 +21,8 @@ namespace CareerTrack.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public class UsersController : BaseController
     {
         private readonly UserManager<User> userManager;
@@ -34,7 +36,6 @@ namespace CareerTrack.WebApi.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody]CreateUserCommand command)
         {
@@ -90,7 +91,6 @@ namespace CareerTrack.WebApi.Controllers
 
         // POST api/customers
         [HttpPost]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Create([FromBody]CreateUserCommand command)
         {
             await Mediator.Send(command);
@@ -110,7 +110,6 @@ namespace CareerTrack.WebApi.Controllers
 
         // DELETE api/customers/5
         [HttpDelete("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Delete(Guid id)
         {
             await Mediator.Send(new DeleteUserCommand { Id = id });
