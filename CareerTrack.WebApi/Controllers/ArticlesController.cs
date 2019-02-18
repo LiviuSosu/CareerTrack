@@ -16,6 +16,9 @@ namespace CareerTrack.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public class ArticlesController : BaseController
     {
         private readonly UserManager<User> userManager;
@@ -28,7 +31,6 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpPost]
         [Authorize(Policy = "IsAdmin")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command, [FromHeader]string Authorization)
         {
             command.ServiceProvider = Provider;
@@ -39,7 +41,6 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Policy = "IsAdmin")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> UpdateArticle(Guid id,[FromBody]UpdateArticleCommand command, [FromHeader]string Authorization)
         {
             command.ServiceProvider = Provider;
@@ -51,7 +52,6 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Policy = "IsAdmin")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> DeleteArticle(Guid id, [FromBody]DeleteArticleCommand command, [FromHeader]string Authorization)
         {
             await Mediator.Send(new DeleteArticleCommand { Id = id});
@@ -60,15 +60,12 @@ namespace CareerTrack.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> GetArticle(Guid id, [FromHeader]string Authorization)
-        {
-            
+        {           
             return Ok(await Mediator.Send(new GetArticleDetailQuery() { Id = id })) ;
         }
 
         [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> GetArticles([FromQuery]PagingModel paginationModel, [FromHeader]string Authorization)
         {
             return Ok(await Mediator.Send(new GetArticlesListQuery(paginationModel)));
