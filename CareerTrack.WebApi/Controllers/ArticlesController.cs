@@ -38,10 +38,19 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command, [FromHeader]string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
-            command.ServiceProvider = Provider;
-            await Mediator.Send(command);
 
-            return NoContent();
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
+                command.ServiceProvider = Provider;
+                await Mediator.Send(command);
+                return Ok();
+            }
+            catch(Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command), Authorization);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
         [HttpPut("{id}")]
@@ -49,11 +58,20 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> UpdateArticle(Guid id, [FromBody]UpdateArticleCommand command, [FromHeader]string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
-            command.ServiceProvider = Provider;
-            command.Id = id;
-            await Mediator.Send(command);
 
-            return NoContent();
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(id) + " " + JsonConvert.SerializeObject(command), Authorization);
+                command.ServiceProvider = Provider;
+                command.Id = id;
+                await Mediator.Send(command);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id), Authorization);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -61,15 +79,35 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> DeleteArticle(Guid id, [FromBody]DeleteArticleCommand command, [FromHeader]string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
-            await Mediator.Send(new DeleteArticleCommand { Id = id });
-            return Ok();
+
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(id) + " " + JsonConvert.SerializeObject(command), Authorization);
+                await Mediator.Send(new DeleteArticleCommand { Id = id });
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id) + " " + JsonConvert.SerializeObject(command), Authorization);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetArticle(Guid id, [FromHeader]string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
-            return Ok(await Mediator.Send(new GetArticleDetailQuery() { Id = id }));
+
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(id), Authorization);
+                return Ok(await Mediator.Send(new GetArticleDetailQuery() { Id = id }));
+            }
+            catch(Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id), Authorization);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
         [HttpGet]
