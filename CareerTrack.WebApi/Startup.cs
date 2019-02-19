@@ -32,6 +32,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace CareerTrack.WebApi
 {
@@ -67,7 +68,7 @@ namespace CareerTrack.WebApi
             services.AddMediatR(typeof(DeleteArticleCommand).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
             services.AddMediatR(typeof(GetArticleDetailQueryHandler).GetTypeInfo().Assembly);
-
+            
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("CareerTrackConnection")
@@ -101,7 +102,7 @@ namespace CareerTrack.WebApi
             });
 
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
-
+            services.Add(new ServiceDescriptor(typeof(Common.ILogger), typeof(Logger), ServiceLifetime.Singleton));
             AddAuthentications(services);
 
             // Customise default API behavour
