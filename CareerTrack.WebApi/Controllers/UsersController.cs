@@ -4,11 +4,13 @@ using CareerTrack.Application.Users.Commands.DeleteUser;
 using CareerTrack.Application.Users.Commands.UpdateCustomer;
 using CareerTrack.Application.Users.Queries.GetUserDetail;
 using CareerTrack.Application.Users.Queries.GetUsersList;
+using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.WebApi.Login;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,68 +30,89 @@ namespace CareerTrack.WebApi.Controllers
         private readonly UserManager<User> userManager;
         private readonly RoleManager<IdentityRole> roleManager;
         private IServiceProvider Provider { get; set; }
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager,  IServiceProvider provider)
+        private readonly ILogger _logger;
+
+        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager,  IServiceProvider provider, ILogger logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             Provider = provider;
+            _logger = logger;
         }
 
         [HttpPost]
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody]CreateUserCommand command)
         {
-            command.UserManager = userManager;
-            command.ServiceProvider = Provider;
-            await Mediator.Send(command);
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
 
-            return NoContent();
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), string.Empty);
+                command.UserManager = userManager;
+                command.ServiceProvider = Provider;
+                await Mediator.Send(command);
+                return Ok();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command), string.Empty);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
         [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel loginModel)
         {
-            var user = await userManager.FindByNameAsync(model.Username);
-            var roles = await userManager.GetRolesAsync(user);
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
 
-            if (user != null && await userManager.CheckPasswordAsync(user, model.Password))
+            try
             {
-                var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Configuration.SecretKey));
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(new LoginModel { Username = loginModel.Username}), string.Empty);
+                var user = await userManager.FindByNameAsync(loginModel.Username);
+                var roles = await userManager.GetRolesAsync(user);
 
-                var token = new JwtSecurityToken(
-                    issuer: Common.Configuration.Issuer,
-                    audience: Common.Configuration.Audience,
-                    expires: DateTime.UtcNow.AddHours(Common.Configuration.JwtLifeTime),                    
-                    claims: await GetRolesAsClaim(user),
-                    signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-                    );
-
-                return Ok(new
+                if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
                 {
-                    token = new JwtSecurityTokenHandler().WriteToken(token),
-                    expiration = token.ValidTo
-                });
-            }
+                    var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Configuration.SecretKey));
 
-            return Unauthorized();
+                    var token = new JwtSecurityToken(
+                        issuer: Configuration.Issuer,
+                        audience: Configuration.Audience,
+                        expires: DateTime.UtcNow.AddHours(Configuration.JwtLifeTime),
+                        claims: await GetRolesAsClaim(user),
+                        signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                        );
+
+                    return Ok(new
+                    {
+                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        expiration = token.ValidTo
+                    });
+                }
+                return Unauthorized();
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(loginModel), string.Empty);
+                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+            }
         }
 
-        // GET api/customers
         [HttpGet]
         public async Task<ActionResult<UsersListViewModel>> GetAll([FromQuery]PagingModel paginationModel)
         {
             return Ok(await Mediator.Send(new GetUsersListQuery(paginationModel)));
         }
 
-        // GET api/customers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDetailModel>> Get(Guid id)
         {
             return Ok(await Mediator.Send(new GetUserDetailQuery { Id = id }));
         }
 
-        // POST api/customers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateUserCommand command)
         {
@@ -98,7 +121,6 @@ namespace CareerTrack.WebApi.Controllers
             return NoContent();
         }
 
-        // PUT api/customers/5
         [HttpPut("{id}")]
         [ProducesResponseType((int)HttpStatusCode.NoContent)]
         public async Task<IActionResult> Update(Guid id, [FromBody]UpdateUserCommand command)
@@ -108,7 +130,6 @@ namespace CareerTrack.WebApi.Controllers
             return NoContent();
         }
 
-        // DELETE api/customers/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
