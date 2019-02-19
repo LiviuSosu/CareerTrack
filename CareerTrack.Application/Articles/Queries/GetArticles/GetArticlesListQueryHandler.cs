@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CareerTrack.Application.Paging;
+﻿using CareerTrack.Application.Paging;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,12 +11,9 @@ namespace CareerTrack.Application.Articles.Queries.GetArticles
     public class GetArticlesListQueryHandler : IRequestHandler<GetArticlesListQuery, ArticlesListViewModel>
     {
         private readonly CareerTrackDbContext _context;
-        private readonly IMapper _mapper;
-
         public GetArticlesListQueryHandler(CareerTrackDbContext context)
         {
             _context = context;
-            //_mapper = mapper;
         }
 
         public async Task<ArticlesListViewModel> Handle(GetArticlesListQuery request, CancellationToken cancellationToken)

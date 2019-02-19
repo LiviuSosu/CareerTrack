@@ -12,12 +12,10 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
     public class GetUsersListQueryHandler : IRequestHandler<GetUsersListQuery, UsersListViewModel>
     {
         private readonly CareerTrackDbContext _context;
-        private readonly IMapper _mapper;
 
         public GetUsersListQueryHandler(CareerTrackDbContext context)
         {
             _context = context;
-            //_mapper = mapper;
         }
 
         public async Task<UsersListViewModel> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
@@ -33,7 +31,7 @@ namespace CareerTrack.Application.Users.Queries.GetUsersList
                     new UserLookupModel
                     {
                         Id = user.UserId,
-                        //UserName = user.UserName
+                        UserName = user.UserName
                     }).Where(x => x.UserName.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
                     .Skip((request.PagingModel.PageNumber - 1) * request.PagingModel.PageSize).Take(request.PagingModel.PageSize)
                     .ToListAsync(cancellationToken)

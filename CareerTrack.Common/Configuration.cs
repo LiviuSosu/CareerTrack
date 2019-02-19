@@ -10,5 +10,8 @@ namespace CareerTrack.Common
         public static string Issuer = "CareerTrack";
         public static string Audience = "CareerTrack";
         public static int JwtLifeTime = 24;
+
+        public static string DisplayUserErrorMessage = "Internal server error";
+        public static string LoggingFilePath = @"C:\Users\lsosu\Work\Proiecte\Personale\CareerTrack\CareerTrack\CareerTrack.WebApi\Logs\logs.log";
     }
 }
