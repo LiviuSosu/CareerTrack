@@ -16,6 +16,11 @@ namespace CareerTrack.Application.Infrastructure
 
         public Task Process(TRequest request, CancellationToken cancellationToken)
         {
+            CancellationToken cancelToken = cancellationToken;
+            if (cancelToken.IsCancellationRequested)
+            {
+                cancelToken.ThrowIfCancellationRequested();
+            }
             return Task.CompletedTask;
         }
     }
