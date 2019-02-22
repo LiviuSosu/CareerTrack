@@ -6,8 +6,9 @@ namespace CareerTrack.Application.Users.Commands.CreateUser
     {
         public CreateUserCommandValidator()
         {
-            //RuleFor(x => x.Id).NotEmpty();
-            //add other rules here
+            RuleFor(x => x.UserName).NotNull();
+            RuleFor(x => x.UserEmail).EmailAddress();
+            RuleFor(x => x.Password).NotNull();
         }
     }
 }

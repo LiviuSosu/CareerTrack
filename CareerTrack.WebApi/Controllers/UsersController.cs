@@ -78,6 +78,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 _logger.LogInformation(actionName, JsonConvert.SerializeObject(new LoginModel { Username = loginModel.Username}), string.Empty);
                 var user = await userManager.FindByNameAsync(loginModel.Username);
+                if (user==null)
+                {
+                    return Unauthorized();
+                }
                 var roles = await userManager.GetRolesAsync(user);
 
                 if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
