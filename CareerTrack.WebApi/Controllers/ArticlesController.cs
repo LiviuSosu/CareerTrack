@@ -20,17 +20,21 @@ namespace CareerTrack.WebApi.Controllers
     [ApiController]
     [ProducesResponseType((int)HttpStatusCode.OK)]
     [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+    [ProducesResponseType((int)HttpStatusCode.Forbidden)]
     [ProducesResponseType((int)HttpStatusCode.InternalServerError)]
     public class ArticlesController : BaseController
     {
         private readonly UserManager<User> userManager;
         private IServiceProvider Provider { get; set; }
         private readonly ILogger _logger;
-        public ArticlesController(UserManager<User> userManager, IServiceProvider provider, ILogger logger)
+        private readonly IConfiguration _configuration;
+
+        public ArticlesController(UserManager<User> userManager, IServiceProvider provider, ILogger logger, IConfiguration configuration)
         {
             this.userManager = userManager;
             Provider = provider;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -49,7 +53,7 @@ namespace CareerTrack.WebApi.Controllers
             catch(Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 
@@ -70,7 +74,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id), Authorization);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 
@@ -89,7 +93,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id) + " " + JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 
@@ -106,7 +110,7 @@ namespace CareerTrack.WebApi.Controllers
             catch(Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(id), Authorization);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 
@@ -122,7 +126,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel), Authorization);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
     }

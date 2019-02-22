@@ -31,13 +31,19 @@ namespace CareerTrack.WebApi.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private IServiceProvider Provider { get; set; }
         private readonly ILogger _logger;
+        private readonly IConfiguration _configuration;
 
-        public UsersController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager,  IServiceProvider provider, ILogger logger)
+        public UsersController(RoleManager<IdentityRole> roleManager
+            ,UserManager<User> userManager
+            ,IServiceProvider provider
+            ,ILogger logger
+            ,IConfiguration configuration)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             Provider = provider;
             _logger = logger;
+            _configuration = configuration;
         }
 
         [HttpPost]
@@ -57,7 +63,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command), string.Empty);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage );
             }
         }
 
@@ -76,12 +82,12 @@ namespace CareerTrack.WebApi.Controllers
 
                 if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
                 {
-                    var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Configuration.SecretKey));
+                    var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecretKey));
 
                     var token = new JwtSecurityToken(
-                        issuer: Configuration.Issuer,
-                        audience: Configuration.Audience,
-                        expires: DateTime.UtcNow.AddHours(Configuration.JwtLifeTime),
+                        issuer: _configuration.JwtIssuer,
+                        audience: _configuration.JwtAudience,
+                        expires: DateTime.UtcNow.AddHours(Convert.ToInt16(_configuration.JwtLifeTime)),
                         claims: await GetRolesAsClaim(user),
                         signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                         );
@@ -97,7 +103,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(loginModel), string.Empty);
-                return StatusCode(500, Configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 

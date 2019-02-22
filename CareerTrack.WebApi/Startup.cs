@@ -32,7 +32,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Serilog;
+using IConfiguration = Microsoft.Extensions.Configuration.IConfiguration;
 
 namespace CareerTrack.WebApi
 {
@@ -83,6 +83,8 @@ namespace CareerTrack.WebApi
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
 
+            var _configuration = new Configuration();
+
             services.AddAuthentication(options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -95,14 +97,15 @@ namespace CareerTrack.WebApi
                 {
                     ValidateIssuer = true,
                     ValidateAudience = true,
-                    ValidAudience = Common.Configuration.Audience,
-                    ValidIssuer = Common.Configuration.Issuer,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Common.Configuration.SecretKey))
+                    ValidAudience = _configuration.JwtAudience,
+                    ValidIssuer = _configuration.JwtIssuer,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecretKey))
                 };
             });
 
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.ILogger), typeof(Logger), ServiceLifetime.Singleton));
+            services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
             AddAuthentications(services);
 
             // Customise default API behavour
@@ -136,11 +139,6 @@ namespace CareerTrack.WebApi
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            //app.UseSwaggerUi3(settings =>
-            //{
-            //    settings.Path = "/api";
-            //    settings.DocumentPath = "/api/specification.json";
-            //});
             SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
 
             app.UseAuthentication();
