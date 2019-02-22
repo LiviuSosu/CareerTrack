@@ -9,7 +9,7 @@ namespace CareerTrack.Common
         public Logger()
         {
             Log.Logger = new LoggerConfiguration()
-                .WriteTo.File(Configuration.LoggingFilePath)
+                .WriteTo.File(new Configuration().LoggingFilePath)
                 .CreateLogger();
         }
 
