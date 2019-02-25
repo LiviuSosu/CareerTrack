@@ -1,3 +1,3 @@
 # CareerTrack
 
-Personla project developed for learning purposes.
+Personal project developed for learning purposes.
