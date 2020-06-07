@@ -5,7 +5,6 @@ namespace CareerTrack.Common
 {
     public class Configuration : IConfiguration
     {
-        //const string path = @"C:\Users\Liviu\Career\Projects\CareerTrack\CareerTrack.Common\appsettings.json";
         private readonly string loggingFilePath;
         public string LoggingFilePath { get => loggingFilePath; }
         private readonly string jwtSecretKey;
@@ -28,11 +27,10 @@ namespace CareerTrack.Common
 
         public Configuration()
         {
-            string path2 = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json"); //Directory.GetCurrentDirectory()+ @"\appsettings.json";
-            
-
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
+           
             var configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile(path2, false);
+            configurationBuilder.AddJsonFile(path, false);
             var root = configurationBuilder.Build();
 
             loggingFilePath = root.GetSection("Logging").GetSection("loggingFilePath").Value;
@@ -43,7 +41,5 @@ namespace CareerTrack.Common
             displayUserErrorMessage = root.GetSection("Errors").GetSection("DisplayUserErrorMessage").Value;
             expectedRoleClaim = root.GetSection("JWT").GetSection("expectedRoleClaim").Value;
         }
-
-
     }
 }
