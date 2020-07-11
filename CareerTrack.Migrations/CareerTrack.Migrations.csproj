@@ -11,4 +11,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CareerTrack.Persistance\CareerTrack.Persistance.csproj" />
+  </ItemGroup>
+
 </Project>
