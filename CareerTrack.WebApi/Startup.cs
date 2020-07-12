@@ -1,17 +1,24 @@
 using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Authorizations;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
+using CareerTrack.WebApi.Filters;
 using MediatR;
 using MediatR.Pipeline;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
+using System.Text;
 
 namespace CareerTrack.WebApi
 {
@@ -43,17 +50,42 @@ namespace CareerTrack.WebApi
                 .AddEntityFrameworkStores<CareerTrackDbContext>()
                 .AddDefaultTokenProviders();
 
-            //services
-            //    .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-            //    .SetCompatibilityVersion(CompatibilityVersion.Ver)
-            //    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>());
+            services
+                .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
+                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>())
+                ;
 
             var _configuration = new Configuration();
 
-            //add JWT here
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+               .AddJwtBearer(options =>
+               {
+                   options.SaveToken = true;
+                   options.RequireHttpsMetadata = false;
+                   options.TokenValidationParameters = new TokenValidationParameters
+                   {
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidAudience = _configuration.JwtAudience,
+                       ValidIssuer = _configuration.JwtIssuer,
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecretKey))
+                   };
+               });
 
+            services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
-            services.AddControllers();
+            //services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
+
+            AddAuthentications(services);
+
+            // Customise default API behavour
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -75,6 +107,26 @@ namespace CareerTrack.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+        }
+
+        public void AddAuthentications(IServiceCollection services)
+        {
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("IsAdmin",
+                    policy => policy.AddAuthenticationSchemes("Bearer")
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(new ClaimRequirement("Admin"))
+                        .Build()
+                    );
+
+                options.AddPolicy("IsStdUser",
+                    policy => policy.AddAuthenticationSchemes("Bearer")
+                        .RequireAuthenticatedUser()
+                        .AddRequirements(new ClaimRequirement("StdUser"))
+                        .Build()
+                    );
             });
         }
     }

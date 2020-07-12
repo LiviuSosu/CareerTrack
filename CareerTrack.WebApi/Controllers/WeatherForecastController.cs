@@ -9,7 +9,7 @@ namespace CareerTrack.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class WeatherForecastController : BaseController
     {
         private static readonly string[] Summaries = new[]
         {
