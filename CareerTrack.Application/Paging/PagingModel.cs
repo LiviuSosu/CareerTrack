@@ -1,5 +1,4 @@
-﻿
-namespace CareerTrack.Application.Paging
+﻿namespace CareerTrack.Application.Paging
 {
     public class PagingModel
     {

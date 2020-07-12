@@ -11,6 +11,7 @@ namespace CareerTrack.Application.Articles.Queries.GetArticles
     public class GetArticlesListQueryHandler : IRequestHandler<GetArticlesListQuery, ArticlesListViewModel>
     {
         private readonly CareerTrackDbContext _context;
+
         public GetArticlesListQueryHandler(CareerTrackDbContext context)
         {
             _context = context;
@@ -29,23 +30,23 @@ namespace CareerTrack.Application.Articles.Queries.GetArticles
                     new ArticleLookupModel
                     {
                         Id = article.Id,
-                        Name = article.Name,
+                        Title = article.Title,
                         Link = article.Link
-                    }).Where(x => x.Name.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
-                    .Skip((request.PagingModel.PageNumber - 1) * request.PagingModel.PageSize).Take(request.PagingModel.PageSize)
-                    .ToListAsync(cancellationToken)
+                    }).Where(x => x.Title.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
+                   .Skip((request.PagingModel.PageNumber - 1) * request.PagingModel.PageSize).Take(request.PagingModel.PageSize)
+                   .ToListAsync(cancellationToken)
             };
 
             switch (request.PagingModel.Field)
             {
-                case "Name":
+                case "Title":
                     if (request.PagingModel.Order == Order.asc)
                     {
-                        viewModel.Articles = viewModel.Articles.OrderBy(user => user.Name).ToList();
+                        viewModel.Articles = viewModel.Articles.OrderBy(user => user.Title).ToList();
                     }
                     else
                     {
-                        viewModel.Articles = viewModel.Articles.OrderByDescending(user => user.Name).ToList();
+                        viewModel.Articles = viewModel.Articles.OrderByDescending(user => user.Title).ToList();
                     }
                     break;
                 default:

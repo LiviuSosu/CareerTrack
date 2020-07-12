@@ -1,7 +1,7 @@
-﻿using CareerTrack.Application.Exceptions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+﻿using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using Microsoft.AspNetCore.Mvc;
+using CareerTrack.Application.Exceptions;
 using System.Net;
 
 namespace CareerTrack.WebApi.Filters

@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace CareerTrack.Domain.Entities
 {
@@ -10,7 +8,7 @@ namespace CareerTrack.Domain.Entities
         [Key]
         public Guid Id { get; set; }
 
-        public string Name { get; set; }
+        public string Title { get; set; }
 
         public string Link { get; set; }
     }

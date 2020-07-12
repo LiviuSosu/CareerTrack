@@ -7,14 +7,16 @@ namespace CareerTrack.Application.Exceptions
 {
     public class ValidationException : Exception
     {
+        public IDictionary<string, string[]> Failures { get; }
+
         public ValidationException()
-            : base("One or more validation failures have occurred.")
+        : base("One or more validation failures have occurred.")
         {
             Failures = new Dictionary<string, string[]>();
         }
 
         public ValidationException(List<ValidationFailure> failures)
-            : this()
+          : this()
         {
             var propertyNames = failures
                 .Select(e => e.PropertyName)
@@ -30,7 +32,5 @@ namespace CareerTrack.Application.Exceptions
                 Failures.Add(propertyName, propertyFailures);
             }
         }
-
-        public IDictionary<string, string[]> Failures { get; }
     }
 }
