@@ -4,6 +4,7 @@ using CareerTrack.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : BaseController
     {
@@ -21,22 +22,26 @@ namespace CareerTrack.WebApi.Controllers
         private readonly RoleManager<IdentityRole> roleManager;
         private IServiceProvider Provider { get; set; }
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
         public UsersController(RoleManager<IdentityRole> roleManager
             ,UserManager<User> userManager
             ,IServiceProvider provider,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ILogger logger)
         {
             this.roleManager = roleManager;
             this.userManager = userManager;
             Provider = provider;
             _configuration = configuration;
+            _logger = logger;
         }
 
         [HttpPost]
         [Route("login")]
         public async Task<IActionResult> Test([FromBody] LoginModel loginModel)
         {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
                 var user = await userManager.FindByNameAsync(loginModel.Username);
@@ -68,10 +73,10 @@ namespace CareerTrack.WebApi.Controllers
 
                 return Unauthorized();
             }
-            catch (Exception /*exception*/)
+            catch (Exception exception)
             {
-                //_logger.LogException(exception, actionName, JsonConvert.SerializeObject(loginModel), string.Empty);
-                return StatusCode(500, /*_configuration.DisplayUserErrorMessage*/"err");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(loginModel), string.Empty);
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
 

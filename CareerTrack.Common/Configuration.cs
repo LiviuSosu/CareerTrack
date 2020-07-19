@@ -1,10 +1,13 @@
 ﻿using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace CareerTrack.Infrastructure
+namespace CareerTrack.Common
 {
-    public class Configuration : Common.IConfiguration
+    public class Configuration : IConfiguration
     {
+        private readonly string loggingFilePath;
+        public string LoggingFilePath { get => loggingFilePath; }
+
         private readonly string displayUserErrorMessage;
         public string DisplayUserErrorMessage { get => displayUserErrorMessage; }
 
@@ -31,7 +34,7 @@ namespace CareerTrack.Infrastructure
             configurationBuilder.AddJsonFile(path, false);
             var root = configurationBuilder.Build();
 
-            //loggingFilePath = root.GetSection("Logging").GetSection("loggingFilePath").Value;
+            loggingFilePath = root.GetSection("Logging").GetSection("loggingFilePath").Value;
             jwtSecretKey = root.GetSection("JWT").GetSection("secret").Value;
             jwtIssuer = root.GetSection("JWT").GetSection("issuer").Value;
             jwtAudience = root.GetSection("JWT").GetSection("audience").Value;

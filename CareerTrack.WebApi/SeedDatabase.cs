@@ -98,6 +98,9 @@ namespace CareerTrack.WebApi
 
                 context.UserClaims.AddAsync(addArticlesUserClaim);
                 context.UserClaims.AddAsync(getArticlesUserClaim);
+
+                context.Articles.Add(new Article { Title = "Title 1", Link = "www.link1.com" });
+                context.Articles.Add(new Article { Title = "Title 2", Link = "www.link2.com" });
             }
         }
     }
