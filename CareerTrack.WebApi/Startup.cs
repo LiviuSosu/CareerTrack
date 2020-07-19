@@ -1,5 +1,6 @@
 using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
+using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
@@ -24,12 +25,12 @@ namespace CareerTrack.WebApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(Microsoft.Extensions.Configuration.IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public Microsoft.Extensions.Configuration.IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -77,7 +78,7 @@ namespace CareerTrack.WebApi
 
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
-            //services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
+            services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
 
             AddAuthentications(services);
 

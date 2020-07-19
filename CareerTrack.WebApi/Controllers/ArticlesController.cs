@@ -5,6 +5,7 @@ using CareerTrack.Application.Paging;
 using CareerTrack.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace CareerTrack.WebApi.Controllers
 {
@@ -13,10 +14,12 @@ namespace CareerTrack.WebApi.Controllers
     public class ArticlesController : BaseController
     {
         private readonly IConfiguration _configuration;
+        private readonly ILogger _logger;
 
-        public ArticlesController(IConfiguration configuration)
+        public ArticlesController(IConfiguration configuration, ILogger logger)
         {
             _configuration = configuration;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -27,12 +30,12 @@ namespace CareerTrack.WebApi.Controllers
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                //_logger.LogInformation(actionName, JsonConvert.SerializeObject(paginationModel));
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(paginationModel),"");
                 return Ok(await Mediator.Send(new GetArticlesListQuery(paginationModel)));
             }
             catch (Exception exception)
             {
-                //_logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel));
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel),"");
                 return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }
