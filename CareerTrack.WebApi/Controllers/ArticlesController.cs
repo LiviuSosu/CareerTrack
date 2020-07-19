@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace CareerTrack.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ArticlesController : BaseController
     {

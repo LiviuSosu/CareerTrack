@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.WebApi.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class UsersController : BaseController
     {
