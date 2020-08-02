@@ -4,6 +4,7 @@ using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
+using CareerTrack.Persistance.Repository;
 using CareerTrack.WebApi.Filters;
 using MediatR;
 using MediatR.Pipeline;
@@ -39,6 +40,7 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
+            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
@@ -46,6 +48,8 @@ namespace CareerTrack.WebApi
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
                 , x => x.MigrationsAssembly("CareerTrack.Migrations")
                 ));
+
+    
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CareerTrackDbContext>()
