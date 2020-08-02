@@ -21,8 +21,8 @@ namespace CareerTrack.Persistance
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source = DESKTOP-M80MDUC;Initial Catalog=CareerTrack;Integrated Security = True;",
-                x => x.MigrationsAssembly("CareerTrack.Migrations"));
+            //optionsBuilder.UseSqlServer("Data Source = DESKTOP-M80MDUC;Initial Catalog=CareerTrack;Integrated Security = True;",
+            //    x => x.MigrationsAssembly("CareerTrack.Migrations"));
             base.OnConfiguring(optionsBuilder);
         }
     }
