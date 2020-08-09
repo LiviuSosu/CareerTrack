@@ -27,7 +27,7 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpGet]
         [Route("GetArticles")]
-        [Authorize(Policy = "IsAdmin")]
+        [Authorize(Policy = "IsStdUser")]
         public async Task<IActionResult> GetArticles([FromQuery] PagingModel paginationModel)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
