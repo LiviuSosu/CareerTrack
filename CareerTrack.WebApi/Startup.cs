@@ -1,3 +1,5 @@
+using CareerTrack.Application.Articles.Commands.Create;
+using CareerTrack.Application.Articles.Queries.GetArticle;
 using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Common;
@@ -6,6 +8,7 @@ using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using CareerTrack.WebApi.Filters;
+using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -42,6 +45,8 @@ namespace CareerTrack.WebApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(CreateArticleCommandHandler).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
@@ -58,6 +63,7 @@ namespace CareerTrack.WebApi
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>())
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
                 ;
 
             var _configuration = new Configuration();

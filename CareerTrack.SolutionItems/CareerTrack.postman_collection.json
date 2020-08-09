@@ -1,0 +1,217 @@
+{
+	"info": {
+		"_postman_id": "76964251-8b71-ec14-3683-4f35de415e9e",
+		"name": "CareerTrack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Login",
+					"item": [
+						{
+							"name": "Admin Success",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Username\":\"admin2\",\r\n    \"Password\":\"Password@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44333/api/Users/login",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Standard User Success",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Username\":\"Stduser\",\r\n    \"Password\":\"StdPassword@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44333/api/Users/login",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Articles",
+			"item": [
+				{
+					"name": "Read",
+					"item": [
+						{
+							"name": "GetArticles",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk1Mjc0NzYzLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.zS1BrlaLSCWhf-cDsXNdtBWCq68jEqoR4xcmWwnfRmE",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44333/api/Articles/GetArticles?pagesize=6",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Articles",
+										"GetArticles"
+									],
+									"query": [
+										{
+											"key": "pagesize",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetArticle",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlN0YW5kYXJkVXNlciIsImV4cCI6MTU5NzA2MjI4NCwiaXNzIjoiQ2FyZWVyVHJhY2siLCJhdWQiOiJNeVN1cGVyU2VjdXJlS2V5In0.xq58Ap5mXy8Hj37bsnhwqvgiirm0HvXH0of0KRMZBos",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:44333/api/Articles/GetArticle?Id=e8f49e66-e948-4abc-3fed-08d82c2ae0c4",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Articles",
+										"GetArticle"
+									],
+									"query": [
+										{
+											"key": "Id",
+											"value": "e8f49e66-e948-4abc-3fed-08d82c2ae0c4"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Command",
+					"item": [
+						{
+							"name": "Create Article - success",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk3MDcxODMwLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.qdNuu6IzAPJW9uRJef3MvHzi0jEifkYivkmZIxtfvXQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Title\": \"Some article\",\r\n    \"Link\": \"test link\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44333/api/Articles/AddArticle",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Articles",
+										"AddArticle"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
