@@ -1,3 +1,4 @@
+using CareerTrack.Application.Articles.Queries.GetArticle;
 using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Common;
@@ -42,6 +43,7 @@ namespace CareerTrack.WebApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
@@ -129,7 +131,7 @@ namespace CareerTrack.WebApi
                 options.AddPolicy("IsStdUser",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .AddRequirements(new ClaimRequirement("StdUser"))
+                        .AddRequirements(new ClaimRequirement("StandardUser"))
                         .Build()
                     );
             });

@@ -1,26 +1,28 @@
-using CareerTrack.Application.Articles.Queries.GetArticles;
-using CareerTrack.Application.Paging;
+﻿using CareerTrack.Application.Paging;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
-using Xunit;
 
-namespace CareerTrack.Application.Tests
+namespace CareerTrack.Application.Tests.Articles.Query
 {
-    public class GetArticlesListTests
+    public class GetArticlesTest
     {
         public CareerTrackDbContext db;
         public PagingModel pagingModel;
+        protected Guid articleIdForTheSecondArticle;
+        protected string articleTitleForTheSecondArticle;
 
-        public GetArticlesListTests()
+        public GetArticlesTest()
         {
+            articleIdForTheSecondArticle = Guid.Parse("8FD637BF-53E6-41B9-7E42-08D690385B3B");
+            articleTitleForTheSecondArticle = "Article 2";
+
             var options = new DbContextOptionsBuilder<CareerTrackDbContext>().
-                UseInMemoryDatabase(databaseName: "ReadCareerTrackUsers").Options;
+              UseInMemoryDatabase(databaseName: "ReadCareerTrackUsers").Options;
 
             db = new CareerTrackDbContext(options);
+
             db.Articles.AddRange(new[] {
                 new Article {
                     Id = Guid.Parse("8464B045-6F16-4A73-7E41-08D690385B3B"),
@@ -28,8 +30,8 @@ namespace CareerTrack.Application.Tests
                     Link = "www.link1.com"
                     },
                 new Article {
-                    Id = Guid.Parse("8FD637BF-53E6-41B9-7E42-08D690385B3B"),
-                    Title = "Article 2",
+                    Id = articleIdForTheSecondArticle,
+                    Title = articleTitleForTheSecondArticle,
                     Link = "www.link2.com"
                     },
                 new Article {
@@ -39,7 +41,15 @@ namespace CareerTrack.Application.Tests
                     }
                 });
 
-            db.SaveChanges();
+            try
+            {
+                db.SaveChanges();
+            }
+            catch(ArgumentException )
+            {
+                //in case it was added the same Id
+            }
+
             pagingModel = new PagingModel
             {
                 Field = "Username"
@@ -48,20 +58,6 @@ namespace CareerTrack.Application.Tests
             pagingModel.Order = order;
             pagingModel.PageNumber = 1;
             pagingModel.PageSize = 2;
-        }
-
-        [Fact]
-        public async Task GetFilteredArticlesTest()
-        {
-            var sut = new GetArticlesListQueryHandler(db);
-            pagingModel.QueryFilter = "2";
-
-            var result = await sut.Handle(new GetArticlesListQuery(pagingModel), CancellationToken.None);
-
-            Assert.IsType<ArticlesListViewModel>(result);
-            Assert.Equal(1, result.Articles.Count);
-            //result.ShouldBeOfType<ArticlesListViewModel>();
-            //result.Articles.Count.ShouldBe(1);
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace CareerTrack.Persistance.Repository
 {
@@ -22,6 +23,11 @@ namespace CareerTrack.Persistance.Repository
         public IQueryable<T> FindByCondition(Expression<Func<T, bool>> expression)
         {
             return this.CareerTrackDbContext.Set<T>().Where(expression).AsNoTracking();
+        }
+
+        public async Task<T> FindByIdAsync(Guid Id)
+        {
+            return await this.CareerTrackDbContext.Set<T>().FindAsync(Id);
         }
 
         public void Create(T entity)
