@@ -18,7 +18,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"Stduser\",\r\n    \"Password\":\"StdPassword@123\"\r\n}",
+									"raw": "{\r\n    \"Username\":\"admin2\",\r\n    \"Password\":\"Password@123\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -153,6 +153,53 @@
 											"key": "Id",
 											"value": "e8f49e66-e948-4abc-3fed-08d82c2ae0c4"
 										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Command",
+					"item": [
+						{
+							"name": "Create Article - success",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk3MDcxODMwLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.qdNuu6IzAPJW9uRJef3MvHzi0jEifkYivkmZIxtfvXQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Title\": \"Some article\",\r\n    \"Link\": \"test link\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:44333/api/Articles/AddArticle",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "44333",
+									"path": [
+										"api",
+										"Articles",
+										"AddArticle"
 									]
 								}
 							},

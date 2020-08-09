@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using CareerTrack.Application.Articles.Commands.Create;
 using CareerTrack.Application.Articles.Queries.GetArticle;
 using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Exceptions;
 using CareerTrack.Application.Paging;
 using CareerTrack.Common;
 using Microsoft.AspNetCore.Authorization;
@@ -55,6 +57,28 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(Id), "");
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+            }
+        }
+
+        [HttpPost]
+        [Route("AddArticle")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                return Ok(await Mediator.Send(command));
+            }
+            catch(ValidationException exception)
+            {
+                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
                 return StatusCode(500, _configuration.DisplayUserErrorMessage);
             }
         }

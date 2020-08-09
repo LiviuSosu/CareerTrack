@@ -6,7 +6,7 @@ using Xunit;
 
 namespace CareerTrack.Application.Tests.Articles.Query
 {
-    public class GetArticleTest : GetArticlesTest
+    public class GetArticleTest : ArticlesTest
     {
         [Fact]
         public async Task GetArticleByIdTest()
