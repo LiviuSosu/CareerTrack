@@ -1,32 +1,30 @@
-﻿using AutoMapper;
-using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
-using CareerTrack.Persistance;
-using CareerTrack.Persistance.Repository;
+﻿using CareerTrack.Persistance;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticle
 {
-    public class GetArticleQueryHandler : IRequestHandler<GetArticleQuery, ArticleLookupModel>
+    public class GetArticleQueryHandler : BaseHandler<GetArticleQuery, ArticleLookupModel>, IRequestHandler<GetArticleQuery, ArticleLookupModel>
+    // : IRequestHandler<GetArticleQuery, ArticleLookupModel>
     {
-        private readonly CareerTrackDbContext _context;
-        private readonly IMapper _mapper;
-        private IRepositoryWrapper _repoWrapper;
+        //private readonly CareerTrackDbContext _context;
+        //private readonly IMapper _mapper;
+        //private IRepositoryWrapper _repoWrapper;
 
-        public GetArticleQueryHandler(CareerTrackDbContext context)
+        public GetArticleQueryHandler(CareerTrackDbContext context) : base(context)
         {
-            _context = context;
-            _repoWrapper = new RepositoryWrapper(_context);
+            //_context = context;
+            //_repoWrapper = new RepositoryWrapper(_context);
 
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<ArticleProfile>();
-            });
-            _mapper = config.CreateMapper();
+            //var config = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.AddProfile<ArticleProfile>();
+            //});
+            //_mapper = config.CreateMapper();
         }
 
-        public async Task<ArticleLookupModel> Handle(GetArticleQuery request, CancellationToken cancellationToken)
+        public new async Task<ArticleLookupModel> Handle(GetArticleQuery request, CancellationToken cancellationToken)
         {
             var article = await _repoWrapper.Article.FindByIdAsync(request.ArticleId);
             
