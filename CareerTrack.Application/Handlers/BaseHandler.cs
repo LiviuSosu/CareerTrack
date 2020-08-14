@@ -1,22 +1,21 @@
 ﻿using AutoMapper;
-using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Articles
+namespace CareerTrack.Application.Handlers.Articles
 {
-    public class BaseArticleCommandHandler<TRequest, Unit>
+    public class BaseHandler<TRequest, Unit>
           : IRequestHandler<TRequest, Unit> 
          where TRequest : IRequest<Unit>
-       // where T : class, IRequestHandler<T, Unit>
     {
         protected readonly IMapper _mapper;
         protected IRepositoryWrapper _repoWrapper;
         private readonly IRequestHandler<TRequest, Unit> _inner;
-        public BaseArticleCommandHandler(CareerTrackDbContext context)
+        public BaseHandler(CareerTrackDbContext context)
         {
             _repoWrapper = new RepositoryWrapper(context);
             var config = new MapperConfiguration(cfg =>

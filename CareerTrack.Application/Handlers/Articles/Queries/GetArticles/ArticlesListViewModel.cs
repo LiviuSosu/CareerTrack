@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticles
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
 {
     public class ArticlesListViewModel
     {

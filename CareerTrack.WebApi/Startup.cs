@@ -1,8 +1,6 @@
-using CareerTrack.Application.Articles;
-using CareerTrack.Application.Articles.Commands.Create;
-using CareerTrack.Application.Articles.Queries.GetArticle;
-using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
+using CareerTrack.Application.Handlers.Articles;
+using CareerTrack.Application.Handlers.Articles.Commands.Create;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
@@ -51,7 +49,7 @@ namespace CareerTrack.WebApi
 
 
 
-            services.AddMediatR(typeof(BaseArticleCommandHandler<,>).GetTypeInfo().Assembly);
+            services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>

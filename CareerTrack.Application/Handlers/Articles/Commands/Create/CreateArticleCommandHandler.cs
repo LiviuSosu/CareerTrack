@@ -1,15 +1,12 @@
-﻿using AutoMapper;
-using CareerTrack.Application.Articles.Queries.GetArticles;
-using CareerTrack.Domain.Entities;
+﻿using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
-using CareerTrack.Persistance.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Articles.Commands.Create
+namespace CareerTrack.Application.Handlers.Articles.Commands.Create
 {
-    public class CreateArticleCommandHandler : BaseArticleCommandHandler<CreateArticleCommand, Unit>, IRequestHandler<CreateArticleCommand, Unit>
+    public class CreateArticleCommandHandler : BaseHandler<CreateArticleCommand, Unit>, IRequestHandler<CreateArticleCommand, Unit>
     {
         //private readonly IMapper _mapper;
         //private IRepositoryWrapper _repoWrapper;

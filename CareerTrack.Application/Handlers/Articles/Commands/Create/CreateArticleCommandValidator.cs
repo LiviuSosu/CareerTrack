@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace CareerTrack.Application.Articles.Commands.Create
+namespace CareerTrack.Application.Handlers.Articles.Commands.Create
 {
     public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>
     {

@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticles
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
 {
     public class GetArticlesListQueryHandler : IRequestHandler<GetArticlesListQuery, ArticlesListViewModel>
     {

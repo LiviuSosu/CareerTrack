@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CareerTrack.Application.Articles.Queries
+namespace CareerTrack.Application.Handlers.Articles.Queries
 {
     public class ArticleLookupModel : ArticleBaseModel
     {

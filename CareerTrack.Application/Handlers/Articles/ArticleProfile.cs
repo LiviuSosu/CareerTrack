@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using CareerTrack.Application.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Commands.Create;
 using CareerTrack.Domain.Entities;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticles
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
 {
     public class ArticleProfile : Profile
     {

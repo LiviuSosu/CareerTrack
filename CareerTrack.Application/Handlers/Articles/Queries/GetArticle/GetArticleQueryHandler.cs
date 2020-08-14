@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
-using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticle
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticle
 {
     public class GetArticleQueryHandler : IRequestHandler<GetArticleQuery, ArticleLookupModel>
     {
