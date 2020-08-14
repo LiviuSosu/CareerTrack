@@ -92,7 +92,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk1Mjc0NzYzLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.zS1BrlaLSCWhf-cDsXNdtBWCq68jEqoR4xcmWwnfRmE",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlN0YW5kYXJkVXNlciIsImV4cCI6MTU5NzUyNDEzMCwiaXNzIjoiQ2FyZWVyVHJhY2siLCJhdWQiOiJNeVN1cGVyU2VjdXJlS2V5In0.eqf4zBOu31MUkYYMltc1S1xm5tFpQ4YaluHU_6DpEm8",
 											"type": "string"
 										}
 									]
@@ -123,13 +123,27 @@
 						},
 						{
 							"name": "GetArticle",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "61881761-7064-4a6c-bf83-8eb6807fc3fa",
+										"exec": [
+											"pm.test(\"Status test\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
 							"request": {
 								"auth": {
 									"type": "bearer",
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlN0YW5kYXJkVXNlciIsImV4cCI6MTU5NzA2MjI4NCwiaXNzIjoiQ2FyZWVyVHJhY2siLCJhdWQiOiJNeVN1cGVyU2VjdXJlS2V5In0.xq58Ap5mXy8Hj37bsnhwqvgiirm0HvXH0of0KRMZBos",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlN0YW5kYXJkVXNlciIsImV4cCI6MTU5NzUyNDEzMCwiaXNzIjoiQ2FyZWVyVHJhY2siLCJhdWQiOiJNeVN1cGVyU2VjdXJlS2V5In0.eqf4zBOu31MUkYYMltc1S1xm5tFpQ4YaluHU_6DpEm8",
 											"type": "string"
 										}
 									]
@@ -173,7 +187,7 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk3MDcxODMwLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.qdNuu6IzAPJW9uRJef3MvHzi0jEifkYivkmZIxtfvXQ",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk3NTI0MDgxLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.AVLlhRsjyxPozhWriAb842xksvKPqjeyEZdJmVnx-FE",
 											"type": "string"
 										}
 									]
@@ -182,7 +196,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Title\": \"Some article\",\r\n    \"Link\": \"test link\"\r\n}",
+									"raw": "{\r\n    \"Title\": \"Some article ziua 3.2\",\r\n    \"Link\": \"test link\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
