@@ -1,4 +1,4 @@
-﻿using CareerTrack.Application.Articles.Commands.Create;
+﻿using CareerTrack.Application.Handlers.Articles.Commands.Create;
 using CareerTrack.Application.Tests.Articles.Query;
 using MediatR;
 using System.Linq;
