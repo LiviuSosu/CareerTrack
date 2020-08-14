@@ -9,26 +9,24 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Articles.Commands.Create
 {
-    public class CreateArticleCommandHandler : IRequestHandler<CreateArticleCommand, Unit>
+    public class CreateArticleCommandHandler : BaseArticleCommandHandler<CreateArticleCommand, Unit>, IRequestHandler<CreateArticleCommand, Unit>
     {
-        private readonly CareerTrackDbContext context;
-        private readonly IMapper _mapper;
-        private IRepositoryWrapper _repoWrapper;
-        public CreateArticleCommandHandler(CareerTrackDbContext _context)
+        //private readonly IMapper _mapper;
+        //private IRepositoryWrapper _repoWrapper;
+        public CreateArticleCommandHandler(CareerTrackDbContext context) : base (context)
         {
-            context = _context;
-            _repoWrapper = new RepositoryWrapper(_context);
-            var config = new MapperConfiguration(cfg =>
-            {
-                cfg.AddProfile<ArticleProfile>();
-            });
-            _mapper = config.CreateMapper();
+            //_repoWrapper = new RepositoryWrapper(context);
+            //var config = new MapperConfiguration(cfg =>
+            //{
+            //    cfg.AddProfile<ArticleProfile>();
+            //});
+            //_mapper = config.CreateMapper();
         }
 
-        public async Task<Unit> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
-        {     
-            await context.AddAsync(_mapper.Map<Article>(request));
-            await context.SaveChangesAsync();
+        public new async Task<Unit> Handle(CreateArticleCommand request, CancellationToken cancellationToken)
+        {
+            _repoWrapper.Article.Create(_mapper.Map<Article>(request));
+            await _repoWrapper.SaveAsync();
             return Unit.Value;
         }
     }

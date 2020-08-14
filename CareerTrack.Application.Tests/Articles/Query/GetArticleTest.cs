@@ -1,5 +1,5 @@
-﻿using CareerTrack.Application.Articles.Queries.GetArticle;
-using CareerTrack.Application.Articles.Queries.GetArticles;
+﻿using CareerTrack.Application.Articles.Queries;
+using CareerTrack.Application.Articles.Queries.GetArticle;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;

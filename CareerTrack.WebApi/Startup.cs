@@ -1,3 +1,4 @@
+using CareerTrack.Application.Articles;
 using CareerTrack.Application.Articles.Commands.Create;
 using CareerTrack.Application.Articles.Queries.GetArticle;
 using CareerTrack.Application.Articles.Queries.GetArticles;
@@ -44,17 +45,18 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(CreateArticleCommandHandler).GetTypeInfo().Assembly);
+            //services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
+           // services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
+            //services.AddMediatR(typeof(CreateArticleCommandHandler).GetTypeInfo().Assembly);
+
+
+
+            services.AddMediatR(typeof(BaseArticleCommandHandler<,>).GetTypeInfo().Assembly);
 
             // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
-                , x => x.MigrationsAssembly("CareerTrack.Migrations")
-                ));
-
-    
+                , x => x.MigrationsAssembly("CareerTrack.Migrations")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CareerTrackDbContext>()

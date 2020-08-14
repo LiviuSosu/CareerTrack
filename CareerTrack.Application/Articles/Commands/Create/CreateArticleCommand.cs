@@ -2,9 +2,7 @@
 
 namespace CareerTrack.Application.Articles.Commands.Create
 {
-    public class CreateArticleCommand : IRequest
+    public class CreateArticleCommand : ArticleBaseModel, IRequest
     {
-        public string Title { get; set; }
-        public string Link { get; set; }
     }
 }
