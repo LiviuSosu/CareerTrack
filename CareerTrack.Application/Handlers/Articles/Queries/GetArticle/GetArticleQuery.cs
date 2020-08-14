@@ -1,8 +1,7 @@
-﻿using CareerTrack.Application.Articles.Queries.GetArticles;
-using MediatR;
+﻿using MediatR;
 using System;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticle
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticle
 {
     public class GetArticleQuery : IRequest<ArticleLookupModel>
     {

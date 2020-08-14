@@ -1,4 +1,6 @@
 ﻿
+using System.Threading.Tasks;
+
 namespace CareerTrack.Persistance.Repository
 {
     public class RepositoryWrapper : IRepositoryWrapper
@@ -24,9 +26,9 @@ namespace CareerTrack.Persistance.Repository
             _careerTrackDbContext = CareerTrackDbContext;
         }
 
-        public void Save()
+        public async Task SaveAsync()
         {
-            _careerTrackDbContext.SaveChanges();
+            await _careerTrackDbContext.SaveChangesAsync();
         }
     }
 }
