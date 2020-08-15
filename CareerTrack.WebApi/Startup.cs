@@ -7,6 +7,7 @@ using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using CareerTrack.WebApi.Filters;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -51,7 +52,6 @@ namespace CareerTrack.WebApi
 
             services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
-            // Add DbContext using SQL Server Provider
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
                 , x => x.MigrationsAssembly("CareerTrack.Migrations")));
@@ -62,7 +62,6 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
                 ;
 
