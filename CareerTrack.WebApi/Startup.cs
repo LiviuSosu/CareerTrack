@@ -43,11 +43,6 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            //services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
-           // services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
-            //services.AddMediatR(typeof(CreateArticleCommandHandler).GetTypeInfo().Assembly);
-
-
 
             services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
@@ -128,14 +123,14 @@ namespace CareerTrack.WebApi
                 options.AddPolicy("IsAdmin",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .AddRequirements(new ClaimRequirement("Admin"))
+                         .RequireRole("Admin")
                         .Build()
                     );
 
                 options.AddPolicy("IsStdUser",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .AddRequirements(new ClaimRequirement("StandardUser"))
+                        .RequireRole("Admin","StandardUser")
                         .Build()
                     );
             });
