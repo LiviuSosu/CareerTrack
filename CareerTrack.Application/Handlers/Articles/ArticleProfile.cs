@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CareerTrack.Application.Handlers.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Commands.Update;
 using CareerTrack.Domain.Entities;
 
 namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
@@ -10,6 +11,7 @@ namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
         {
             CreateMap<Article, ArticleLookupModel>();
             CreateMap<CreateArticleCommand, Article>();
+            CreateMap<UpdateArticleCommand, Article>();
         }
     }
 }

@@ -1,13 +1,13 @@
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Application.Handlers.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Commands.Update;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using CareerTrack.WebApi.Filters;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -58,7 +58,7 @@ namespace CareerTrack.WebApi
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
-                ;
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>());
 
             var _configuration = new Configuration();
 
