@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Handlers.Articles
 {
-    public class BaseHandler<TRequest, Unit>
-          : IRequestHandler<TRequest, Unit> 
-         where TRequest : IRequest<Unit>
+    public class BaseHandler<TRequest, Unit> : IRequestHandler<TRequest, Unit> where TRequest : IRequest<Unit>
     {
         protected readonly IMapper _mapper;
         protected IRepositoryWrapper _repoWrapper;
@@ -29,20 +27,5 @@ namespace CareerTrack.Application.Handlers.Articles
         {
             return _inner.Handle(message, cancellationToken);
         }
-
-        //public virtual async Task<MediatR.Unit> Handle(T request, CancellationToken cancellationToken)
-        //{
-        //    return MediatR.Unit.Value;
-        //}
-
-        //public virtual async Task<Unit> Handle(T request, CancellationToken cancellationToken)
-        //{
-       // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/
-       //https://docs.microsoft.com/en-us/dotnet/standard/generics/
-       //https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/generic-methods
-
-                //https://lostechies.com/jimmybogard/2016/10/13/mediatr-pipeline-examples/
-        //    return Unit.Value;
-        //}
     }
 }
