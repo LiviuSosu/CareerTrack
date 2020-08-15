@@ -1,13 +1,7 @@
-﻿using FluentValidation;
-
+﻿
 namespace CareerTrack.Application.Handlers.Articles.Commands.Create
 {
-    public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>
+    public class CreateArticleCommandValidator : ArticleCommandBaseValidator
     {
-        public CreateArticleCommandValidator()
-        {
-            RuleFor(article => article.Title).NotEmpty();
-            //add other rules here
-        }
     }
 }
