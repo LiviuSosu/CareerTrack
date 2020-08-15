@@ -1,0 +1,14 @@
+Microsoft.EntityFrameworkCore
+Microsoft.EntityFrameworkCore.Tools
+Microsoft.Extensions.Logging.Abstractions
+Microsoft.Extensions.Configuration
+Microsoft.Extensions.Configuration.Json
+Microsoft.AspNetCore.Identity.EntityFrameworkCore
+Microsoft.AspNetCore.Authorization
+Microsoft.AspNetCore.Authentication.JwtBearer
+Microsoft.EntityFrameworkCore.SqlServer
+Microsoft.EntityFrameworkCore.InMemory
+Microsoft.NET.Test.Sdk
+unit.runner.visualstudio
+FluentValidation
+FluentValidation.AspNetCore
