@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CareerTrack.Application.Articles.Commands.Create;
-using CareerTrack.Application.Articles.Queries.GetArticle;
-using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticle;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using CareerTrack.Application.Paging;
 using CareerTrack.Common;
 using Microsoft.AspNetCore.Authorization;
