@@ -26,11 +26,11 @@ namespace CareerTrack.Application.Tests.Articles.Command
         {
             var sut = new UpdateArticleCommandHandler(db);
             var art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a=>a.Id==articleIdForTheSecondArticle);
+                .SingleOrDefaultAsync(a=>a.Id== articleIdForTheFirstArticle);
 
             var oldCopy = art;
 
-            updateArticleCommand.Id = articleIdForTheSecondArticle;
+            updateArticleCommand.Id = articleIdForTheFirstArticle;
             updateArticleCommand.Title = oldCopy.Title;
             db.Entry(art).State = EntityState.Detached;
             Unit result;
@@ -44,7 +44,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
                 await UpdateArticleSuccessTest();
             }
             art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a => a.Id == articleIdForTheSecondArticle);
+                .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
 
             Assert.Equal(articleLinkToModify, art.Link);
             Assert.Equal(oldCopy.Title, art.Title);
