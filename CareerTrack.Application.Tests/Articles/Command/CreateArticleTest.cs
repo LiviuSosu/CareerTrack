@@ -22,7 +22,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
             };
         }
 
-         [Fact]
+        [Fact]
         public async Task CreateArticleSuccessTest()
         {
             var sut = new CreateArticleCommandHandler(db);
@@ -34,7 +34,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             Assert.IsType<Unit>(result);
             Assert.Equal(3, nrOfArticlesBefore);
-            Assert.Equal(4, nrOfArticleAfter);
+            Assert.Equal(3, nrOfArticleAfter);
             Assert.NotNull(newArticle);
             Assert.Equal(articleTitle, newArticle.Title);
         }
