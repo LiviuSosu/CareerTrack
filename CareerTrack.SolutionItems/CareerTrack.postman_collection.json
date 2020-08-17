@@ -345,15 +345,21 @@
 									"bearer": [
 										{
 											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlN0YW5kYXJkVXNlciIsImV4cCI6MTU5NzUyNDEzMCwiaXNzIjoiQ2FyZWVyVHJhY2siLCJhdWQiOiJNeVN1cGVyU2VjdXJlS2V5In0.eqf4zBOu31MUkYYMltc1S1xm5tFpQ4YaluHU_6DpEm8",
+											"value": "",
 											"type": "string"
 										}
 									]
 								},
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwttoken}}",
+										"type": "text"
+									}
+								],
 								"url": {
-									"raw": "{{base_url}}Articles/GetArticles?pagesize=6",
+									"raw": "{{base_url}}Articles/GetArticles?Field=Title&Order=desc",
 									"host": [
 										"{{base_url}}Articles"
 									],
@@ -362,8 +368,12 @@
 									],
 									"query": [
 										{
-											"key": "pagesize",
-											"value": "6"
+											"key": "Field",
+											"value": "Title"
+										},
+										{
+											"key": "Order",
+											"value": "desc"
 										}
 									]
 								}
@@ -484,7 +494,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{base_url}}Articles/GetArticle?Id={{GetArticleId}}",
+									"raw": "{{base_url}}Articles/GetArticle?Id={{GetArticleId}}&Authorization=Bearer {{jwttoken}}",
 									"host": [
 										"{{base_url}}Articles"
 									],
@@ -495,6 +505,10 @@
 										{
 											"key": "Id",
 											"value": "{{GetArticleId}}"
+										},
+										{
+											"key": "Authorization",
+											"value": "Bearer {{jwttoken}}"
 										}
 									]
 								}
@@ -529,13 +543,140 @@
 										"id": "22cd0449-6f82-45c0-a41a-333b50e0d370",
 										"exec": [
 											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-											"var username = pm.environment.get(\"StdUser\");\r",
+											"var username = pm.environment.get(\"AdminUsername\");\r",
 											"var password = pm.environment.get(\"AdminPassword\");\r",
 											"\r",
 											"var sdk = require('postman-collection');\r",
 											"\r",
 											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?pagesize=6',\r",
+											"    url: pm.environment.get(\"base_url\")+'Articles/AddArticle',\r",
+											"    method: 'POST',\r",
+											"    header: [\r",
+											"        new sdk.Header({\r",
+											"            key: 'content-type',\r",
+											"            value: 'application/json',\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'acccept',\r",
+											"            value: 'application/json',\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'Authorization',\r",
+											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+											"        }),\r",
+											"    ],\r",
+											"    body: {\r",
+											"        mode: 'raw',\r",
+											"        raw: JSON.stringify({\r",
+											"            Title: \"Some article ziua 3.2\",\r",
+											"            Link: \"test link\"\r",
+											"        })\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+											"    if (response.code === 401 || response.code === 403) {\r",
+											"        refreshToken();\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"function refreshToken() {\r",
+											"    var tokenRequest = new sdk.Request({\r",
+											"    url: authServiceUrl,\r",
+											"    method: 'POST',\r",
+											"    header: [\r",
+											"        new sdk.Header({\r",
+											"            key: 'content-type',\r",
+											"            value: 'application/json'\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'acccept',\r",
+											"            value: 'application/json'\r",
+											"        }),\r",
+											"    ],\r",
+											"    body: {\r",
+											"        mode: 'raw',\r",
+											"        raw: JSON.stringify({\r",
+											"            username: username,\r",
+											"            password: password\r",
+											"        })\r",
+											"    } \r",
+											"  });\r",
+											"\r",
+											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+											"      if (err) {\r",
+											"          throw err;\r",
+											"      }\r",
+											"      \r",
+											"      if (response.code !== 200) {\r",
+											"          throw new Error('Could not log in.');\r",
+											"      }\r",
+											"      \r",
+											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+											"      console.log(`New token has been set: ${response.json().token}`);\r",
+											"  });\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwttoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Title\": \"Some article ziua 3.2\",\r\n    \"Link\": \"test link\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}Articles/AddArticle",
+									"host": [
+										"{{base_url}}Articles"
+									],
+									"path": [
+										"AddArticle"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Article - Success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "0783a2fd-6fcb-4294-bbbb-aaf09784a9a9",
+										"exec": [
+											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+											"var username = pm.environment.get(\"AdminUsername\");\r",
+											"var password = pm.environment.get(\"AdminPassword\");\r",
+											"\r",
+											"var sdk = require('postman-collection');\r",
+											"\r",
+											"var isValidTokenRequest = new sdk.Request({\r",
+											"    url: pm.environment.get(\"base_url\")+'Articles/UpdateArticle',\r",
 											"    method: 'POST',\r",
 											"    header: [\r",
 											"        new sdk.Header({\r",
@@ -594,6 +735,142 @@
 											"          throw err;\r",
 											"      }\r",
 											"      \r",
+											"      if (response.code !== 200 || response.code === 403) {\r",
+											"          throw new Error('Could not log in.');\r",
+											"      }\r",
+											"      \r",
+											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+											"      console.log(`New token has been set: ${response.json().token}`);\r",
+											"  });\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "16e3819c-eb5a-44e2-9bbe-fc8353587ee0",
+										"exec": [
+											"pm.test(\"Update article\", function () {\r",
+											"     pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwttoken}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"Id\": \"8ED6C83A-4302-467B-C58A-08D83C75793D\",\r\n    \"Title\": \"aaa\",\r\n    \"Link\": \"test link\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}Articles/UpdateArticle?Authorization=Bearer {{jwttoken}}",
+									"host": [
+										"{{base_url}}Articles"
+									],
+									"path": [
+										"UpdateArticle"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "Bearer {{jwttoken}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Article - success",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "17d1b6b5-4d04-455a-839f-b0783264c0bf",
+										"exec": [
+											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+											"var username = pm.environment.get(\"AdminUsername\");\r",
+											"var password = pm.environment.get(\"AdminPassword\");\r",
+											"\r",
+											"var sdk = require('postman-collection');\r",
+											"\r",
+											"\r",
+											"\r",
+											"var isValidTokenRequest = new sdk.Request({\r",
+											"    url: pm.environment.get(\"base_url\")+'Articles/DeleteArticle',\r",
+											"    method: 'POST',\r",
+											"    header: [\r",
+											"        new sdk.Header({\r",
+											"            key: 'content-type',\r",
+											"            value: 'application/json',\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'acccept',\r",
+											"            value: 'application/json',\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'Authorization',\r",
+											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+											"        }),\r",
+											"    ],\r",
+											"    body: {\r",
+											"         mode: 'raw',\r",
+											"        raw: JSON.stringify({\r",
+											"            Id: \"f7dfa281-b758-4d3a-66a3-08d840927ff5\"\r",
+											"        })\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+											"    if (response.code === 401 || response.code === 403) {\r",
+											"        refreshToken();\r",
+											"    }\r",
+											"});\r",
+											"\r",
+											"function refreshToken() {\r",
+											"    var tokenRequest = new sdk.Request({\r",
+											"    url: authServiceUrl,\r",
+											"    method: 'POST',\r",
+											"    header: [\r",
+											"        new sdk.Header({\r",
+											"            key: 'content-type',\r",
+											"            value: 'application/json'\r",
+											"        }),\r",
+											"        new sdk.Header({\r",
+											"            key: 'acccept',\r",
+											"            value: 'application/json'\r",
+											"        }),\r",
+											"    ],\r",
+											"    body: {\r",
+											"        mode: 'raw',\r",
+											"        raw: JSON.stringify({\r",
+											"            username: username,\r",
+											"            password: password\r",
+											"        })\r",
+											"    } \r",
+											"  });\r",
+											"\r",
+											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+											"      if (err) {\r",
+											"          throw err;\r",
+											"      }\r",
+											"      \r",
 											"      if (response.code !== 200) {\r",
 											"          throw new Error('Could not log in.');\r",
 											"      }\r",
@@ -605,24 +882,32 @@
 										],
 										"type": "text/javascript"
 									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"id": "aa358ed8-497b-4c25-96fc-db4ea64b0a42",
+										"exec": [
+											"pm.test(\"Delete article\", function () {\r",
+											"     pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
 								}
 							],
 							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNTk3NTI0MDgxLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6Ik15U3VwZXJTZWN1cmVLZXkifQ.AVLlhRsjyxPozhWriAb842xksvKPqjeyEZdJmVnx-FE",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [],
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "Bearer {{jwttoken}}",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"Title\": \"Some article ziua 3.2\",\r\n    \"Link\": \"test link\"\r\n}",
+									"raw": "{\r\n    \"Id\": \"f7dfa281-b758-4d3a-66a3-08d840927ff5\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -630,12 +915,18 @@
 									}
 								},
 								"url": {
-									"raw": "{{base_url}}Articles/AddArticle",
+									"raw": "{{base_url}}Articles/DeleteArticle?Authorization=Bearer {{jwttoken}}",
 									"host": [
 										"{{base_url}}Articles"
 									],
 									"path": [
-										"AddArticle"
+										"DeleteArticle"
+									],
+									"query": [
+										{
+											"key": "Authorization",
+											"value": "Bearer {{jwttoken}}"
+										}
 									]
 								}
 							},
