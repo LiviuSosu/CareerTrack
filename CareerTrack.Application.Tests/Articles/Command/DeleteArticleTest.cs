@@ -3,7 +3,6 @@ using CareerTrack.Application.Tests.Articles.Query;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,6 +42,31 @@ namespace CareerTrack.Application.Tests.Articles.Command
             }
             art = await db.Articles.AsNoTracking()
                 .SingleOrDefaultAsync(a => a.Id == articleIdForTheThirdArticle);
+
+            Assert.Null(art);
+        }
+
+
+        [Fact]
+        public async Task DeleteArticleFail_WhenArticleDoesNotExist()
+        {
+            var articleId =  Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+            var sut = new DeleteArticleCommandHandler(db);
+
+            var art = await db.Articles.AsNoTracking()
+              .SingleOrDefaultAsync(a => a.Id == articleId);
+
+            try
+            {
+                _ = await Assert.ThrowsAsync<InvalidOperationException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
+            }
+            catch (InvalidOperationException)
+            {
+                db.Entry(art).State = EntityState.Detached;
+                await DeleteArticleSuccessTest();
+            }
+            art = await db.Articles.AsNoTracking()
+                .SingleOrDefaultAsync(a => a.Id == articleId);
 
             Assert.Null(art);
         }
