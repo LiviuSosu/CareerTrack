@@ -50,25 +50,28 @@ namespace CareerTrack.Application.Tests.Articles.Command
         [Fact]
         public async Task DeleteArticleFail_WhenArticleDoesNotExist()
         {
-            var articleId =  Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+            var articleId = Guid.NewGuid();
+            deleteArticleCommand.Id = articleId;
+
             var sut = new DeleteArticleCommandHandler(db);
 
-            var art = await db.Articles.AsNoTracking()
-              .SingleOrDefaultAsync(a => a.Id == articleId);
+            //var art = await db.Articles.AsNoTracking()
+            //  .SingleOrDefaultAsync(a => a.Id == articleId);
 
-            try
-            {
-                _ = await Assert.ThrowsAsync<InvalidOperationException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
-            }
-            catch (InvalidOperationException)
-            {
-                db.Entry(art).State = EntityState.Detached;
-                await DeleteArticleSuccessTest();
-            }
-            art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a => a.Id == articleId);
+            _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
+            //try
+            //{
+            //    _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
+            //}
+            //catch (DbUpdateConcurrencyException)
+            //{
+            //    db.Entry(art).State = EntityState.Detached;
+            //    await DeleteArticleSuccessTest();
+            //}
+            //art = await db.Articles.AsNoTracking()
+            //    .SingleOrDefaultAsync(a => a.Id == articleId);
 
-            Assert.Null(art);
+            //Assert.Null(art);
         }
     }
 }
