@@ -55,23 +55,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             var sut = new DeleteArticleCommandHandler(db);
 
-            //var art = await db.Articles.AsNoTracking()
-            //  .SingleOrDefaultAsync(a => a.Id == articleId);
-
             _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
-            //try
-            //{
-            //    _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
-            //}
-            //catch (DbUpdateConcurrencyException)
-            //{
-            //    db.Entry(art).State = EntityState.Detached;
-            //    await DeleteArticleSuccessTest();
-            //}
-            //art = await db.Articles.AsNoTracking()
-            //    .SingleOrDefaultAsync(a => a.Id == articleId);
-
-            //Assert.Null(art);
         }
     }
 }

@@ -57,21 +57,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
             updateArticleCommand.Id = articleId;
             var sut = new UpdateArticleCommandHandler(db);
 
-            var art = await db.Articles.AsNoTracking()
-              .SingleOrDefaultAsync(a => a.Id == articleId);
-            try
-            {
-                _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                //db.Entry(art).State = EntityState.Detached;
-                //await UpdateArticleFail_WhenArticleDoesNotExist();
-            }
-            //art = await db.Articles.AsNoTracking()
-            //    .SingleOrDefaultAsync(a => a.Id == articleId);
-
-            //Assert.Null(art);
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
         }
     }
 }
