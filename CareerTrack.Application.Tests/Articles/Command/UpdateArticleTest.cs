@@ -49,5 +49,16 @@ namespace CareerTrack.Application.Tests.Articles.Command
             Assert.Equal(articleLinkToModify, art.Link);
             Assert.Equal(oldCopy.Title, art.Title);
         }
+
+
+        [Fact]
+        public async Task UpdateArticleFail_WhenArticleDoesNotExist()
+        {
+            var articleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+            updateArticleCommand.Id = articleId;
+            var sut = new UpdateArticleCommandHandler(db);
+
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
+        }
     }
 }

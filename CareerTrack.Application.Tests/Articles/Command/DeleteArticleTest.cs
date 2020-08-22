@@ -46,5 +46,18 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             Assert.Null(art);
         }
+
+
+
+        [Fact]
+        public async Task DeleteArticleFail_WhenArticleDoesNotExist()
+        {
+            var articleId = Guid.NewGuid();
+            deleteArticleCommand.Id = articleId;
+
+            var sut = new DeleteArticleCommandHandler(db);
+
+            _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
+        }
     }
 }
