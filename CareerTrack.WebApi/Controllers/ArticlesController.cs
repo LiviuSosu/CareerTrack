@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CareerTrack.Application.Articles.Commands.Create;
-using CareerTrack.Application.Articles.Queries.GetArticle;
-using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Commands.Delete;
+using CareerTrack.Application.Handlers.Articles.Commands.Update;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticle;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using CareerTrack.Application.Paging;
 using CareerTrack.Common;
 using Microsoft.AspNetCore.Authorization;
@@ -75,6 +77,46 @@ namespace CareerTrack.WebApi.Controllers
             catch(ValidationException exception)
             {
                 return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+            }
+        }
+
+        [HttpPut]
+        [Route("UpdateArticle")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<IActionResult> UpdateArticle([FromBody] UpdateArticleCommand command)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                return Ok(await Mediator.Send(command));
+            }
+            catch (ValidationException exception)
+            {
+                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteArticle")]
+        [Authorize(Policy = "IsAdmin")]
+        public async Task<IActionResult> DeleteArticle([FromBody] DeleteArticleCommand command)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                return Ok(await Mediator.Send(command));
             }
             catch (Exception exception)
             {

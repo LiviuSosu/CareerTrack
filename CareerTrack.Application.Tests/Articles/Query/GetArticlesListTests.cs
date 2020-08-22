@@ -1,4 +1,4 @@
-using CareerTrack.Application.Articles.Queries.GetArticles;
+using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;

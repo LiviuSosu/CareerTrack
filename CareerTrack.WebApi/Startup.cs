@@ -1,7 +1,7 @@
-using CareerTrack.Application.Articles.Commands.Create;
-using CareerTrack.Application.Articles.Queries.GetArticle;
-using CareerTrack.Application.Articles.Queries.GetArticles;
 using CareerTrack.Application.Authorizations;
+using CareerTrack.Application.Handlers.Articles;
+using CareerTrack.Application.Handlers.Articles.Commands.Create;
+using CareerTrack.Application.Handlers.Articles.Commands.Update;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
@@ -44,17 +44,12 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
-            services.AddMediatR(typeof(GetArticlesListQueryHandler).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(GetArticleQueryHandler).GetTypeInfo().Assembly);
-            services.AddMediatR(typeof(CreateArticleCommandHandler).GetTypeInfo().Assembly);
 
-            // Add DbContext using SQL Server Provider
+            services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
+
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
-                , x => x.MigrationsAssembly("CareerTrack.Migrations")
-                ));
-
-    
+                , x => x.MigrationsAssembly("CareerTrack.Migrations")));
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<CareerTrackDbContext>()
@@ -62,9 +57,8 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateUserCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
-                ;
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>());
 
             var _configuration = new Configuration();
 
@@ -128,14 +122,14 @@ namespace CareerTrack.WebApi
                 options.AddPolicy("IsAdmin",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .AddRequirements(new ClaimRequirement("Admin"))
+                         .RequireRole("Admin")
                         .Build()
                     );
 
                 options.AddPolicy("IsStdUser",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .AddRequirements(new ClaimRequirement("StandardUser"))
+                        .RequireRole("Admin","StandardUser")
                         .Build()
                     );
             });

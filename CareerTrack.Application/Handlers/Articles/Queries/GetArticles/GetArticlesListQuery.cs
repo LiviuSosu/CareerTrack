@@ -1,7 +1,7 @@
 ﻿using CareerTrack.Application.Paging;
 using MediatR;
 
-namespace CareerTrack.Application.Articles.Queries.GetArticles
+namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
 {
     public class GetArticlesListQuery : IRequest<ArticlesListViewModel>
     {
