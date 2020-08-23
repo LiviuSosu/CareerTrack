@@ -8,8 +8,11 @@ namespace CareerTrack.Common
         private readonly string loggingFilePath;
         public string LoggingFilePath { get => loggingFilePath; }
 
-        private readonly string displayUserErrorMessage;
-        public string DisplayUserErrorMessage { get => displayUserErrorMessage; }
+        private readonly string displayGenericUserErrorMessage;
+        public string DisplayGenericUserErrorMessage { get => displayGenericUserErrorMessage; }
+
+        private readonly string displayObjectNotFoundErrorMessage;
+        public string DisplayObjectNotFoundErrorMessage { get => displayObjectNotFoundErrorMessage; }
 
         private readonly string jwtSecretKey;
         public string JwtSecretKey { get => jwtSecretKey; }
@@ -39,7 +42,8 @@ namespace CareerTrack.Common
             jwtIssuer = root.GetSection("JWT").GetSection("issuer").Value;
             jwtAudience = root.GetSection("JWT").GetSection("audience").Value;
             jwtLifeTime = root.GetSection("JWT").GetSection("lifeteme").Value;
-            displayUserErrorMessage = root.GetSection("Errors").GetSection("DisplayUserErrorMessage").Value;
+            displayGenericUserErrorMessage = root.GetSection("Errors").GetSection("DisplayGenericUserErrorMessage").Value;
+            displayObjectNotFoundErrorMessage = root.GetSection("Errors").GetSection("DisplayObjectNotFoundErrorMessage").Value;
             expectedRoleClaim = root.GetSection("JWT").GetSection("expectedRoleClaim").Value;
         }
     }
