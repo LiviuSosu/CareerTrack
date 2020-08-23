@@ -5,6 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Articles\**" />
+    <Compile Remove="Services\**" />
+    <EmbeddedResource Remove="Articles\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <None Remove="Articles\**" />
+    <None Remove="Services\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="FluentValidation" Version="9.1.2" />
     <PackageReference Include="MediatR" Version="8.1.0" />
@@ -16,11 +25,6 @@
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
     <ProjectReference Include="..\CareerTrack.Domain\CareerTrack.Domain.csproj" />
     <ProjectReference Include="..\CareerTrack.Persistance\CareerTrack.Persistance.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Articles\Update\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

@@ -76,7 +76,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(loginModel), string.Empty);
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 

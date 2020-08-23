@@ -2,7 +2,8 @@
 {
     public interface IConfiguration
     {
-        string DisplayUserErrorMessage { get; }
+        string DisplayGenericUserErrorMessage { get; }
+        string DisplayObjectNotFoundErrorMessage { get; }
 
         string JwtSecretKey { get; }
         string JwtLifeTime { get; }
