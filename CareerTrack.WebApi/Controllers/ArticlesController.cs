@@ -10,6 +10,7 @@ using CareerTrack.Application.Paging;
 using CareerTrack.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
 namespace CareerTrack.WebApi.Controllers
@@ -41,7 +42,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel),"");
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -59,7 +60,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(Id), "");
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -81,7 +82,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -103,7 +104,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -118,10 +119,14 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
                 return Ok(await Mediator.Send(command));
             }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                return StatusCode(400, _configuration.DisplayObjectNotFoundErrorMessage);
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
-                return StatusCode(500, _configuration.DisplayUserErrorMessage);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }

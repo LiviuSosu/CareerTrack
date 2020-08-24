@@ -33,6 +33,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
             var newArticle = db.Articles.Where(a=>a.Title == articleTitle).FirstOrDefault();
 
             Assert.IsType<Unit>(result);
+
             Assert.NotNull(newArticle);
             Assert.Equal(articleTitle, newArticle.Title);
         }

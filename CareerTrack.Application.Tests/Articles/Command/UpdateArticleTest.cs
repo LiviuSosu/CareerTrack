@@ -50,6 +50,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
             Assert.Equal(oldCopy.Title, art.Title);
         }
 
+
         [Fact]
         public async Task UpdateArticleFail_WhenArticleDoesNotExist()
         {
