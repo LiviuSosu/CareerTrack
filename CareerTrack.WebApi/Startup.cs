@@ -8,6 +8,7 @@ using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using CareerTrack.WebApi.Filters;
+using CareerTrack.WebApi.HealthChecks;
 using FluentValidation.AspNetCore;
 using MediatR;
 using MediatR.Pipeline;
@@ -20,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System.Reflection;
@@ -91,6 +93,14 @@ namespace CareerTrack.WebApi
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.AddHealthChecks()
+           // Add a health check for a SQL Server database
+           .AddCheck(
+               "OrderingDB-check",
+               new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
+               HealthStatus.Unhealthy,
+               new string[] { "orderingdb" });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -112,6 +122,7 @@ namespace CareerTrack.WebApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc");
             });
         }
 
@@ -129,7 +140,7 @@ namespace CareerTrack.WebApi
                 options.AddPolicy("IsStdUser",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                        .RequireRole("Admin","StandardUser")
+                        .RequireRole("Admin", "StandardUser")
                         .Build()
                     );
             });

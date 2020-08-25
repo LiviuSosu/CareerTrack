@@ -119,8 +119,9 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
                 return Ok(await Mediator.Send(command));
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException exception)
             {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
                 return StatusCode(400, _configuration.DisplayObjectNotFoundErrorMessage);
             }
             catch (Exception exception)
