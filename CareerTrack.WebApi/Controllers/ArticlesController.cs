@@ -49,17 +49,17 @@ namespace CareerTrack.WebApi.Controllers
         [HttpGet]
         [Route("GetArticle")]
         [Authorize(Policy = "IsStdUser")]
-        public async Task<IActionResult> GetArticle([FromQuery] Guid Id)
+        public async Task<IActionResult> GetArticle([FromQuery] Guid Id, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                _logger.LogInformation(actionName, JsonConvert.SerializeObject(Id), "");
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(Id), Authorization);
                 return Ok(await Mediator.Send(new GetArticleQuery(Id)));
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(Id), "");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(Id), Authorization);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
