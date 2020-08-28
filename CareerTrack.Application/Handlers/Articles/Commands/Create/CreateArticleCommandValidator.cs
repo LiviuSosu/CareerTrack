@@ -2,7 +2,7 @@
 
 namespace CareerTrack.Application.Handlers.Articles.Commands.Create
 {
-    public class CreateArticleCommandValidator : AbstractValidator<CreateArticleCommand>
+    public class CreateArticleCommandValidator : BaseValidator<CreateArticleCommand> //: AbstractValidator<CreateArticleCommand>
     {
         public CreateArticleCommandValidator()
         {
