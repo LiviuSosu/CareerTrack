@@ -61,7 +61,7 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
+                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>())
 
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BaseValidator<object>>());
