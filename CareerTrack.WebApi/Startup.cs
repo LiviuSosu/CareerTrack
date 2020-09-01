@@ -1,9 +1,7 @@
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
 using CareerTrack.Application.Handlers.Articles;
-using CareerTrack.Application.Handlers.Articles.Commands.Create;
 using CareerTrack.Application.Handlers.Articles.Commands.Update;
-using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;

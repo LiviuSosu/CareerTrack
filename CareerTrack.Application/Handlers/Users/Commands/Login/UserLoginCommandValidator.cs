@@ -6,7 +6,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
     {
         public UserLoginCommandValidator()
         {
-            RuleFor(loginRequest => loginRequest.Username).EmailAddress();
+            RuleFor(loginRequest => loginRequest.Username).NotEmpty();
             RuleFor(loginRequest => loginRequest.Password).NotEmpty();
         }
     }

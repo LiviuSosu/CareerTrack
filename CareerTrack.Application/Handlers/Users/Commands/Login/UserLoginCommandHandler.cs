@@ -1,4 +1,5 @@
 ﻿using CareerTrack.Application.Handlers.Articles;
+using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
 using System;
@@ -18,11 +19,9 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
 
         public new async Task<Unit> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
-            await Task.Delay(200);
-            return Unit.Value;
-            //_repoWrapper.Article.Create(_mapper.Map<Article>(request));
+            _repoWrapper.User.FindByCondition(u=>u.Email== request.Username);
             //await _repoWrapper.SaveAsync();
-            //return Unit.Value;
+            return Unit.Value;
         }
     }
 }
