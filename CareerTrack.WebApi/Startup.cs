@@ -59,11 +59,8 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<CreateArticleCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>())
-
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BaseValidator<object>>());
-                //.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserLoginCommandValidator>());
 
             var _configuration = new Configuration();
 
@@ -79,9 +76,9 @@ namespace CareerTrack.WebApi
                    {
                        ValidateIssuer = true,
                        ValidateAudience = true,
-                       ValidAudience = _configuration.JwtAudience,
-                       ValidIssuer = _configuration.JwtIssuer,
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecretKey))
+                       ValidAudience = _configuration.JWTConfiguration.JwtAudience,
+                       ValidIssuer = _configuration.JWTConfiguration.JwtIssuer,
+                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JWTConfiguration.JwtSecretKey))
                    };
                });
 

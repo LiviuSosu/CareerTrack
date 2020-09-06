@@ -14,20 +14,8 @@ namespace CareerTrack.Common
         private readonly string displayObjectNotFoundErrorMessage;
         public string DisplayObjectNotFoundErrorMessage { get => displayObjectNotFoundErrorMessage; }
 
-        private readonly string jwtSecretKey;
-        public string JwtSecretKey { get => jwtSecretKey; }
-
-        private readonly string jwtIssuer;
-        public string JwtIssuer { get => jwtIssuer; }
-
-        private readonly string jwtAudience;
-        public string JwtAudience { get => jwtSecretKey; }
-
-        private readonly string jwtLifeTime;
-        public string JwtLifeTime { get => jwtLifeTime; }
-
-        private readonly string expectedRoleClaim;
-        public string ExpectedRoleClaim { get => expectedRoleClaim; }
+        private readonly JWTConfiguration jwtConfiguration;
+        public JWTConfiguration JWTConfiguration { get => jwtConfiguration; }
 
         public Configuration()
         {
@@ -38,13 +26,40 @@ namespace CareerTrack.Common
             var root = configurationBuilder.Build();
 
             loggingFilePath = root.GetSection("Logging").GetSection("loggingFilePath").Value;
-            jwtSecretKey = root.GetSection("JWT").GetSection("secret").Value;
-            jwtIssuer = root.GetSection("JWT").GetSection("issuer").Value;
-            jwtAudience = root.GetSection("JWT").GetSection("audience").Value;
-            jwtLifeTime = root.GetSection("JWT").GetSection("lifeteme").Value;
+
+            var jwtSection = root.GetSection("JWT");
+            jwtConfiguration = new JWTConfiguration(
+                jwtSection.GetSection("secret").Value,
+                jwtSection.GetSection("issuer").Value,
+                jwtSection.GetSection("audience").Value,
+                jwtSection.GetSection("lifeteme").Value,
+                jwtSection.GetSection("expectedRoleClaim").Value
+                );
+
             displayGenericUserErrorMessage = root.GetSection("Errors").GetSection("DisplayGenericUserErrorMessage").Value;
             displayObjectNotFoundErrorMessage = root.GetSection("Errors").GetSection("DisplayObjectNotFoundErrorMessage").Value;
-            expectedRoleClaim = root.GetSection("JWT").GetSection("expectedRoleClaim").Value;
         }
+    }
+
+    public class JWTConfiguration
+    {
+        public JWTConfiguration(string jwtSecretKey, string jwtIssuer, string jwtAudience, string jwtLifeTime, string expectedRoleClaim)
+        {
+            JwtSecretKey = jwtSecretKey;
+            JwtIssuer = jwtIssuer;
+            JwtAudience = jwtAudience;
+            JwtLifeTime = jwtLifeTime;
+            ExpectedRoleClaim = expectedRoleClaim;
+        }
+
+        public readonly string JwtSecretKey;
+
+        public readonly string JwtIssuer;
+
+        public readonly string JwtAudience;
+
+        public readonly string JwtLifeTime;
+
+        public readonly string ExpectedRoleClaim;
     }
 }
