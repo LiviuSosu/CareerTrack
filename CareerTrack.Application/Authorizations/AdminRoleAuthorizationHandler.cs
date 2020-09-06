@@ -15,12 +15,12 @@ namespace CareerTrack.Application.Authorizations
 
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, ClaimRequirement requirement)
         {
-            if (!context.User.HasClaim(c => c.Issuer == configuration.JwtIssuer && c.Type == configuration.ExpectedRoleClaim))
+            if (!context.User.HasClaim(c => c.Issuer == configuration.JWTConfiguration.JwtIssuer && c.Type == configuration.JWTConfiguration.ExpectedRoleClaim))
             {
                 return Task.CompletedTask;
             }
 
-            if (context.User.Identities.ToList().FirstOrDefault().HasClaim(configuration.ExpectedRoleClaim, requirement.Role))
+            if (context.User.Identities.ToList().FirstOrDefault().HasClaim(configuration.JWTConfiguration.ExpectedRoleClaim, requirement.Role))
             {
                 context.Succeed(requirement);
             }

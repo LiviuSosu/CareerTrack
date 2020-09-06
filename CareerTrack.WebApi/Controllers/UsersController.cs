@@ -1,4 +1,5 @@
-﻿using CareerTrack.Application.Handlers.Users.Commands.Login;
+﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -45,36 +46,14 @@ namespace CareerTrack.WebApi.Controllers
           
             try
             {
-                userLoginCommand.userManager = userManager;
+                userLoginCommand.UserManager = userManager;
+                userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
+                await Mediator.Send(userLoginCommand);
                 return Ok(await Mediator.Send(userLoginCommand));
-                //var user = await userManager.FindByNameAsync(loginModel.Username);
-                //if (user == null)
-                //{
-                //    return Unauthorized();
-                //}
-
-                //var roles = await userManager.GetRolesAsync(user);
-
-                //if (user != null && await userManager.CheckPasswordAsync(user, loginModel.Password))
-                //{
-                //    var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JwtSecretKey));
-
-                //    var token = new JwtSecurityToken(
-                //           issuer: _configuration.JwtIssuer,
-                //           audience: _configuration.JwtAudience,
-                //           expires: DateTime.UtcNow.AddHours(Convert.ToInt16(_configuration.JwtLifeTime)),
-                //           claims: await GetRolesAsClaim(user),
-                //           signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-                //           );
-
-                //    return Ok(new
-                //    {
-                //        token = new JwtSecurityTokenHandler().WriteToken(token),
-                //        expiration = token.ValidTo
-                //    });
-                //}
-
-                //return Unauthorized();
+            }
+            catch (NotFoundException)
+            {
+                return Unauthorized();
             }
             catch (Exception exception)
             {
