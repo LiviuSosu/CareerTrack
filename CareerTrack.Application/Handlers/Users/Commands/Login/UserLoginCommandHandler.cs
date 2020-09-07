@@ -47,7 +47,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                 }
                 else
                 {
-                    throw new NotImplementedException(); //wrong password
+                    throw new LoginFailedException(); 
                 }
             }
             else
