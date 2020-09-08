@@ -1,5 +1,6 @@
 ﻿using CareerTrack.Persistance.Repository.ArticleRepository;
 using CareerTrack.Persistance.Repository.UserRepository;
+using CareerTrack.Persistance.Repository.UserRoleRepository;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Persistance.Repository
@@ -8,6 +9,8 @@ namespace CareerTrack.Persistance.Repository
     {
         IArticleRepository Article { get; }
         IUserRepository User { get; }
+
+        IUserRoleRepository UserRole { get; }
         Task SaveAsync();
     }
 }
