@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace CareerTrack.Domain.Entities
 {
-    public class User : IdentityUser
+    public class User : IdentityUser<Guid>
     {
-        [Key]
-        public Guid UserId { get; set; }
     }
 }

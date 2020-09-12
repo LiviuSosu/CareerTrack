@@ -32,8 +32,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 
             var standardUser = new User
             {
-                Id = Guid.NewGuid().ToString(),
-                UserId = Guid.NewGuid(),
+                Id = Guid.NewGuid(),
                 Email = request.Email,
                 SecurityStamp = Guid.NewGuid().ToString(),
                 UserName = request.Username,
