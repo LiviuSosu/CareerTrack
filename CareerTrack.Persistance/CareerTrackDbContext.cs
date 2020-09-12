@@ -12,6 +12,9 @@ namespace CareerTrack.Persistance
         }
 
         public override DbSet<User>  Users { get; set; } //Possible bug
+        public override DbSet<Role> Roles { get; set; } //Possible bug
+
+        public override DbSet<UserRole> UserRoles{ get; set; } //Possible bug
         public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
