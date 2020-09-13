@@ -1,6 +1,5 @@
 ﻿using CareerTrack.Persistance.Repository.ArticleRepository;
 using CareerTrack.Persistance.Repository.UserRepository;
-using CareerTrack.Persistance.Repository.UserRoleRepository;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Persistance.Repository
@@ -10,7 +9,6 @@ namespace CareerTrack.Persistance.Repository
         private CareerTrackDbContext _careerTrackDbContext;
         private IArticleRepository _article;
         private IUserRepository _user;
-        private IUserRoleRepository _userRole;
 
         public RepositoryWrapper(CareerTrackDbContext CareerTrackDbContext)
         {
@@ -39,19 +37,6 @@ namespace CareerTrack.Persistance.Repository
                 }
 
                 return _user;
-            }
-        }
-
-        public IUserRoleRepository UserRole
-        {
-            get
-            {
-                if (_userRole == null)
-                {
-                    _userRole = new UserRoleRepository.UserRoleRepository(_careerTrackDbContext);
-                }
-
-                return _userRole;
             }
         }
 

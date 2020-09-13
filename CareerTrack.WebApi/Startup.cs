@@ -53,7 +53,7 @@ namespace CareerTrack.WebApi
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
                 , x => x.MigrationsAssembly("CareerTrack.Migrations")));
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<CareerTrackDbContext>()
                 .AddDefaultTokenProviders();
 

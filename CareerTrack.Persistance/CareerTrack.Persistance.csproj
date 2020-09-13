@@ -19,4 +19,8 @@
     <ProjectReference Include="..\CareerTrack.Domain\CareerTrack.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\UserRoleRepository\" />
+  </ItemGroup>
+
 </Project>
