@@ -72,7 +72,7 @@ namespace CareerTrack.WebApi
 
                 context.UserRoles.AddAsync(identityAdminRole);
 
-                IdentityUserRole<Guid> identityStandaerdUserRole = new IdentityUserRole<Guid>
+                var identityStandaerdUserRole = new UserRole
                 {
                     RoleId = roles[1].Id,
                     UserId = standardUser.Id
