@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading;
@@ -19,7 +20,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
     {
         public UserLoginCommandHandler(CareerTrackDbContext context) : base(context)
         {
-
         }
 
         public new async Task<LoginResponseDto> Handle(UserLoginCommand request, CancellationToken cancellationToken)
@@ -60,19 +60,26 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
         {
             var result = new List<Claim>();
 
-            var roles = await userManager.GetRolesAsync(user);
+            var rolesString = await GetRoles(user);
+
+            result.Add(new Claim("roles", rolesString));
+            return result;
+        }
+
+        private async Task<string> GetRoles(User user)
+        {
+            var userRolesIds = _repoWrapper.UserRole.FindByCondition(r => r.UserId == user.Id).ToList();
 
             var stringRoles = new StringBuilder();
 
-            foreach (var role in roles)
+            foreach (var roleId in userRolesIds)
             {
-                stringRoles.Append(role);
+                stringRoles.Append((await _repoWrapper.Role.FindByIdAsync(roleId.RoleId)).Name);
                 stringRoles.Append(',');
             }
             stringRoles.Remove(stringRoles.Length - 1, 1);
 
-            result.Add(new Claim("roles", stringRoles.ToString()));
-            return result;
+            return stringRoles.ToString();
         }
     }
 }
