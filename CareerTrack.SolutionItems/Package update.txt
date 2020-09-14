@@ -1,4 +1,3 @@
-Microsoft.EntityFrameworkCore
 Microsoft.EntityFrameworkCore.Tools
 Microsoft.Extensions.Logging.Abstractions
 Microsoft.Extensions.Configuration

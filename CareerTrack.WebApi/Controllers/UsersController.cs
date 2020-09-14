@@ -1,5 +1,6 @@
 ﻿using CareerTrack.Application.Exceptions;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
+using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -41,7 +42,6 @@ namespace CareerTrack.WebApi.Controllers
             {
                 userLoginCommand.UserManager = userManager;
                 userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
-                await Mediator.Send(userLoginCommand);
                 return Ok(await Mediator.Send(userLoginCommand));
             }
             catch (NotFoundException)
@@ -55,6 +55,24 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+            }
+        }
+
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterCommand userRegisterCommand)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            try
+            {
+                userRegisterCommand.UserManager = userManager;
+                return Ok(await Mediator.Send(userRegisterCommand));
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userRegisterCommand), string.Empty);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }

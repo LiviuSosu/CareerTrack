@@ -5,8 +5,6 @@ using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,18 +14,17 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
     {
         public UserRegisterCommandHandler(CareerTrackDbContext context) : base(context)
         {
-
         }
 
         public new async Task<Unit> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
-            if (await request.UserManager.FindByNameAsync(request.Username) == null)
+            if (await request.UserManager.FindByNameAsync(request.Username) != null)
             {
-                throw new NotFoundException(request.Username, request);
+                throw new ExistentUserException(request.Username);
             }
             if(await request.UserManager.FindByEmailAsync(request.Email) != null)
             {
-                throw new NotFoundException(request.Email, request);
+                throw new ExistentUserException(request.Email);
             }
 
             var standardUser = new User
@@ -38,8 +35,8 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
                 UserName = request.Username,
             };
 
-            await request.UserManager.CreateAsync(standardUser, request.Password);
             _repoWrapper.User.Create(standardUser);
+            var x= await request.UserManager.CreateAsync(standardUser, request.Password);
 
             var identityStandaerdUserRole = new IdentityUserRole<Guid>
             {
@@ -47,6 +44,9 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
                 UserId = standardUser.Id
             };
 
+            _repoWrapper.UserRole.Create(identityStandaerdUserRole);
+
+            await _repoWrapper.SaveAsync();
             return Unit.Value;
         }
     }

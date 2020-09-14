@@ -64,7 +64,7 @@ namespace CareerTrack.WebApi
                 context.Users.AddAsync(standardUser);
                 userManager.CreateAsync(standardUser, "StdPassword@123");
 
-                UserRole identityAdminRole = new UserRole
+                var identityAdminRole = new IdentityUserRole<Guid>
                 {
                     RoleId = roles[0].Id,
                     UserId = adminUser.Id
@@ -72,7 +72,7 @@ namespace CareerTrack.WebApi
 
                 context.UserRoles.AddAsync(identityAdminRole);
 
-                var identityStandaerdUserRole = new UserRole
+                var identityStandaerdUserRole = new IdentityUserRole<Guid>
                 {
                     RoleId = roles[1].Id,
                     UserId = standardUser.Id

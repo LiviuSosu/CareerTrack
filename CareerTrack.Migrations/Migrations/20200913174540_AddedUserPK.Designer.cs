@@ -4,14 +4,16 @@ using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerTrack.Migrations
 {
     [DbContext(typeof(CareerTrackDbContext))]
-    partial class CareerTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200913174540_AddedUserPK")]
+    partial class AddedUserPK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,6 +114,9 @@ namespace CareerTrack.Migrations
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(256)")
