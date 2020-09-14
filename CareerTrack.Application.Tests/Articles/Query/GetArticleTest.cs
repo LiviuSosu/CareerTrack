@@ -17,6 +17,8 @@ namespace CareerTrack.Application.Tests.Articles.Query
 
             Assert.IsType<ArticleLookupModel>(result);
             Assert.Equal(articleTitleForTheSecondArticle, result.Title);
+
+            db.Articles.RemoveRange(db.Articles);
         }
     }
 }

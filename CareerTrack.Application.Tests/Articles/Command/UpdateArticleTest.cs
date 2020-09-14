@@ -32,7 +32,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             updateArticleCommand.Id = articleIdForTheFirstArticle;
             updateArticleCommand.Title = oldCopy.Title;
-            db.Entry(art).State = EntityState.Detached;
+
             Unit result;
             try
             {
@@ -48,6 +48,8 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             Assert.Equal(articleLinkToModify, art.Link);
             Assert.Equal(oldCopy.Title, art.Title);
+
+            db.Articles.RemoveRange(db.Articles);
         }
 
 
@@ -59,6 +61,8 @@ namespace CareerTrack.Application.Tests.Articles.Command
             var sut = new UpdateArticleCommandHandler(db);
 
             await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
+
+            db.Articles.RemoveRange(db.Articles);
         }
     }
 }

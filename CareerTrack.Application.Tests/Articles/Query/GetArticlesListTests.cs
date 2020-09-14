@@ -17,8 +17,8 @@ namespace CareerTrack.Application.Tests.Articles.Query
 
             Assert.IsType<ArticlesListViewModel>(result);
             Assert.Equal(1, result.Articles.Count);
-            //result.ShouldBeOfType<ArticlesListViewModel>();
-            //result.Articles.Count.ShouldBe(1);
+
+            db.Articles.RemoveRange(db.Articles);
         }
     }
 }
