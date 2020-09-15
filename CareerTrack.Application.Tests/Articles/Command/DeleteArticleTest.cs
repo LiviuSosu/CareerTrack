@@ -45,6 +45,8 @@ namespace CareerTrack.Application.Tests.Articles.Command
                 .SingleOrDefaultAsync(a => a.Id == articleIdForTheThirdArticle);
 
             Assert.Null(art);
+
+            db.Articles.RemoveRange(db.Articles);
         }
 
 
@@ -58,6 +60,8 @@ namespace CareerTrack.Application.Tests.Articles.Command
             var sut = new DeleteArticleCommandHandler(db);
 
             _ = await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(deleteArticleCommand, CancellationToken.None));
+
+            db.Articles.RemoveRange(db.Articles);
         }
     }
 }

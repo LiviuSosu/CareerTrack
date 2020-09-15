@@ -36,6 +36,8 @@ namespace CareerTrack.Application.Tests.Articles.Command
 
             Assert.NotNull(newArticle);
             Assert.Equal(articleTitle, newArticle.Title);
+
+            db.Articles.RemoveRange(db.Articles);
         }
     }
 }

@@ -23,7 +23,7 @@ namespace CareerTrack.Application.Tests.Articles.Query
 
             articleIdForTheThirdArticle = Guid.Parse("FEA44EA2-1D4C-49BB-92A0-1AD6899CA220");
             var options = new DbContextOptionsBuilder<CareerTrackDbContext>().
-              UseInMemoryDatabase(databaseName: "ReadCareerTrackUsers").Options;
+              UseInMemoryDatabase(databaseName: "CareerTrackArticles").Options;
 
             db = new CareerTrackDbContext(options);
 
