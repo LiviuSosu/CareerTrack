@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
-using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using MediatR;
