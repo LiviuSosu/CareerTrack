@@ -36,7 +36,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             };
 
             _repoWrapper.User.Create(standardUser);
-            var x= await request.UserManager.CreateAsync(standardUser, request.Password);
 
             var identityStandaerdUserRole = new IdentityUserRole<Guid>
             {
