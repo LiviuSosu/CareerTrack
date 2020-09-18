@@ -9,8 +9,8 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
         {
             RuleFor(registerRequest => registerRequest.Username).NotNull();
             RuleFor(registerRequest => registerRequest.Email).EmailAddress();
-            Regex r = new Regex("^[a-zA-Z0-9]*$");
-            RuleFor(registerRequest => registerRequest.Password).Must(str => r.IsMatch(str));
+           // Regex r = new Regex("^[a-zA-Z0-9]*$");
+            RuleFor(registerRequest => registerRequest.Password).NotNull();// Must(str => r.IsMatch(str));
             RuleFor(registerRequest => registerRequest.RoleId).NotNull();
         }
     }

@@ -1,8 +1,10 @@
 ﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -75,6 +77,20 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userRegisterCommand), string.Empty);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
+        }
+
+        //[HttpDelete]
+        [HttpGet]
+        //[Authorize(Policy = "IsAdmin")]
+        [Route("DeleteUserPermanently")]
+        public async Task<IActionResult> DeleteUserPermanently([FromQuery]  Guid userId)
+        {
+            var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
+            deleteUserDeleteCommand.UserId = userId;
+           
+            deleteUserDeleteCommand.UserManager = userManager;
+            return Ok(await Mediator.Send(deleteUserDeleteCommand));
+            //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
         }
     }
 }
