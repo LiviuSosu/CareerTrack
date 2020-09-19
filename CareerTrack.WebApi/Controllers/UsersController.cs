@@ -87,7 +87,7 @@ namespace CareerTrack.WebApi.Controllers
         {
             var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
             deleteUserDeleteCommand.UserId = userId;
-           
+            //C:\Users\Liviu\AppData\Roaming\Microsoft\UserSecrets\e9c5aa3d-31af-419e-aeb3-0edde79b2769
             deleteUserDeleteCommand.UserManager = userManager;
             return Ok(await Mediator.Send(deleteUserDeleteCommand));
             //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
