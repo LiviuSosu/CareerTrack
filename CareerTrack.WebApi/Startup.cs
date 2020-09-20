@@ -2,6 +2,7 @@ using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
 using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Application.Handlers.Articles.Commands.Update;
+using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
@@ -93,6 +94,8 @@ namespace CareerTrack.WebApi
             {
                 options.SuppressModelStateInvalidFilter = true;
             });
+
+            services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddHealthChecks()
            // Add a health check for a SQL Server database

@@ -85,12 +85,22 @@ namespace CareerTrack.WebApi.Controllers
         [Route("DeleteUserPermanently")]
         public async Task<IActionResult> DeleteUserPermanently([FromQuery]  Guid userId)
         {
-            var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
-            deleteUserDeleteCommand.UserId = userId;
-            //C:\Users\Liviu\AppData\Roaming\Microsoft\UserSecrets\e9c5aa3d-31af-419e-aeb3-0edde79b2769
-            deleteUserDeleteCommand.UserManager = userManager;
-            return Ok(await Mediator.Send(deleteUserDeleteCommand));
-            //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            try
+            {
+                var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
+                deleteUserDeleteCommand.UserId = userId;
+                //C:\Users\Liviu\AppData\Roaming\Microsoft\UserSecrets\e9c5aa3d-31af-419e-aeb3-0edde79b2769
+                deleteUserDeleteCommand.UserManager = userManager;
+                return Ok(await Mediator.Send(deleteUserDeleteCommand));
+                //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userId), string.Empty);
+                return StatusCode(500, "aaa "+exception.Message);
+            }
         }
     }
 }
