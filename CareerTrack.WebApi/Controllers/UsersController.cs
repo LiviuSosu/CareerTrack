@@ -104,7 +104,6 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
-
         }
     }
 }
