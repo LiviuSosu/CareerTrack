@@ -9,9 +9,25 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
         {
             RuleFor(registerRequest => registerRequest.Username).NotNull();
             RuleFor(registerRequest => registerRequest.Email).EmailAddress();
-           // Regex r = new Regex("^[a-zA-Z0-9]*$");
-            RuleFor(registerRequest => registerRequest.Password).NotNull();// Must(str => r.IsMatch(str));
+            RuleFor(registerRequest => registerRequest.Password).Must(str=> ValidatePassword(str));
             RuleFor(registerRequest => registerRequest.RoleId).NotNull();
+        }
+
+        bool ValidatePassword(string password)
+        {
+            var letterPattern = new Regex("[a-zA-Z]+");
+            var numberPattern = new Regex("\\d+");
+            var alfanumericCharacterPattern = new Regex("\\W+");
+
+            if(letterPattern.IsMatch(password) && numberPattern.IsMatch(password) &&
+                alfanumericCharacterPattern.IsMatch(password) && password.Length>=8)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

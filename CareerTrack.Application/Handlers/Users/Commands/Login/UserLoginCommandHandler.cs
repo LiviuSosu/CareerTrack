@@ -70,16 +70,23 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
         {
             var userRolesIds = _repoWrapper.UserRole.FindByCondition(r => r.UserId == user.Id).ToList();
 
-            var stringRoles = new StringBuilder();
-
-            foreach (var roleId in userRolesIds)
+            if (userRolesIds.Count != 0)
             {
-                stringRoles.Append((await _repoWrapper.Role.FindByIdAsync(roleId.RoleId)).Name);
-                stringRoles.Append(',');
-            }
-            stringRoles.Remove(stringRoles.Length - 1, 1);
+                var stringRoles = new StringBuilder();
 
-            return stringRoles.ToString();
+                foreach (var roleId in userRolesIds)
+                {
+                    stringRoles.Append((await _repoWrapper.Role.FindByIdAsync(roleId.RoleId)).Name);
+                    stringRoles.Append(',');
+                }
+                stringRoles.Remove(stringRoles.Length - 1, 1);
+
+                return stringRoles.ToString();
+            }
+            else
+            {
+                throw new NoAssignedRolesException(user.Email);
+            }
         }
     }
 }

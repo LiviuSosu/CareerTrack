@@ -7,19 +7,17 @@
 
   <ItemGroup>
     <Compile Remove="Articles\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="Articles\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="Articles\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />
     <PackageReference Include="FluentValidation" Version="9.2.0" />
     <PackageReference Include="MediatR" Version="8.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.8" />
+    <PackageReference Include="SendGrid" Version="9.21.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 

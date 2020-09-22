@@ -1,9 +1,7 @@
-﻿using CareerTrack.Application.Handlers.Articles;
+﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Persistance;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,6 +16,10 @@ namespace CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty
         public new async Task<Unit> Handle(DeleteUserPermanentyCommand request, CancellationToken cancellationToken)
         {
             var user  = await _repoWrapper.User.FindByIdAsync(request.UserId);
+            if(user == null)
+            {
+                throw new NotFoundException(user.Email,user);
+            }
             await request.UserManager.DeleteAsync(user);
 
             return Unit.Value;
