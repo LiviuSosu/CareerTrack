@@ -1,9 +1,11 @@
 ﻿using CareerTrack.Application.Exceptions;
 using CareerTrack.Application.Handlers.Articles;
+using CareerTrack.Application.Services.Mail;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,9 +14,13 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 {
     public class UserRegisterCommandHandler : BaseHandler<UserRegisterCommand, Unit>, IRequestHandler<UserRegisterCommand, Unit>
     {
-        public UserRegisterCommandHandler(CareerTrackDbContext context) : base(context)
+        public UserRegisterCommandHandler(IOptions<AuthMessageSenderOptions> optionsAccessor
+            , CareerTrackDbContext context) : base(context)
         {
+            Options = optionsAccessor.Value;
         }
+
+        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         public new async Task<Unit> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
@@ -46,8 +52,14 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 
             _repoWrapper.UserRole.Create(identityStandaerdUserRole);
 
-            await _repoWrapper.SaveAsync();
+          //  await _repoWrapper.SaveAsync();
+            await SendEmailAsync();
             return Unit.Value;
+        }
+
+        async Task SendEmailAsync()
+        {
+            var apiKey = Options.SendGridApiKey;
         }
     }
 }

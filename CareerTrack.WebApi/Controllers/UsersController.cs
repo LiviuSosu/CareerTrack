@@ -79,27 +79,30 @@ namespace CareerTrack.WebApi.Controllers
             }
         }
 
-        //[HttpDelete]
-        [HttpGet]
-        //[Authorize(Policy = "IsAdmin")]
+        [HttpDelete]
+        [Authorize(Policy = "IsAdmin")]
         [Route("DeleteUserPermanently")]
         public async Task<IActionResult> DeleteUserPermanently([FromQuery]  Guid userId)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
 
+            var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
+            deleteUserDeleteCommand.UserId = userId;
+            deleteUserDeleteCommand.UserManager = userManager;
+        
             try
-            {
-                var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
-                deleteUserDeleteCommand.UserId = userId;
-                //C:\Users\Liviu\AppData\Roaming\Microsoft\UserSecrets\e9c5aa3d-31af-419e-aeb3-0edde79b2769
-                deleteUserDeleteCommand.UserManager = userManager;
+            {          
                 return Ok(await Mediator.Send(deleteUserDeleteCommand));
                 //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
             }
+            catch(NotFoundException exception)
+            {
+                return StatusCode(404, exception);
+            }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userId), string.Empty);
-                return StatusCode(500, "aaa "+exception.Message);
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }

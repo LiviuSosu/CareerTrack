@@ -22,11 +22,12 @@ namespace CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
         public new async Task<Unit> Handle(DeleteUserPermanentyCommand request, CancellationToken cancellationToken)
         {
-            //var user  = await _repoWrapper.User.FindByIdAsync(request.UserId);
-            //await request.UserManager.DeleteAsync(user);
-            var x = Options.SendGridUser;
-            await Task.Delay(100);
-            throw new NotFoundException(x,x);
+            var user  = await _repoWrapper.User.FindByIdAsync(request.UserId);
+            if(user == null)
+            {
+                throw new NotFoundException(user.Email,user);
+            }
+            await request.UserManager.DeleteAsync(user);
             
             return Unit.Value;
         }
