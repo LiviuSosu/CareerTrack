@@ -17,7 +17,6 @@
     <PackageReference Include="MediatR" Version="8.1.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="3.1.8" />
-    <PackageReference Include="SendGrid" Version="9.21.0" />
     <PackageReference Include="Serilog" Version="2.10.0" />
   </ItemGroup>
 
@@ -25,6 +24,7 @@
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
     <ProjectReference Include="..\CareerTrack.Domain\CareerTrack.Domain.csproj" />
     <ProjectReference Include="..\CareerTrack.Persistance\CareerTrack.Persistance.csproj" />
+    <ProjectReference Include="..\CareerTrack.Services\CareerTrack.Services.csproj" />
   </ItemGroup>
 
 </Project>
