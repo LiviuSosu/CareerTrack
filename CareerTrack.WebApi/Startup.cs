@@ -97,6 +97,8 @@ namespace CareerTrack.WebApi
                 options.SuppressModelStateInvalidFilter = true;
             });
 
+            services.Configure<AuthMessageSenderOptions>(Configuration);
+
             services.AddHealthChecks()
            // Add a health check for a SQL Server database
            .AddCheck(
