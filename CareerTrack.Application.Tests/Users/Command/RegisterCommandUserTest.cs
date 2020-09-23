@@ -22,8 +22,8 @@ namespace CareerTrack.Application.Tests.Users.Command
             var store = new Mock<IUserStore<User>>();
             var mgr = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
            
-            var sut = new UserRegisterCommandHandler(db);
-
+            var sut = new UserRegisterCommandHandler(null,null,db);
+            throw new NotImplementedException();
             var userRegisterCommand = new UserRegisterCommand
             {
                 Username = "SomeUsername",

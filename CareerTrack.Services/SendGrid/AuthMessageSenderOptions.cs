@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CareerTrack.Application.Services.Mail
+namespace CareerTrack.Services.SendGrid
 {
-    public  class AuthMessageSenderOptions
+    public class AuthMessageSenderOptions
     {
         public string SendGridApiKey { get; set; }
     }

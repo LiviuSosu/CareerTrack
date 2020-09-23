@@ -1,8 +1,8 @@
 ﻿using CareerTrack.Application.Exceptions;
 using CareerTrack.Application.Handlers.Articles;
-using CareerTrack.Application.Services.Mail;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
+using CareerTrack.Services.SendGrid;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -14,10 +14,12 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 {
     public class UserRegisterCommandHandler : BaseHandler<UserRegisterCommand, Unit>, IRequestHandler<UserRegisterCommand, Unit>
     {
+        IEmailSender _emailSender;
         public UserRegisterCommandHandler(IOptions<AuthMessageSenderOptions> optionsAccessor
-            , CareerTrackDbContext context) : base(context)
+            ,IEmailSender emailSender, CareerTrackDbContext context) : base(context)
         {
             Options = optionsAccessor.Value;
+            _emailSender = emailSender;
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
@@ -52,14 +54,15 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 
             _repoWrapper.UserRole.Create(identityStandaerdUserRole);
 
-          //  await _repoWrapper.SaveAsync();
-            await SendEmailAsync();
-            return Unit.Value;
-        }
+            await _repoWrapper.SaveAsync();
+            var user = await request.UserManager.FindByNameAsync(request.Username);
 
-        async Task SendEmailAsync()
-        {
-            var apiKey = Options.SendGridApiKey;
+            var userRegistrationEmailDTO = _mapper.Map<UserRegistrationEmailDTO>(user);
+            userRegistrationEmailDTO.ConfirmationToken = await request.UserManager.GenerateEmailConfirmationTokenAsync(user);
+
+            await _emailSender.SendConfirmationEmail(userRegistrationEmailDTO);
+
+            return Unit.Value;
         }
     }
 }

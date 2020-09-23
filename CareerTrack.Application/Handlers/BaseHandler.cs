@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
+using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Handlers.Articles
+namespace CareerTrack.Application.Handlers
 {
     public class BaseHandler<TRequest, Unit> : IRequestHandler<TRequest, Unit> where TRequest : IRequest<Unit>
     {
@@ -19,6 +20,7 @@ namespace CareerTrack.Application.Handlers.Articles
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ArticleProfile>();
+                cfg.AddProfile<UserProfile>();
             });
             _mapper = config.CreateMapper();
         }

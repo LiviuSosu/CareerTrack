@@ -2,13 +2,12 @@ using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
 using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Application.Handlers.Articles.Commands.Update;
-using CareerTrack.Application.Services.Mail;
-using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
+using CareerTrack.Services.SendGrid;
 using CareerTrack.WebApi.Filters;
 using CareerTrack.WebApi.HealthChecks;
 using FluentValidation.AspNetCore;
@@ -87,7 +86,7 @@ namespace CareerTrack.WebApi
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
-            //services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IEmailSender>(service=>new EmailSender(""));
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             AddAuthentications(services);
