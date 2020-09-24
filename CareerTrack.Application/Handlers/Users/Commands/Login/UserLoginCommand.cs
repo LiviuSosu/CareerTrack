@@ -1,7 +1,5 @@
 ﻿using CareerTrack.Common;
-using CareerTrack.Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.Login
 {

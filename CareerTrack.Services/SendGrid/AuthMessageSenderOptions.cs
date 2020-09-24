@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CareerTrack.Services.SendGrid
 {
-    public class AuthMessageSenderOptions
+    public  class AuthMessageSenderOptions
     {
         public string SendGridApiKey { get; set; }
     }
