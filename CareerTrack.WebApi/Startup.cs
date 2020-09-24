@@ -2,6 +2,7 @@ using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
 using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Application.Handlers.Articles.Commands.Update;
+using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
@@ -25,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -86,8 +88,7 @@ namespace CareerTrack.WebApi
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
-            services.AddTransient<IEmailSender>(service=>new EmailSender(""));
-            services.Configure<AuthMessageSenderOptions>(Configuration);
+            services.AddTransient<IEmailSender>(service => new EmailSender(""));
 
             AddAuthentications(services);
 
@@ -106,6 +107,8 @@ namespace CareerTrack.WebApi
                new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
                HealthStatus.Unhealthy,
                new string[] { "orderingdb" });
+
+            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(3));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

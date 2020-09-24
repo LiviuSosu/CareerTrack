@@ -1,12 +1,15 @@
 ﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
+using CareerTrack.Services.SendGrid;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
@@ -20,16 +23,22 @@ namespace CareerTrack.WebApi.Controllers
         private readonly UserManager<User> userManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly IEmailSender _emailSender;
 
         public UsersController(
             UserManager<User> userManager,
             IConfiguration configuration,
-            ILogger logger)
+            ILogger logger,
+            IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             this.userManager = userManager;
             _configuration = configuration;
             _logger = logger;
+            Options = optionsAccessor.Value;
+            _emailSender = new EmailSender(Options.SendGridApiKey);
         }
+
+        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         [HttpPost]
         [Route("login")]
@@ -67,7 +76,26 @@ namespace CareerTrack.WebApi.Controllers
             try
             {
                 userRegisterCommand.UserManager = userManager;
-                return Ok(await Mediator.Send(userRegisterCommand));
+                userRegisterCommand.EmailServiceConfiguration = _configuration.EmailServiceConfiguration;
+                userRegisterCommand.EmailSender = _emailSender;
+                await Mediator.Send(userRegisterCommand);
+
+                var user = await userManager.FindByNameAsync("LiviuS");
+                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                string confirmationLink = Url.Action("ConfirmAccount",
+                              "Users", new
+                              {
+                                  userid = user.Id,
+                                  token = code
+                              },
+                               protocol: HttpContext.Request.Scheme);
+
+                return Ok();
+            }
+            catch(ExistentUserException)
+            {
+                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
             }
             catch (Exception exception)
             {
@@ -101,6 +129,15 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
+        }
+
+        [HttpGet]
+        [Route("ConfirmAccount")]
+        public async Task<IActionResult> ConfirmAccount([FromQuery] string token, [FromQuery] string userid)
+        {
+            var user = await userManager.FindByIdAsync(userid);
+            var x = await userManager.ConfirmEmailAsync(user, token);
+            return null;
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Services.SendGrid
@@ -18,7 +15,16 @@ namespace CareerTrack.Services.SendGrid
         public async Task SendConfirmationEmail(UserRegistrationEmailDTO userRegistrationEmailDTO)
         {
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("test@example.com", "Example User");
+            var from = new EmailAddress(userRegistrationEmailDTO.EmailServiceConfiguration.EmailAddress.Email,
+                userRegistrationEmailDTO.EmailServiceConfiguration.EmailAddress.User);
+
+            var subject = string.Format(userRegistrationEmailDTO.EmailServiceConfiguration.Subject, userRegistrationEmailDTO.Username);
+            var to = new EmailAddress(userRegistrationEmailDTO.Email, userRegistrationEmailDTO.Username);
+
+            var plainTextContent = userRegistrationEmailDTO.EmailServiceConfiguration.PlainTextContent+userRegistrationEmailDTO.ConfirmationToken;
+
+            var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, null);
+            var response = await client.SendEmailAsync(message);
         }
     }
 }

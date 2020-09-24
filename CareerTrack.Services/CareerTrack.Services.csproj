@@ -8,4 +8,8 @@
     <PackageReference Include="SendGrid" Version="9.21.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
+  </ItemGroup>
+
 </Project>

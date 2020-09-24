@@ -1,5 +1,4 @@
 ﻿using CareerTrack.Application.Exceptions;
-using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using CareerTrack.Services.SendGrid;
@@ -14,12 +13,8 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 {
     public class UserRegisterCommandHandler : BaseHandler<UserRegisterCommand, Unit>, IRequestHandler<UserRegisterCommand, Unit>
     {
-        IEmailSender _emailSender;
-        public UserRegisterCommandHandler(IOptions<AuthMessageSenderOptions> optionsAccessor
-            ,IEmailSender emailSender, CareerTrackDbContext context) : base(context)
+        public UserRegisterCommandHandler(CareerTrackDbContext context) : base(context)
         {
-            Options = optionsAccessor.Value;
-            _emailSender = emailSender;
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
@@ -56,11 +51,11 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
 
             await _repoWrapper.SaveAsync();
             var user = await request.UserManager.FindByNameAsync(request.Username);
-
+        
             var userRegistrationEmailDTO = _mapper.Map<UserRegistrationEmailDTO>(user);
-            userRegistrationEmailDTO.ConfirmationToken = await request.UserManager.GenerateEmailConfirmationTokenAsync(user);
-
-            await _emailSender.SendConfirmationEmail(userRegistrationEmailDTO);
+            userRegistrationEmailDTO.ConfirmationToken = await request.UserManager.GenerateEmailConfirmationTokenAsync(user)+"&username="+user.UserName;
+            userRegistrationEmailDTO.EmailServiceConfiguration = request.EmailServiceConfiguration;
+             await request.EmailSender.SendConfirmationEmail(userRegistrationEmailDTO);
 
             return Unit.Value;
         }
