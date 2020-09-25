@@ -50,12 +50,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             _repoWrapper.UserRole.Create(identityStandaerdUserRole);
 
             await _repoWrapper.SaveAsync();
-            var user = await request.UserManager.FindByNameAsync(request.Username);
-        
-            var userRegistrationEmailDTO = _mapper.Map<UserRegistrationEmailDTO>(user);
-            userRegistrationEmailDTO.ConfirmationToken = await request.UserManager.GenerateEmailConfirmationTokenAsync(user)+"&username="+user.UserName;
-            userRegistrationEmailDTO.EmailServiceConfiguration = request.EmailServiceConfiguration;
-             await request.EmailSender.SendConfirmationEmail(userRegistrationEmailDTO);
 
             return Unit.Value;
         }

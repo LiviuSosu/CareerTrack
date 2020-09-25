@@ -1,5 +1,7 @@
 ﻿using SendGrid;
 using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Services.SendGrid
@@ -21,7 +23,7 @@ namespace CareerTrack.Services.SendGrid
             var subject = string.Format(userRegistrationEmailDTO.EmailServiceConfiguration.Subject, userRegistrationEmailDTO.Username);
             var to = new EmailAddress(userRegistrationEmailDTO.Email, userRegistrationEmailDTO.Username);
 
-            var plainTextContent = userRegistrationEmailDTO.EmailServiceConfiguration.PlainTextContent+userRegistrationEmailDTO.ConfirmationToken;
+            var plainTextContent = userRegistrationEmailDTO.EmailServiceConfiguration.PlainTextContent + userRegistrationEmailDTO.ConfirmationToken;
 
             var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, null);
             var response = await client.SendEmailAsync(message);

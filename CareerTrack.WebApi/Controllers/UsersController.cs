@@ -1,5 +1,4 @@
 ﻿using CareerTrack.Application.Exceptions;
-using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
@@ -76,8 +75,6 @@ namespace CareerTrack.WebApi.Controllers
             try
             {
                 userRegisterCommand.UserManager = userManager;
-                userRegisterCommand.EmailServiceConfiguration = _configuration.EmailServiceConfiguration;
-                userRegisterCommand.EmailSender = _emailSender;
                 await Mediator.Send(userRegisterCommand);
 
                 var user = await userManager.FindByNameAsync("LiviuS");
@@ -90,6 +87,14 @@ namespace CareerTrack.WebApi.Controllers
                                   token = code
                               },
                                protocol: HttpContext.Request.Scheme);
+
+                await _emailSender.SendConfirmationEmail(new UserRegistrationEmailDTO
+                {
+                    Email = userRegisterCommand.Email,
+                    Username = userRegisterCommand.Username,
+                    EmailServiceConfiguration = _configuration.EmailServiceConfiguration,
+                    ConfirmationToken = confirmationLink
+                });
 
                 return Ok();
             }
@@ -136,8 +141,15 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> ConfirmAccount([FromQuery] string token, [FromQuery] string userid)
         {
             var user = await userManager.FindByIdAsync(userid);
-            var x = await userManager.ConfirmEmailAsync(user, token);
-            return null;
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if(result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
+            }
         }
     }
 }

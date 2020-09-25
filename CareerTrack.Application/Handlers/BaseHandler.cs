@@ -20,7 +20,6 @@ namespace CareerTrack.Application.Handlers
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<ArticleProfile>();
-                cfg.AddProfile<UserProfile>();
             });
             _mapper = config.CreateMapper();
         }
