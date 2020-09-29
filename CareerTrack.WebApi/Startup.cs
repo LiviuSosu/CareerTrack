@@ -62,7 +62,6 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BaseValidator<object>>());
 
             var _configuration = new Configuration();
@@ -109,6 +108,22 @@ namespace CareerTrack.WebApi
                new string[] { "orderingdb" });
 
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(3));
+
+            services.AddCors(options =>
+            {
+                options. AddPolicy(name: "MyPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins(
+                            "https://localhost:44333",
+                            "http://localhost:1400",
+                            "https://localhost:1400",
+                            "http://localhost:3000",
+                            "https://localhost:3000")
+                                .WithMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
+                                .WithHeaders("Content-Type");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -124,6 +139,8 @@ namespace CareerTrack.WebApi
             app.UseRouting();
 
             SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
+            app.UseCors();
 
             app.UseAuthorization();
 

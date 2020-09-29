@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.Login
 {
-    public class UserLoginCommandHandler : BaseHandler<UserLoginCommand, LoginResponseDto>, IRequestHandler<UserLoginCommand, LoginResponseDto>
+    public class UserLoginCommandHandler : BaseHandler<UserLoginCommand, LoginResponseDTO>, IRequestHandler<UserLoginCommand, LoginResponseDTO>
     {
         public UserLoginCommandHandler(CareerTrackDbContext context) : base(context)
         {
         }
 
-        public new async Task<LoginResponseDto> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public new async Task<LoginResponseDTO> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
             var user = await request.UserManager.FindByNameAsync(request.Username);
             if (user != null)
@@ -39,7 +39,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                            signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                            );
 
-                    return new LoginResponseDto
+                    return new LoginResponseDTO
                     {
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo
@@ -85,7 +85,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
             }
             else
             {
-                throw new NoAssignedRolesException(user.Email);
+                throw new NoRolesAssignedException(user.Email);
             }
         }
     }

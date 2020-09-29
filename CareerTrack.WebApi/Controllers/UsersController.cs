@@ -1,4 +1,5 @@
 ﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users.Commands.ChangePassword;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
@@ -6,6 +7,7 @@ using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Services.SendGrid;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -15,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.WebApi.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : BaseController
@@ -59,6 +62,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return Unauthorized();
             }
+            //catch (NoRolesAssignedException)
+            //{
+            //    asas
+            //}
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);
@@ -149,6 +156,31 @@ namespace CareerTrack.WebApi.Controllers
             else
             {
                 return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
+            }
+        }
+
+        [HttpPut]
+        [Route("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserChangePasswordCommand userChangePasswordCommand)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                userChangePasswordCommand.UserManager = userManager;
+                return Ok(await Mediator.Send(userChangePasswordCommand));
+            }
+            catch(NotFoundException)
+            {
+                return StatusCode(500, _configuration.DisplayObjectNotFoundErrorMessage);
+            }
+            catch (PasswordsAreNotTheSameException)
+            {
+                return StatusCode(500, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), string.Empty);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }
