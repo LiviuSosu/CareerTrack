@@ -2,9 +2,9 @@
 
 namespace CareerTrack.Application.Exceptions
 {
-    public class NoAssignedRolesException : Exception
+    public class NoRolesAssignedException : Exception
     {
-        public NoAssignedRolesException(string name)
+        public NoRolesAssignedException(string name)
          : base($"The following user \"{name}\" does not have any assigned roles.")
         {
         }

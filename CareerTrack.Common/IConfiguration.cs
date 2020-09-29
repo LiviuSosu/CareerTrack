@@ -4,8 +4,8 @@
     {
         string DisplayGenericUserErrorMessage { get; }
         string DisplayObjectNotFoundErrorMessage { get; }
-
         string DisplayExistentUserExceptionMessage { get; }
+        string DisplayPasswordsAreNotTheSameExceptionMessage { get; }
 
         JWTConfiguration JWTConfiguration { get; }
 
