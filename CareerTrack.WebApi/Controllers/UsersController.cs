@@ -17,7 +17,6 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.WebApi.Controllers
 {
-    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : BaseController

@@ -1,8 +1,5 @@
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
-using CareerTrack.Application.Handlers.Articles;
-using CareerTrack.Application.Handlers.Articles.Commands.Update;
-using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
@@ -111,15 +108,10 @@ namespace CareerTrack.WebApi
 
             services.AddCors(options =>
             {
-                options. AddPolicy(name: "MyPolicy",
+                options. AddDefaultPolicy(
                     builder =>
                     {
-                        builder.WithOrigins(
-                            "https://localhost:44333",
-                            "http://localhost:1400",
-                            "https://localhost:1400",
-                            "http://localhost:3000",
-                            "https://localhost:3000")
+                        builder.WithOrigins("http://localhost:3000")
                                 .WithMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
                                 .WithHeaders("Content-Type");
                     });
