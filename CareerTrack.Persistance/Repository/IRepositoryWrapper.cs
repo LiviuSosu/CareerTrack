@@ -2,6 +2,7 @@
 using CareerTrack.Persistance.Repository.RoleRepository;
 using CareerTrack.Persistance.Repository.UserRepository;
 using CareerTrack.Persistance.Repository.UserRoleRepository;
+using CareerTrack.Persistance.Repository.UserTokenRepository;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Persistance.Repository
@@ -13,6 +14,7 @@ namespace CareerTrack.Persistance.Repository
 
         IUserRoleRepository UserRole { get; }
         IRoleRepository Role { get; }
+        IUserTokenRepository UserToken { get; }
 
         Task SaveAsync();
     }

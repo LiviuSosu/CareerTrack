@@ -20,6 +20,9 @@ namespace CareerTrack.Common
         private readonly string displayPasswordsAreNotTheSameExceptionMessage;
         public string DisplayPasswordsAreNotTheSameExceptionMessage { get => displayPasswordsAreNotTheSameExceptionMessage; }
         private readonly JWTConfiguration jwtConfiguration;
+        string noRolesAssignedExceptionMessage { get; }
+        public string NoRolesAssignedExceptionMessage { get => noRolesAssignedExceptionMessage; }
+
         public JWTConfiguration JWTConfiguration { get => jwtConfiguration; }
 
         private readonly EmailServiceConfiguration emailServiceConfiguration;
@@ -46,6 +49,7 @@ namespace CareerTrack.Common
             displayGenericUserErrorMessage = root.GetSection("Errors").GetSection("DisplayGenericUserErrorMessage").Value;
             displayObjectNotFoundErrorMessage = root.GetSection("Errors").GetSection("DisplayObjectNotFoundErrorMessage").Value;
             displayExistentUserExceptionMessage = root.GetSection("Errors").GetSection("DisplayExistentUserExceptionMessage").Value;
+            noRolesAssignedExceptionMessage = root.GetSection("Errors").GetSection("NoRolesAssignedExceptionMessage").Value;
 
             var emailServiceConfigurationSection = root.GetSection("EmailServiceConfiguration");
             var emailAddressConfigurationSection = emailServiceConfigurationSection.GetSection("EmailAddress");

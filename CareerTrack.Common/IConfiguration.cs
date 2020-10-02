@@ -6,6 +6,7 @@
         string DisplayObjectNotFoundErrorMessage { get; }
         string DisplayExistentUserExceptionMessage { get; }
         string DisplayPasswordsAreNotTheSameExceptionMessage { get; }
+        string NoRolesAssignedExceptionMessage { get; }
 
         JWTConfiguration JWTConfiguration { get; }
 

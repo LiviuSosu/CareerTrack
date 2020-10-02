@@ -1,5 +1,4 @@
 ﻿using CareerTrack.Application.Exceptions;
-using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
@@ -18,9 +17,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
 {
     public class UserLoginCommandHandler : BaseHandler<UserLoginCommand, LoginResponseDTO>, IRequestHandler<UserLoginCommand, LoginResponseDTO>
     {
-        public UserLoginCommandHandler(CareerTrackDbContext context) : base(context)
-        {
-        }
+        public UserLoginCommandHandler(CareerTrackDbContext context) : base(context) { }
 
         public new async Task<LoginResponseDTO> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
@@ -39,9 +36,20 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                            signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                            );
 
+                    var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+                    var tok = new IdentityUserToken<Guid>
+                    {
+                        UserId = Guid.NewGuid(),
+                        LoginProvider = "WIF",
+                        Name = user.Id.ToString(),
+                        Value = tokenValue
+                    };
+                    _repoWrapper.UserToken.Create(tok);
+                    await _repoWrapper.SaveAsync();
+
                     return new LoginResponseDTO
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        token = tokenValue,
                         expiration = token.ValidTo
                     };
                 }
