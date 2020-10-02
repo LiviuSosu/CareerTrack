@@ -7,7 +7,6 @@ using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Services.SendGrid;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -61,10 +60,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return Unauthorized();
             }
-            //catch (NoRolesAssignedException)
-            //{
-            //    asas
-            //}
+            catch (NoRolesAssignedException)
+            {
+                return StatusCode(500, _configuration.NoRolesAssignedExceptionMessage);
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);
@@ -83,7 +82,7 @@ namespace CareerTrack.WebApi.Controllers
                 userRegisterCommand.UserManager = userManager;
                 await Mediator.Send(userRegisterCommand);
 
-                var user = await userManager.FindByNameAsync("LiviuS");
+                var user = await userManager.FindByEmailAsync(userRegisterCommand.Email);
                 var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
                 string confirmationLink = Url.Action("ConfirmAccount",

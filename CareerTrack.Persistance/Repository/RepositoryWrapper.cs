@@ -2,6 +2,7 @@
 using CareerTrack.Persistance.Repository.RoleRepository;
 using CareerTrack.Persistance.Repository.UserRepository;
 using CareerTrack.Persistance.Repository.UserRoleRepository;
+using CareerTrack.Persistance.Repository.UserTokenRepository;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Persistance.Repository
@@ -13,6 +14,7 @@ namespace CareerTrack.Persistance.Repository
         private IUserRepository _user;
         private IUserRoleRepository _userRole;
         private IRoleRepository _role;
+        private IUserTokenRepository _userToken;
 
         public RepositoryWrapper(CareerTrackDbContext CareerTrackDbContext)
         {
@@ -68,6 +70,19 @@ namespace CareerTrack.Persistance.Repository
                 }
 
                 return _role;
+            }
+        }
+
+        public IUserTokenRepository UserToken 
+        { 
+            get
+            {
+                if (_userToken == null)
+                {
+                    _userToken = new UserTokenRepository.UserTokenRepository(_careerTrackDbContext);
+                }
+
+                return _userToken;
             }
         }
 
