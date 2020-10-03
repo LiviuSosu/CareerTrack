@@ -6,11 +6,8 @@
 
   <ItemGroup>
     <Compile Remove="Articles\**" />
-    <Compile Remove="Services\**" />
     <EmbeddedResource Remove="Articles\**" />
-    <EmbeddedResource Remove="Services\**" />
     <None Remove="Articles\**" />
-    <None Remove="Services\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +23,7 @@
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
     <ProjectReference Include="..\CareerTrack.Domain\CareerTrack.Domain.csproj" />
     <ProjectReference Include="..\CareerTrack.Persistance\CareerTrack.Persistance.csproj" />
+    <ProjectReference Include="..\CareerTrack.Services\CareerTrack.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,11 @@
 using CareerTrack.Application.Authorizations;
 using CareerTrack.Application.Handlers;
-using CareerTrack.Application.Handlers.Articles;
-using CareerTrack.Application.Handlers.Articles.Commands.Update;
-using CareerTrack.Application.Handlers.Users;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
+using CareerTrack.Services.SendGrid;
 using CareerTrack.WebApi.Filters;
 using CareerTrack.WebApi.HealthChecks;
 using FluentValidation.AspNetCore;
@@ -25,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -60,7 +59,6 @@ namespace CareerTrack.WebApi
 
             services
                 .AddMvc(options => options.Filters.Add(typeof(CustomExceptionFilterAttribute)))
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UpdateArticleCommandValidator>())
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<BaseValidator<object>>());
 
             var _configuration = new Configuration();
@@ -86,6 +84,7 @@ namespace CareerTrack.WebApi
             services.AddSingleton<IAuthorizationHandler, AdminRoleAuthorizationHandler>();
             services.Add(new ServiceDescriptor(typeof(Common.IConfiguration), typeof(Configuration), ServiceLifetime.Singleton));
             services.Add(new ServiceDescriptor(typeof(ILogger), typeof(Logger), ServiceLifetime.Singleton));
+            services.AddTransient<IEmailSender>(service => new EmailSender(""));
 
             AddAuthentications(services);
 
@@ -104,6 +103,19 @@ namespace CareerTrack.WebApi
                new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
                HealthStatus.Unhealthy,
                new string[] { "orderingdb" });
+
+            services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(3));
+
+            services.AddCors(options =>
+            {
+                options. AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:3000")
+                                .WithMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
+                                .WithHeaders("Content-Type");
+                    });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +131,8 @@ namespace CareerTrack.WebApi
             app.UseRouting();
 
             SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
+
+            app.UseCors();
 
             app.UseAuthorization();
 

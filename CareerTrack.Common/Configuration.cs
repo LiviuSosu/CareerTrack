@@ -14,9 +14,19 @@ namespace CareerTrack.Common
         private readonly string displayObjectNotFoundErrorMessage;
         public string DisplayObjectNotFoundErrorMessage { get => displayObjectNotFoundErrorMessage; }
 
+        private readonly string displayExistentUserExceptionMessage;
+        public string DisplayExistentUserExceptionMessage { get => displayExistentUserExceptionMessage; }
+        
+        private readonly string displayPasswordsAreNotTheSameExceptionMessage;
+        public string DisplayPasswordsAreNotTheSameExceptionMessage { get => displayPasswordsAreNotTheSameExceptionMessage; }
         private readonly JWTConfiguration jwtConfiguration;
+        string noRolesAssignedExceptionMessage { get; }
+        public string NoRolesAssignedExceptionMessage { get => noRolesAssignedExceptionMessage; }
+
         public JWTConfiguration JWTConfiguration { get => jwtConfiguration; }
 
+        private readonly EmailServiceConfiguration emailServiceConfiguration;
+        public EmailServiceConfiguration EmailServiceConfiguration { get => emailServiceConfiguration; }
         public Configuration()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
@@ -38,6 +48,23 @@ namespace CareerTrack.Common
 
             displayGenericUserErrorMessage = root.GetSection("Errors").GetSection("DisplayGenericUserErrorMessage").Value;
             displayObjectNotFoundErrorMessage = root.GetSection("Errors").GetSection("DisplayObjectNotFoundErrorMessage").Value;
+            displayExistentUserExceptionMessage = root.GetSection("Errors").GetSection("DisplayExistentUserExceptionMessage").Value;
+            noRolesAssignedExceptionMessage = root.GetSection("Errors").GetSection("NoRolesAssignedExceptionMessage").Value;
+
+            var emailServiceConfigurationSection = root.GetSection("EmailServiceConfiguration");
+            var emailAddressConfigurationSection = emailServiceConfigurationSection.GetSection("EmailAddress");
+            var emailAddressConfiguration = new EmailAddress
+            {
+                Email = emailAddressConfigurationSection.GetSection("Email").Value,
+                User = emailAddressConfigurationSection.GetSection("User").Value
+            };
+
+            emailServiceConfiguration = new EmailServiceConfiguration
+            {
+                EmailAddress = emailAddressConfiguration,
+                Subject = emailServiceConfigurationSection.GetSection("Subject").Value,
+                PlainTextContent = emailServiceConfigurationSection.GetSection("PlainTextContent").Value
+            };
         }
     }
 
@@ -61,5 +88,19 @@ namespace CareerTrack.Common
         public readonly string JwtLifeTime;
 
         public readonly string ExpectedRoleClaim;
+    }
+
+    public class EmailServiceConfiguration
+    {
+        private EmailAddress emailAddress;
+        public EmailAddress EmailAddress { get => emailAddress; set { emailAddress = value; } }
+        public string Subject { get; set; }
+        public string PlainTextContent { get; set; }
+    }
+
+    public class EmailAddress
+    {
+        public string Email { get; set; }
+        public string User { get; set; }
     }
 }

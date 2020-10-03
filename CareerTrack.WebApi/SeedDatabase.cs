@@ -34,15 +34,7 @@ namespace CareerTrack.WebApi
                     }
                 };
 
-                context.Roles.AddRangeAsync(roles);
-
-                //IdentityRoleClaim<string> identityRoleClaim = new IdentityRoleClaim<string>
-                //{
-                //    ClaimType = "AddArticles",
-                //    ClaimValue = "Add articles",
-                //    RoleId = roles[0].Id
-                //};
-                //context.RoleClaims.AddAsync(identityRoleClaim);
+                context.Roles.AddRange(roles);
 
                 User adminUser = new User
                 {
@@ -79,26 +71,7 @@ namespace CareerTrack.WebApi
                 };
 
                 context.UserRoles.AddAsync(identityStandaerdUserRole);
-
-                //var addArticlesUserClaim = new IdentityUserClaim<Guid>
-                //{
-                //    UserId = adminUser.Id,
-                //    ClaimType = "AddArticles",
-                //    ClaimValue = "Add Articles"
-                //};
-
-                //var getArticlesUserClaim = new IdentityUserClaim<Guid>
-                //{
-                //    UserId = standardUser.Id,
-                //    ClaimType = "GetArticles",
-                //    ClaimValue = "Get Articles"
-                //};
-
-                //context.UserClaims.AddAsync(addArticlesUserClaim);
-                //context.UserClaims.AddAsync(getArticlesUserClaim);
-
-                context.Articles.Add(new Article { Title = "Title 1", Link = "www.link1.com" });
-                context.Articles.Add(new Article { Title = "Title 2", Link = "www.link2.com" });
+                context.SaveChanges();
             }
         }
     }

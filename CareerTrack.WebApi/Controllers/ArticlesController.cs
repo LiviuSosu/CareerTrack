@@ -31,17 +31,17 @@ namespace CareerTrack.WebApi.Controllers
         [HttpGet]
         [Route("GetArticles")]
         [Authorize(Policy = "IsStdUser")]
-        public async Task<IActionResult> GetArticles([FromQuery] PagingModel paginationModel)
+        public async Task<IActionResult> GetArticles([FromQuery] PagingModel paginationModel, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                _logger.LogInformation(actionName, JsonConvert.SerializeObject(paginationModel),"");
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(paginationModel), Authorization);
                 return Ok(await Mediator.Send(new GetArticlesListQuery(paginationModel)));
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel),"");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel), Authorization);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
@@ -67,12 +67,12 @@ namespace CareerTrack.WebApi.Controllers
         [HttpPost]
         [Route("AddArticle")]
         [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command)
+        public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
                 return Ok(await Mediator.Send(command));
             }
             catch(ValidationException exception)
@@ -81,7 +81,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
@@ -89,12 +89,12 @@ namespace CareerTrack.WebApi.Controllers
         [HttpPut]
         [Route("UpdateArticle")]
         [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> UpdateArticle([FromBody] UpdateArticleCommand command)
+        public async Task<IActionResult> UpdateArticle([FromBody] UpdateArticleCommand command, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
                 return Ok(await Mediator.Send(command));
             }
             catch (ValidationException exception)
@@ -103,7 +103,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
@@ -111,22 +111,22 @@ namespace CareerTrack.WebApi.Controllers
         [HttpDelete]
         [Route("DeleteArticle")]
         [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> DeleteArticle([FromBody] DeleteArticleCommand command)
+        public async Task<IActionResult> DeleteArticle([FromBody] DeleteArticleCommand command, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), "");
+                _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
                 return Ok(await Mediator.Send(command));
             }
             catch (DbUpdateConcurrencyException exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
                 return StatusCode(400, _configuration.DisplayObjectNotFoundErrorMessage);
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), "");
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
                 return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }

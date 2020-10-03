@@ -23,7 +23,6 @@ namespace CareerTrack.Application.Tests.Users.Command
             var mgr = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
            
             var sut = new UserRegisterCommandHandler(db);
-
             var userRegisterCommand = new UserRegisterCommand
             {
                 Username = "SomeUsername",

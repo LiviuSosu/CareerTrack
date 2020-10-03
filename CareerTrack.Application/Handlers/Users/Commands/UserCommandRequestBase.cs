@@ -5,6 +5,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands
 {
     public class UserCommandRequestBase
     {
+        public string Username { get; set; }
         public UserManager<User> UserManager { get; set; }
     }
 }

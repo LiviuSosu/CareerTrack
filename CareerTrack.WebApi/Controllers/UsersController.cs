@@ -1,17 +1,17 @@
 ﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users.Commands.ChangePassword;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
+using CareerTrack.Services.SendGrid;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CareerTrack.WebApi.Controllers
@@ -23,16 +23,22 @@ namespace CareerTrack.WebApi.Controllers
         private readonly UserManager<User> userManager;
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
+        private readonly IEmailSender _emailSender;
 
         public UsersController(
             UserManager<User> userManager,
             IConfiguration configuration,
-            ILogger logger)
+            ILogger logger,
+            IOptions<AuthMessageSenderOptions> optionsAccessor)
         {
             this.userManager = userManager;
             _configuration = configuration;
             _logger = logger;
+            Options = optionsAccessor.Value;
+            _emailSender = new EmailSender(Options.SendGridApiKey);
         }
+
+        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
 
         [HttpPost]
         [Route("login")]
@@ -54,6 +60,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return Unauthorized();
             }
+            catch (NoRolesAssignedException)
+            {
+                return StatusCode(500, _configuration.NoRolesAssignedExceptionMessage);
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);
@@ -70,7 +80,32 @@ namespace CareerTrack.WebApi.Controllers
             try
             {
                 userRegisterCommand.UserManager = userManager;
-                return Ok(await Mediator.Send(userRegisterCommand));
+                await Mediator.Send(userRegisterCommand);
+
+                var user = await userManager.FindByEmailAsync(userRegisterCommand.Email);
+                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+                string confirmationLink = Url.Action("ConfirmAccount",
+                              "Users", new
+                              {
+                                  userid = user.Id,
+                                  token = code
+                              },
+                               protocol: HttpContext.Request.Scheme);
+
+                await _emailSender.SendConfirmationEmail(new UserRegistrationEmailDTO
+                {
+                    Email = userRegisterCommand.Email,
+                    Username = userRegisterCommand.Username,
+                    EmailServiceConfiguration = _configuration.EmailServiceConfiguration,
+                    ConfirmationToken = confirmationLink
+                });
+
+                return Ok();
+            }
+            catch(ExistentUserException)
+            {
+                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
             }
             catch (Exception exception)
             {
@@ -79,27 +114,71 @@ namespace CareerTrack.WebApi.Controllers
             }
         }
 
-        //[HttpDelete]
-        [HttpGet]
-        //[Authorize(Policy = "IsAdmin")]
+        [HttpDelete]
+        [Authorize(Policy = "IsAdmin")]
         [Route("DeleteUserPermanently")]
         public async Task<IActionResult> DeleteUserPermanently([FromQuery]  Guid userId)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
 
+            var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
+            deleteUserDeleteCommand.UserId = userId;
+            deleteUserDeleteCommand.UserManager = userManager;
+        
             try
-            {
-                var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
-                deleteUserDeleteCommand.UserId = userId;
-                //C:\Users\Liviu\AppData\Roaming\Microsoft\UserSecrets\e9c5aa3d-31af-419e-aeb3-0edde79b2769
-                deleteUserDeleteCommand.UserManager = userManager;
+            {          
                 return Ok(await Mediator.Send(deleteUserDeleteCommand));
                 //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
             }
+            catch(NotFoundException exception)
+            {
+                return StatusCode(404, exception);
+            }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userId), string.Empty);
-                return StatusCode(500, "aaa "+exception.Message);
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+            }
+        }
+
+        [HttpGet]
+        [Route("ConfirmAccount")]
+        public async Task<IActionResult> ConfirmAccount([FromQuery] string token, [FromQuery] string userid)
+        {
+            var user = await userManager.FindByIdAsync(userid);
+            var result = await userManager.ConfirmEmailAsync(user, token);
+            if(result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
+            }
+        }
+
+        [HttpPut]
+        [Route("ChangePassword")]
+        public async Task<IActionResult> ChangePassword([FromBody] UserChangePasswordCommand userChangePasswordCommand)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                userChangePasswordCommand.UserManager = userManager;
+                return Ok(await Mediator.Send(userChangePasswordCommand));
+            }
+            catch(NotFoundException)
+            {
+                return StatusCode(500, _configuration.DisplayObjectNotFoundErrorMessage);
+            }
+            catch (PasswordsAreNotTheSameException)
+            {
+                return StatusCode(500, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+            }
+            catch (Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), string.Empty);
+                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }

@@ -24,6 +24,7 @@
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
     <ProjectReference Include="..\CareerTrack.Infrastructure\CareerTrack.Infrastructure.csproj" />
     <ProjectReference Include="..\CareerTrack.Migrations\CareerTrack.Migrations.csproj" />
+    <ProjectReference Include="..\CareerTrack.Services\CareerTrack.Services.csproj" />
   </ItemGroup>
 
 

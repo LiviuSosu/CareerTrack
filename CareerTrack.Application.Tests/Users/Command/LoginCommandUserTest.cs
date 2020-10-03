@@ -56,7 +56,7 @@ namespace CareerTrack.Application.Tests.Users.Command
             var sut = new UserLoginCommandHandler(db);
             var result = await sut.Handle(userLoginCommand, CancellationToken.None);
 
-            Assert.IsType<LoginResponseDto>(result);
+            Assert.IsType<LoginResponseDTO>(result);
 
             db.Users.RemoveRange(db.Users);
         }

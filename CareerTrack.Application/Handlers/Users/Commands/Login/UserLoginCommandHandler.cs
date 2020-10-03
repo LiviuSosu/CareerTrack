@@ -1,5 +1,4 @@
 ﻿using CareerTrack.Application.Exceptions;
-using CareerTrack.Application.Handlers.Articles;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
@@ -16,13 +15,11 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.Login
 {
-    public class UserLoginCommandHandler : BaseHandler<UserLoginCommand, LoginResponseDto>, IRequestHandler<UserLoginCommand, LoginResponseDto>
+    public class UserLoginCommandHandler : BaseHandler<UserLoginCommand, LoginResponseDTO>, IRequestHandler<UserLoginCommand, LoginResponseDTO>
     {
-        public UserLoginCommandHandler(CareerTrackDbContext context) : base(context)
-        {
-        }
+        public UserLoginCommandHandler(CareerTrackDbContext context) : base(context) { }
 
-        public new async Task<LoginResponseDto> Handle(UserLoginCommand request, CancellationToken cancellationToken)
+        public new async Task<LoginResponseDTO> Handle(UserLoginCommand request, CancellationToken cancellationToken)
         {
             var user = await request.UserManager.FindByNameAsync(request.Username);
             if (user != null)
@@ -39,9 +36,20 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                            signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                            );
 
-                    return new LoginResponseDto
+                    var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+                    var tok = new IdentityUserToken<Guid>
                     {
-                        token = new JwtSecurityTokenHandler().WriteToken(token),
+                        UserId = Guid.NewGuid(),
+                        LoginProvider = "WIF",
+                        Name = user.Id.ToString(),
+                        Value = tokenValue
+                    };
+                    _repoWrapper.UserToken.Create(tok);
+                    await _repoWrapper.SaveAsync();
+
+                    return new LoginResponseDTO
+                    {
+                        token = tokenValue,
                         expiration = token.ValidTo
                     };
                 }
@@ -70,16 +78,23 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
         {
             var userRolesIds = _repoWrapper.UserRole.FindByCondition(r => r.UserId == user.Id).ToList();
 
-            var stringRoles = new StringBuilder();
-
-            foreach (var roleId in userRolesIds)
+            if (userRolesIds.Count != 0)
             {
-                stringRoles.Append((await _repoWrapper.Role.FindByIdAsync(roleId.RoleId)).Name);
-                stringRoles.Append(',');
-            }
-            stringRoles.Remove(stringRoles.Length - 1, 1);
+                var stringRoles = new StringBuilder();
 
-            return stringRoles.ToString();
+                foreach (var roleId in userRolesIds)
+                {
+                    stringRoles.Append((await _repoWrapper.Role.FindByIdAsync(roleId.RoleId)).Name);
+                    stringRoles.Append(',');
+                }
+                stringRoles.Remove(stringRoles.Length - 1, 1);
+
+                return stringRoles.ToString();
+            }
+            else
+            {
+                throw new NoRolesAssignedException(user.Email);
+            }
         }
     }
 }
