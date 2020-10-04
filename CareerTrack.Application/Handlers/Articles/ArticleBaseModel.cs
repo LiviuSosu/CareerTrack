@@ -1,5 +1,4 @@
-﻿
-namespace CareerTrack.Application.Handlers.Articles
+﻿namespace CareerTrack.Application.Handlers.Articles
 {
     public class ArticleBaseModel
     {

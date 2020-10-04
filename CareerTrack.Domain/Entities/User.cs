@@ -1,12 +1,9 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
 namespace CareerTrack.Domain.Entities
 {
     public class User : IdentityUser<Guid>
     {
-        //[Key]
-        //public new Guid Id { get; set; }
     }
 }

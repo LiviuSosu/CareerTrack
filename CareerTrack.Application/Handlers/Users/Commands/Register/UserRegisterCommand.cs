@@ -1,6 +1,4 @@
-﻿using CareerTrack.Common;
-using CareerTrack.Services.SendGrid;
-using MediatR;
+﻿using MediatR;
 using System;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.Register

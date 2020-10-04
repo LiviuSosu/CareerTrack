@@ -7,6 +7,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
     {
         public string Password { get; set; }
 
-        public JWTConfiguration JWTConfiguration  { get; set; }
+        public JWTConfiguration JWTConfiguration { get; set; }
     }
 }

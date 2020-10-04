@@ -45,7 +45,7 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginCommand userLoginCommand)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
-          
+
             try
             {
                 userLoginCommand.UserManager = userManager;
@@ -103,7 +103,7 @@ namespace CareerTrack.WebApi.Controllers
 
                 return Ok();
             }
-            catch(ExistentUserException)
+            catch (ExistentUserException)
             {
                 return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
             }
@@ -117,20 +117,19 @@ namespace CareerTrack.WebApi.Controllers
         [HttpDelete]
         [Authorize(Policy = "IsAdmin")]
         [Route("DeleteUserPermanently")]
-        public async Task<IActionResult> DeleteUserPermanently([FromQuery]  Guid userId)
+        public async Task<IActionResult> DeleteUserPermanently([FromQuery] string Username)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
 
             var deleteUserDeleteCommand = new DeleteUserPermanentyCommand();
-            deleteUserDeleteCommand.UserId = userId;
+            deleteUserDeleteCommand.Username = Username;
             deleteUserDeleteCommand.UserManager = userManager;
-        
+
             try
-            {          
+            {
                 return Ok(await Mediator.Send(deleteUserDeleteCommand));
-                //https://docs.microsoft.com/en-us/aspnet/core/security/authentication/accconfirm?view=aspnetcore-3.1&tabs=visual-studio
             }
-            catch(NotFoundException exception)
+            catch (NotFoundException exception)
             {
                 return StatusCode(404, exception);
             }
@@ -147,7 +146,7 @@ namespace CareerTrack.WebApi.Controllers
         {
             var user = await userManager.FindByIdAsync(userid);
             var result = await userManager.ConfirmEmailAsync(user, token);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 return Ok();
             }
@@ -167,7 +166,7 @@ namespace CareerTrack.WebApi.Controllers
                 userChangePasswordCommand.UserManager = userManager;
                 return Ok(await Mediator.Send(userChangePasswordCommand));
             }
-            catch(NotFoundException)
+            catch (NotFoundException)
             {
                 return StatusCode(500, _configuration.DisplayObjectNotFoundErrorMessage);
             }

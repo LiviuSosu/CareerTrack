@@ -26,7 +26,7 @@ namespace CareerTrack.Application.Tests.Articles.Query
               UseInMemoryDatabase(databaseName: "CareerTrackArticles").Options;
 
             db = new CareerTrackDbContext(options);
-
+            db.Articles.RemoveRange(db.Articles);
             try
             {
                 db.Articles.RemoveRange(db.Articles);
@@ -51,7 +51,7 @@ namespace CareerTrack.Application.Tests.Articles.Query
 
                 db.SaveChanges();
             }
-            catch(ArgumentException )
+            catch (ArgumentException)
             {
                 //in case it was added the same Id
                 db.Articles.RemoveRange(db.Articles);

@@ -18,7 +18,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
             updateArticleCommand = new UpdateArticleCommand
             {
                 Link = articleLinkToModify
-            };       
+            };
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
         {
             var sut = new UpdateArticleCommandHandler(db);
             var art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a=>a.Id== articleIdForTheFirstArticle);
+                .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
 
             var oldCopy = art;
 
@@ -36,9 +36,9 @@ namespace CareerTrack.Application.Tests.Articles.Command
             Unit result;
             try
             {
-                 result = await sut.Handle(updateArticleCommand, CancellationToken.None);
+                result = await sut.Handle(updateArticleCommand, CancellationToken.None);
             }
-            catch(InvalidOperationException)
+            catch (InvalidOperationException)
             {
                 db.Entry(art).State = EntityState.Detached;
                 await UpdateArticleSuccessTest();

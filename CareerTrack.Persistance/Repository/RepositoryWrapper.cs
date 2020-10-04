@@ -73,8 +73,8 @@ namespace CareerTrack.Persistance.Repository
             }
         }
 
-        public IUserTokenRepository UserToken 
-        { 
+        public IUserTokenRepository UserToken
+        {
             get
             {
                 if (_userToken == null)

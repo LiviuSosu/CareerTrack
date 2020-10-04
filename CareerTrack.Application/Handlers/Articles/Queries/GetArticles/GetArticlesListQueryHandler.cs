@@ -24,7 +24,7 @@ namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
             var viewModel = new ArticlesListViewModel
             {
                 Articles = await
-                _repoWrapper.Article.FindByCondition(dto => dto.Title.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))           
+                _repoWrapper.Article.FindByCondition(dto => dto.Title.ToLower().Contains(request.PagingModel.QueryFilter.ToLower()))
                 .Select(article =>
                     _mapper.Map<ArticleLookupModel>(article)
                 )

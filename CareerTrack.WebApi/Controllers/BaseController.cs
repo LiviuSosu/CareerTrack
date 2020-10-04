@@ -6,7 +6,7 @@ namespace CareerTrack.WebApi.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class BaseController: Controller
+    public class BaseController : Controller
     {
         private IMediator _mediator;
 

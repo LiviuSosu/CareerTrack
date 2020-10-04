@@ -4,7 +4,6 @@ using CareerTrack.Persistance;
 using CareerTrack.Services.SendGrid;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +24,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             {
                 throw new ExistentUserException(request.Username);
             }
-            if(await request.UserManager.FindByEmailAsync(request.Email) != null)
+            if (await request.UserManager.FindByEmailAsync(request.Email) != null)
             {
                 throw new ExistentUserException(request.Email);
             }

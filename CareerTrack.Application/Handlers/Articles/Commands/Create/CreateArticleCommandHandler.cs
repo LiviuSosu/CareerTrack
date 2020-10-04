@@ -8,7 +8,7 @@ namespace CareerTrack.Application.Handlers.Articles.Commands.Create
 {
     public class CreateArticleCommandHandler : BaseHandler<CreateArticleCommand, Unit>, IRequestHandler<CreateArticleCommand, Unit>
     {
-        public CreateArticleCommandHandler(CareerTrackDbContext context) : base (context)
+        public CreateArticleCommandHandler(CareerTrackDbContext context) : base(context)
         {
         }
 

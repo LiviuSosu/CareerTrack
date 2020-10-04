@@ -67,7 +67,7 @@ namespace CareerTrack.WebApi.Controllers
         [HttpPost]
         [Route("AddArticle")]
         [Authorize(Policy = "IsAdmin")]
-        public async Task<IActionResult> CreateArticle([FromBody]CreateArticleCommand command, [FromHeader] string Authorization)
+        public async Task<IActionResult> CreateArticle([FromBody] CreateArticleCommand command, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
@@ -75,7 +75,7 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
                 return Ok(await Mediator.Send(command));
             }
-            catch(ValidationException exception)
+            catch (ValidationException exception)
             {
                 return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
             }

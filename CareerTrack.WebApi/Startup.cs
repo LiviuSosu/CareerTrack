@@ -108,7 +108,7 @@ namespace CareerTrack.WebApi
 
             services.AddCors(options =>
             {
-                options. AddDefaultPolicy(
+                options.AddDefaultPolicy(
                     builder =>
                     {
                         builder.WithOrigins("http://localhost:3000")

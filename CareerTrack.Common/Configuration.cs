@@ -16,7 +16,7 @@ namespace CareerTrack.Common
 
         private readonly string displayExistentUserExceptionMessage;
         public string DisplayExistentUserExceptionMessage { get => displayExistentUserExceptionMessage; }
-        
+
         private readonly string displayPasswordsAreNotTheSameExceptionMessage;
         public string DisplayPasswordsAreNotTheSameExceptionMessage { get => displayPasswordsAreNotTheSameExceptionMessage; }
         private readonly JWTConfiguration jwtConfiguration;

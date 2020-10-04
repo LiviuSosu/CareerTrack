@@ -26,11 +26,11 @@ namespace CareerTrack.Application.Tests.Articles.Command
         public async Task CreateArticleSuccessTest()
         {
             var sut = new CreateArticleCommandHandler(db);
-            var nrOfArticlesBefore =  db.Articles.Count();
+            var nrOfArticlesBefore = db.Articles.Count();
             var result = await sut.Handle(createArticleCommand, CancellationToken.None);
-            var nrOfArticleAfter =  db.Articles.Count();
+            var nrOfArticleAfter = db.Articles.Count();
 
-            var newArticle = db.Articles.Where(a=>a.Title == articleTitle).FirstOrDefault();
+            var newArticle = db.Articles.Where(a => a.Title == articleTitle).FirstOrDefault();
 
             Assert.IsType<Unit>(result);
 

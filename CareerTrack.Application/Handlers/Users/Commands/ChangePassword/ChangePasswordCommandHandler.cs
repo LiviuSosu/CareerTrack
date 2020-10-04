@@ -14,12 +14,12 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ChangePassword
 
         public new async Task<Unit> Handle(UserChangePasswordCommand request, CancellationToken cancellationToken)
         {
-            if(request.NewPassword == request.ConfirmPassword)
+            if (request.NewPassword == request.ConfirmPassword)
             {
                 var user = await request.UserManager.FindByNameAsync(request.Username);
-                if(user != null)
+                if (user != null)
                 {
-                    await request.UserManager.ChangePasswordAsync(user, request.OldPassword,request.NewPassword);
+                    await request.UserManager.ChangePasswordAsync(user, request.OldPassword, request.NewPassword);
                 }
                 else
                 {

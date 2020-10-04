@@ -1,21 +1,32 @@
 ﻿using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace CareerTrack.Application.Tests.Users
 {
     public class UsersTest
     {
         public CareerTrackDbContext db;
+        protected const string username = "admin2";
+        protected const string email = "admin@b.com";
+        protected Mock<IUserStore<User>> store;
+        protected Mock<UserManager<User>> mgr;
 
         public UsersTest()
         {
+            //https://stackoverflow.com/questions/49165810/how-to-mock-usermanager-in-net-core-testing
+            store = new Mock<IUserStore<User>>();
+            mgr = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
+
             var options = new DbContextOptionsBuilder<CareerTrackDbContext>().
              UseInMemoryDatabase(databaseName: "CareerTrackUsers").Options;
             db = new CareerTrackDbContext(options);
+
+            mgr.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success)
+                .Callback<User, string>((userToAdd, _) => db.Users.Add(userToAdd));
 
             try
             {

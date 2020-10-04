@@ -37,15 +37,15 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                            );
 
                     var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                    var tok = new IdentityUserToken<Guid>
-                    {
-                        UserId = Guid.NewGuid(),
-                        LoginProvider = "WIF",
-                        Name = user.Id.ToString(),
-                        Value = tokenValue
-                    };
-                    _repoWrapper.UserToken.Create(tok);
-                    await _repoWrapper.SaveAsync();
+                    //var tok = new IdentityUserToken<Guid>
+                    //{
+                    //    UserId = Guid.NewGuid(),
+                    //    LoginProvider = "WIF",
+                    //    Name = user.Id.ToString(),
+                    //    Value = tokenValue
+                    //};
+                    //_repoWrapper.UserToken.Create(tok);
+                    //await _repoWrapper.SaveAsync();
 
                     return new LoginResponseDTO
                     {
@@ -55,7 +55,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                 }
                 else
                 {
-                    throw new LoginFailedException(); 
+                    throw new LoginFailedException();
                 }
             }
             else

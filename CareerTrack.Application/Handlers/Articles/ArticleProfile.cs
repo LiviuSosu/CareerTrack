@@ -8,7 +8,7 @@ namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticles
 {
     public class ArticleProfile : Profile
     {
-        public ArticleProfile() 
+        public ArticleProfile()
         {
             CreateMap<Article, ArticleLookupModel>();
             CreateMap<CreateArticleCommand, Article>();

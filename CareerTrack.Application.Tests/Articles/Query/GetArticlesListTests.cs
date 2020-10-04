@@ -6,7 +6,7 @@ using Xunit;
 namespace CareerTrack.Application.Tests.Articles.Query
 {
     public class GetArticlesListTests : ArticlesTest
-    {      
+    {
         [Fact]
         public async Task GetFilteredArticlesTest()
         {

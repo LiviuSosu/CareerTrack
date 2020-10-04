@@ -7,7 +7,7 @@ namespace CareerTrack.Application.Handlers.Articles.Queries.GetArticle
     {
         public Guid ArticleId { get; set; }
 
-        public GetArticleQuery (Guid articleId)
+        public GetArticleQuery(Guid articleId)
         {
             ArticleId = articleId;
         }
