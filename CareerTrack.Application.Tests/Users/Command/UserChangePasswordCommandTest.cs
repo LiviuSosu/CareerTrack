@@ -12,7 +12,7 @@ namespace CareerTrack.Application.Tests.Users.Command
         public async Task UserChangePasswordCommand_UserNameNotFound_Test()
         {
             var sut = new ChangePasswordCommandHandler(db);
-            var userChangePasswordCommand = new UserChangePasswordCommand
+            var userChangePasswordCommand = new ChangePasswordCommand
             {
                 Username = "SomeUsername",
                 OldPassword = "SomePassword200!",
@@ -28,7 +28,7 @@ namespace CareerTrack.Application.Tests.Users.Command
         public async Task UserChangePasswordCommand_PasswordsAreNotTheSame_Test()
         {
             var sut = new ChangePasswordCommandHandler(db);
-            var userChangePasswordCommand = new UserChangePasswordCommand
+            var userChangePasswordCommand = new ChangePasswordCommand
             {
                 Username = "SomeUsername",
                 OldPassword = "SomePassword200!",

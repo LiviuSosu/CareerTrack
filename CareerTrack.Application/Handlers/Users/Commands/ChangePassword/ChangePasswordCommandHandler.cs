@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.ChangePassword
 {
-    public class ChangePasswordCommandHandler : BaseHandler<UserChangePasswordCommand, Unit>, IRequestHandler<UserChangePasswordCommand, Unit>
+    public class ChangePasswordCommandHandler : BaseHandler<ChangePasswordCommand, Unit>, IRequestHandler<ChangePasswordCommand, Unit>
     {
         public ChangePasswordCommandHandler(CareerTrackDbContext context) : base(context)
         {
         }
 
-        public new async Task<Unit> Handle(UserChangePasswordCommand request, CancellationToken cancellationToken)
+        public new async Task<Unit> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             if (request.NewPassword == request.ConfirmPassword)
             {

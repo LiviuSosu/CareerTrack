@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.ChangePassword
 {
-    public class ChangePasswordCommandValidator : BaseValidator<UserChangePasswordCommand>
+    public class ChangePasswordCommandValidator : BaseValidator<ChangePasswordCommand>
     {
         public ChangePasswordCommandValidator()
         {

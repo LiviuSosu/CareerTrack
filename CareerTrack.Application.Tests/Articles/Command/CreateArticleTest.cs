@@ -25,6 +25,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
         [Fact]
         public async Task CreateArticleSuccessTest()
         {
+
             var sut = new CreateArticleCommandHandler(db);
             var nrOfArticlesBefore = db.Articles.Count();
             var result = await sut.Handle(createArticleCommand, CancellationToken.None);

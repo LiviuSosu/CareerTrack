@@ -65,7 +65,7 @@ namespace CareerTrack.Application.Tests.Users.Command
         }
 
         [Fact]
-        public async Task DeleteUserPermanentyCommandFailTest()
+        public async Task DeleteUserPermanentyCommandFail_WhenNotFoundException_Test()
         {
             var user = new User()
             {

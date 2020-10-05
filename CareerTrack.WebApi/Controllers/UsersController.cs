@@ -133,6 +133,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(404, exception);
             }
+            catch (ValidationException exception)
+            {
+                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
@@ -158,7 +162,7 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpPut]
         [Route("ChangePassword")]
-        public async Task<IActionResult> ChangePassword([FromBody] UserChangePasswordCommand userChangePasswordCommand)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand userChangePasswordCommand)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try

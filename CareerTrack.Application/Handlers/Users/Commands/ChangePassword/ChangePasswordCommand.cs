@@ -2,7 +2,7 @@
 
 namespace CareerTrack.Application.Handlers.Users.Commands.ChangePassword
 {
-    public class UserChangePasswordCommand : UserCommandRequestBase, IRequest
+    public class ChangePasswordCommand : UserCommandRequestBase, IRequest
     {
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
