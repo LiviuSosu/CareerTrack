@@ -21,48 +21,48 @@ namespace CareerTrack.Application.Tests.Articles.Command
             };
         }
 
-        [Fact]
-        public async Task UpdateArticleSuccessTest()
-        {
-            var sut = new UpdateArticleCommandHandler(db);
-            var art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
+        //[Fact]
+        //public async Task UpdateArticleSuccessTest()
+        //{
+        //    var sut = new UpdateArticleCommandHandler(db);
+        //    var art = await db.Articles.AsNoTracking()
+        //        .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
 
-            var oldCopy = art;
+        //    var oldCopy = art;
 
-            updateArticleCommand.Id = articleIdForTheFirstArticle;
-            updateArticleCommand.Title = oldCopy.Title;
+        //    updateArticleCommand.Id = articleIdForTheFirstArticle;
+        //    updateArticleCommand.Title = oldCopy.Title;
 
-            Unit result;
-            try
-            {
-                result = await sut.Handle(updateArticleCommand, CancellationToken.None);
-            }
-            catch (InvalidOperationException)
-            {
-                db.Entry(art).State = EntityState.Detached;
-                await UpdateArticleSuccessTest();
-            }
-            art = await db.Articles.AsNoTracking()
-                .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
+        //    Unit result;
+        //    try
+        //    {
+        //        result = await sut.Handle(updateArticleCommand, CancellationToken.None);
+        //    }
+        //    catch (InvalidOperationException)
+        //    {
+        //        db.Entry(art).State = EntityState.Detached;
+        //        await UpdateArticleSuccessTest();
+        //    }
+        //    art = await db.Articles.AsNoTracking()
+        //        .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
 
-            Assert.Equal(articleLinkToModify, art.Link);
-            Assert.Equal(oldCopy.Title, art.Title);
+        //    Assert.Equal(articleLinkToModify, art.Link);
+        //    Assert.Equal(oldCopy.Title, art.Title);
 
-            db.Articles.RemoveRange(db.Articles);
-        }
+        //    db.Articles.RemoveRange(db.Articles);
+        //}
 
 
-        [Fact]
-        public async Task UpdateArticleFail_WhenArticleDoesNotExist()
-        {
-            var articleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
-            updateArticleCommand.Id = articleId;
-            var sut = new UpdateArticleCommandHandler(db);
+        //[Fact]
+        //public async Task UpdateArticleFail_WhenArticleDoesNotExist()
+        //{
+        //    var articleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+        //    updateArticleCommand.Id = articleId;
+        //    var sut = new UpdateArticleCommandHandler(db);
 
-            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
+        //    await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
 
-            db.Articles.RemoveRange(db.Articles);
-        }
+        //    db.Articles.RemoveRange(db.Articles);
+        //}
     }
 }
