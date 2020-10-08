@@ -1,5 +1,6 @@
 ﻿using CareerTrack.Application.Handlers.Articles.Commands.Delete;
 using CareerTrack.Application.Tests.Articles.Query;
+using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -12,43 +13,36 @@ namespace CareerTrack.Application.Tests.Articles.Command
 {
     public class DeleteArticleTest : ArticlesTest
     {
-        DeleteArticleCommand deleteArticleCommand;
-
         public DeleteArticleTest()
         {
-            deleteArticleCommand = new DeleteArticleCommand
-            {
-                Id = articleIdForTheThirdArticle
-            };
         }
 
         [Fact]
         public async Task DeleteArticleSuccessTest()
         {
             db = new CareerTrackDbContext(options);
-            // InitializeDatabase();
-            //db.Articles.RemoveRange(db.Articles);
+            var artcileId = Guid.NewGuid();
+            db.Articles.Add(new Article
+            {
+                Id = artcileId,
+                Link = "www.link.com",
+                Title = "Some Title"
+            });
+            db.Articles.RemoveRange(db.Articles);
+            db.SaveChanges();
 
-            //var sut = new DeleteArticleCommandHandler(db);
+            db = new CareerTrackDbContext(options);
+            var deleteArticleCommand = new DeleteArticleCommand
+            {
+                Id = artcileId
+            };
 
-            //var art = await db.Articles.AsNoTracking()
-            //  .SingleOrDefaultAsync(a => a.Id == articleIdForTheThirdArticle);
+            var sut = new DeleteArticleCommandHandler(db);
+            var result = await sut.Handle(deleteArticleCommand, CancellationToken.None);
 
-            //db.Entry(art).State = EntityState.Detached;
-            //Unit result;
-            //try
-            //{
-            //    result = await sut.Handle(deleteArticleCommand, CancellationToken.None);
-            //}
-            //catch (InvalidOperationException)
-            //{
-            //    db.Entry(art).State = EntityState.Detached;
-            //    await DeleteArticleSuccessTest();
-            //}
-            //art = await db.Articles.AsNoTracking()
-            //    .SingleOrDefaultAsync(a => a.Id == articleIdForTheThirdArticle);
-
-            //Assert.Null(art);
+            var art = await db.Articles.AsNoTracking()
+                .SingleOrDefaultAsync(a => a.Id == artcileId);
+            Assert.Null(art);
 
             db.Articles.RemoveRange(db.Articles);
             db.SaveChanges();
@@ -59,7 +53,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
         public async Task DeleteArticleFail_WhenArticleDoesNotExist()
         {
             db = new CareerTrackDbContext(options);
-            deleteArticleCommand = new DeleteArticleCommand
+            var deleteArticleCommand = new DeleteArticleCommand
             {
                 Id = Guid.NewGuid()
             };
