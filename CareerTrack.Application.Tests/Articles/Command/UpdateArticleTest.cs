@@ -1,8 +1,11 @@
 ﻿using CareerTrack.Application.Handlers.Articles.Commands.Update;
 using CareerTrack.Application.Tests.Articles.Query;
+using CareerTrack.Domain.Entities;
+using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -11,58 +14,76 @@ namespace CareerTrack.Application.Tests.Articles.Command
 {
     public class UpdateArticleTest : ArticlesTest
     {
-        UpdateArticleCommand updateArticleCommand;
         const string articleLinkToModify = "www.modified-link.com";
         public UpdateArticleTest()
         {
-            updateArticleCommand = new UpdateArticleCommand
-            {
-                Link = articleLinkToModify
-            };
+           
         }
 
-        //[Fact]
-        //public async Task UpdateArticleSuccessTest()
-        //{
-        //    var sut = new UpdateArticleCommandHandler(db);
-        //    var art = await db.Articles.AsNoTracking()
-        //        .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
+        [Fact]
+        public async Task UpdateArticleSuccessTest()
+        {
+            options = new DbContextOptionsBuilder<CareerTrackDbContext>()
+                     .UseInMemoryDatabase(databaseName: "CareerTrackUpdateArticles").Options;
 
-        //    var oldCopy = art;
+            db = new CareerTrackDbContext(options);
+            db.Articles.RemoveRange(db.Articles);
+            db.SaveChanges();
 
-        //    updateArticleCommand.Id = articleIdForTheFirstArticle;
-        //    updateArticleCommand.Title = oldCopy.Title;
+            var artcileId = Guid.NewGuid();
+            db.Articles.Add(new Article
+            {
+                Id = artcileId,
+                Link = "www.link.com",
+                Title = "Some Title"
+            });
+            db.SaveChanges();
+            db.Dispose();
 
-        //    Unit result;
-        //    try
-        //    {
-        //        result = await sut.Handle(updateArticleCommand, CancellationToken.None);
-        //    }
-        //    catch (InvalidOperationException)
-        //    {
-        //        db.Entry(art).State = EntityState.Detached;
-        //        await UpdateArticleSuccessTest();
-        //    }
-        //    art = await db.Articles.AsNoTracking()
-        //        .SingleOrDefaultAsync(a => a.Id == articleIdForTheFirstArticle);
+            db = new CareerTrackDbContext(options);
 
-        //    Assert.Equal(articleLinkToModify, art.Link);
-        //    Assert.Equal(oldCopy.Title, art.Title);
+            var sut = new UpdateArticleCommandHandler(db);
+            var updateArticleCommand = new UpdateArticleCommand
+            { Id = artcileId,
+                Link = articleLinkToModify
+            };
+            var result = await sut.Handle(updateArticleCommand, CancellationToken.None);
 
-        //    db.Articles.RemoveRange(db.Articles);
-        //}
+            //var oldCopy = art;
+
+            //updateArticleCommand.Id = artcileId;
+            //updateArticleCommand.Title = oldCopy.Title;
+
+            var art = await db.Articles
+                .SingleOrDefaultAsync(a => a.Id == artcileId);
+
+            Assert.Equal(articleLinkToModify, art.Link);
+            //Assert.Equal(oldCopy.Title, art.Title);
+
+            //db.Articles.RemoveRange(db.Articles);
+            //await db.DisposeAsync();
+        }
 
 
-        //[Fact]
-        //public async Task UpdateArticleFail_WhenArticleDoesNotExist()
-        //{
-        //    var articleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
-        //    updateArticleCommand.Id = articleId;
-        //    var sut = new UpdateArticleCommandHandler(db);
+        [Fact]
+        public async Task UpdateArticleFail_WhenArticleDoesNotExist()
+        {
+            var articleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
 
-        //    await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
+            var updateArticleCommand = new UpdateArticleCommand
+            {
+                Id = articleId,
+            };
 
-        //    db.Articles.RemoveRange(db.Articles);
-        //}
+            options = new DbContextOptionsBuilder<CareerTrackDbContext>()
+                    .UseInMemoryDatabase(databaseName: "CareerTrackUpdateArticles").Options;
+
+            db = new CareerTrackDbContext(options);
+            var sut = new UpdateArticleCommandHandler(db);
+
+            await Assert.ThrowsAsync<DbUpdateConcurrencyException>(() => sut.Handle(updateArticleCommand, CancellationToken.None));
+
+            db.Articles.RemoveRange(db.Articles);
+        }
     }
 }

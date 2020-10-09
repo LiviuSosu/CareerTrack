@@ -28,6 +28,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
         {
             db = new CareerTrackDbContext(options);
             db.Articles.RemoveRange(db.Articles);
+            db.SaveChanges();
 
             var sut = new CreateArticleCommandHandler(db);
             var result = await sut.Handle(createArticleCommand, CancellationToken.None);
