@@ -2,10 +2,8 @@
 using CareerTrack.Application.Tests.Articles.Query;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -15,10 +13,6 @@ namespace CareerTrack.Application.Tests.Articles.Command
     public class UpdateArticleTest : ArticlesTest
     {
         const string articleLinkToModify = "www.modified-link.com";
-        public UpdateArticleTest()
-        {
-           
-        }
 
         [Fact]
         public async Task UpdateArticleSuccessTest()
@@ -49,19 +43,9 @@ namespace CareerTrack.Application.Tests.Articles.Command
             };
             var result = await sut.Handle(updateArticleCommand, CancellationToken.None);
 
-            //var oldCopy = art;
-
-            //updateArticleCommand.Id = artcileId;
-            //updateArticleCommand.Title = oldCopy.Title;
-
-            var art = await db.Articles
-                .SingleOrDefaultAsync(a => a.Id == artcileId);
+            var art = await db.Articles.SingleOrDefaultAsync(a => a.Id == artcileId);
 
             Assert.Equal(articleLinkToModify, art.Link);
-            //Assert.Equal(oldCopy.Title, art.Title);
-
-            //db.Articles.RemoveRange(db.Articles);
-            //await db.DisposeAsync();
         }
 
 

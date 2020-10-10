@@ -8,17 +8,16 @@ namespace CareerTrack.Application.Tests.Articles.Query
 {
     public class GetArticleTest : ArticlesTest
     {
-        //[Fact]
-        //public async Task GetArticleByIdTest()
-        //{
-        //    var sut = new GetArticleQueryHandler(db);
+        [Fact]
+        public async Task GetArticleByIdTest()
+        {
+            dbReader = InitializeDatabase("GetArticleByIdTest");
+            var sut = new GetArticleQueryHandler(dbReader);
 
-        //    var result = await sut.Handle(new GetArticleQuery(articleIdForTheSecondArticle), CancellationToken.None);
+            var result = await sut.Handle(new GetArticleQuery(articleIdForTheSecondArticle), CancellationToken.None);
 
-        //    Assert.IsType<ArticleLookupModel>(result);
-        //    Assert.Equal(articleTitleForTheSecondArticle, result.Title);
-
-        //    db.Articles.RemoveRange(db.Articles);
-        //}
+            Assert.IsType<ArticleLookupModel>(result);
+            Assert.Equal(articleTitleForTheSecondArticle, result.Title);
+        }
     }
 }
