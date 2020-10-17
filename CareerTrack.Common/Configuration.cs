@@ -50,6 +50,7 @@ namespace CareerTrack.Common
             displayObjectNotFoundErrorMessage = root.GetSection("Errors").GetSection("DisplayObjectNotFoundErrorMessage").Value;
             displayExistentUserExceptionMessage = root.GetSection("Errors").GetSection("DisplayExistentUserExceptionMessage").Value;
             noRolesAssignedExceptionMessage = root.GetSection("Errors").GetSection("NoRolesAssignedExceptionMessage").Value;
+            displayPasswordsAreNotTheSameExceptionMessage = root.GetSection("Errors").GetSection("DisplayPasswordsAreNotTheSameExceptionMessage").Value;
 
             var emailServiceConfigurationSection = root.GetSection("EmailServiceConfiguration");
             var emailAddressConfigurationSection = emailServiceConfigurationSection.GetSection("EmailAddress");

@@ -137,6 +137,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
             }
+            catch (PasswordsAreNotTheSameException)
+            {
+                return StatusCode(404, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
