@@ -42,7 +42,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(paginationModel), Authorization);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -60,7 +60,7 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(Id), Authorization);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -77,12 +77,12 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (ValidationException exception)
             {
-                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+                return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -99,12 +99,12 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (ValidationException exception)
             {
-                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+                return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -122,12 +122,12 @@ namespace CareerTrack.WebApi.Controllers
             catch (DbUpdateConcurrencyException exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(400, _configuration.DisplayObjectNotFoundErrorMessage);
+                return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }

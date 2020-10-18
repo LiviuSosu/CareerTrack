@@ -54,7 +54,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (NotFoundException)
             {
-                return Unauthorized();
+                return StatusCode(notFoundErrorCode);
             }
             catch (LoginFailedException)
             {
@@ -62,12 +62,12 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (NoRolesAssignedException)
             {
-                return StatusCode(500, _configuration.NoRolesAssignedExceptionMessage);
+                return StatusCode(internalServerErrorCode, _configuration.NoRolesAssignedExceptionMessage);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -105,12 +105,12 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (ExistentUserException)
             {
-                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
+                return StatusCode(badRequestErrorCode, _configuration.DisplayExistentUserExceptionMessage);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userRegisterCommand), string.Empty);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -131,20 +131,20 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (NotFoundException exception)
             {
-                return StatusCode(404, exception);
+                return StatusCode(notFoundErrorCode, exception);
             }
             catch (ValidationException exception)
             {
-                return StatusCode(500, JsonConvert.SerializeObject(exception.Failures));
+                return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
             }
             catch (PasswordsAreNotTheSameException)
             {
-                return StatusCode(404, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+                return StatusCode(badRequestErrorCode, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
@@ -160,7 +160,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             else
             {
-                return StatusCode(500, _configuration.DisplayExistentUserExceptionMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayExistentUserExceptionMessage);
             }
         }
 
@@ -176,16 +176,16 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (NotFoundException)
             {
-                return StatusCode(500, _configuration.DisplayObjectNotFoundErrorMessage);
+                return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
             }
             catch (PasswordsAreNotTheSameException)
             {
-                return StatusCode(500, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+                return StatusCode(badRequestErrorCode, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
             }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), string.Empty);
-                return StatusCode(500, _configuration.DisplayGenericUserErrorMessage);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
     }
