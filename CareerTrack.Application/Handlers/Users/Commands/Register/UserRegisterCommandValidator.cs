@@ -10,7 +10,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             RuleFor(registerRequest => registerRequest.Username).NotNull();
             RuleFor(registerRequest => registerRequest.Email).EmailAddress();
             RuleFor(registerRequest => registerRequest.Password).Must(str => ValidatePassword(str));
-            RuleFor(registerRequest => registerRequest.RoleId).NotNull();
         }
 
         bool ValidatePassword(string password)

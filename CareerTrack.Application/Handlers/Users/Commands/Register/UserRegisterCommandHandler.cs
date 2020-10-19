@@ -5,6 +5,7 @@ using CareerTrack.Services.SendGrid;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -40,9 +41,11 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             _repoWrapper.User.Create(standardUser);
             await request.UserManager.CreateAsync(standardUser, request.Password);
 
+            var standardUSerRole = _repoWrapper.Role.FindByCondition(r => r.NormalizedName == "STANDARDUSER").FirstOrDefault();
+
             var identityStandaerdUserRole = new IdentityUserRole<Guid>
             {
-                RoleId = request.RoleId,
+                RoleId = standardUSerRole.Id,
                 UserId = standardUser.Id
             };
 

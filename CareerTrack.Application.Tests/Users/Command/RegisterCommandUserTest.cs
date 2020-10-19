@@ -21,7 +21,6 @@ namespace CareerTrack.Application.Tests.Users.Command
                 Username = "SomeUsername",
                 Email = "some.email@domain.com",
                 Password = "SomePassword200/",
-                RoleId = Guid.Parse("2BAF6E28-B1C9-42FE-953F-3B660BEFC6DA"),
                 UserManager = mgr.Object
             };
 
