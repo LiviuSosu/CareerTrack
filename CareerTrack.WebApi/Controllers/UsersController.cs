@@ -3,6 +3,7 @@ using CareerTrack.Application.Handlers.Users.Commands.ChangePassword;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
+using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Services.SendGrid;
@@ -185,6 +186,30 @@ namespace CareerTrack.WebApi.Controllers
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), string.Empty);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
+            }
+        }
+
+        [HttpPut]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordCommand userResetPasswordCommand)
+        {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+            try
+            {
+                var user = await userManager.FindByEmailAsync(userResetPasswordCommand.Username);
+                if(user!=null)
+                {
+                    var code = await userManager.GeneratePasswordResetTokenAsync(user);
+                }     
+                else
+                {
+
+                }
+                return Ok();
+            }
+            catch 
+            {
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
