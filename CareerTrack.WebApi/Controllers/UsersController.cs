@@ -84,25 +84,33 @@ namespace CareerTrack.WebApi.Controllers
                 await Mediator.Send(userRegisterCommand);
 
                 var user = await userManager.FindByEmailAsync(userRegisterCommand.Email);
-                var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                string confirmationLink = Url.Action("ConfirmAccount",
-                              "Users", new
-                              {
-                                  userid = user.Id,
-                                  token = code
-                              },
-                               protocol: HttpContext.Request.Scheme);
-
-                await _emailSender.SendConfirmationEmail(new UserRegistrationEmailDTO
+                if (user!=null)
                 {
-                    Email = userRegisterCommand.Email,
-                    Username = userRegisterCommand.Username,
-                    EmailServiceConfiguration = _configuration.EmailServiceConfiguration,
-                    ConfirmationToken = confirmationLink
-                });
+                    var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-                return Ok();
+                    string confirmationLink = Url.Action("ConfirmAccount",
+                                  "Users", new
+                                  {
+                                      userid = user.Id,
+                                      token = code
+                                  },
+                                   protocol: HttpContext.Request.Scheme);
+
+                    await _emailSender.SendConfirmationEmail(new UserRegistrationEmailDTO
+                    {
+                        Email = userRegisterCommand.Email,
+                        Username = userRegisterCommand.Username,
+                        EmailServiceConfiguration = _configuration.EmailServiceConfiguration,
+                        ConfirmationToken = confirmationLink
+                    });
+
+                    return Ok();
+                }
+                else
+                {
+                    return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
+                }
+         
             }
             catch (ExistentUserException)
             {
@@ -154,14 +162,21 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> ConfirmAccount([FromQuery] string token, [FromQuery] string userid)
         {
             var user = await userManager.FindByIdAsync(userid);
-            var result = await userManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
+            if(user!=null)
             {
-                return Ok();
+                var result = await userManager.ConfirmEmailAsync(user, token);
+                if (result.Succeeded)
+                {
+                    return Ok();
+                }
+                else
+                {
+                    return StatusCode(internalServerErrorCode, _configuration.DisplayExistentUserExceptionMessage);
+                }
             }
             else
             {
-                return StatusCode(internalServerErrorCode, _configuration.DisplayExistentUserExceptionMessage);
+                return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
             }
         }
 
@@ -190,28 +205,33 @@ namespace CareerTrack.WebApi.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpGet]
         [Route("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordCommand userResetPasswordCommand)
+        public async Task<IActionResult> ResetPassword([FromQuery] string userName)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
-                var user = await userManager.FindByEmailAsync(userResetPasswordCommand.Username);
+                var user = await userManager.FindByEmailAsync(userName);
                 if(user!=null)
                 {
                     var code = await userManager.GeneratePasswordResetTokenAsync(user);
+                    return Ok(code);
                 }     
                 else
                 {
-
+                    return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
                 }
-                return Ok();
             }
             catch 
             {
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
+        }
+
+        public async Task<IActionResult> ResetPassword(UserResetPasswordCommand userResetPasswordCommand)
+        {
+            return null;
         }
     }
 }
