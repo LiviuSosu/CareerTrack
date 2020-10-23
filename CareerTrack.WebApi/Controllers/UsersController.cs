@@ -126,7 +126,7 @@ namespace CareerTrack.WebApi.Controllers
         [HttpDelete]
         [Authorize(Policy = "IsAdmin")]
         [Route("DeleteUserPermanently")]
-        public async Task<IActionResult> DeleteUserPermanently([FromQuery] string Username)
+        public async Task<IActionResult> DeleteUserPermanently([FromQuery] string Username, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
 
@@ -152,7 +152,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), string.Empty);
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
@@ -181,8 +181,9 @@ namespace CareerTrack.WebApi.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         [Route("ChangePassword")]
-        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand userChangePasswordCommand)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommand userChangePasswordCommand, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
@@ -200,16 +201,16 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (Exception exception)
             {
-                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), string.Empty);
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userChangePasswordCommand), Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
 
         [HttpGet]
+        [Authorize]
         [Route("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromQuery] string userName)
+        public async Task<IActionResult> ResetPassword([FromQuery] string userName, [FromHeader] string Authorization)
         {
-            var actionName = ControllerContext.ActionDescriptor.ActionName;
             try
             {
                 var user = await userManager.FindByEmailAsync(userName);
@@ -229,8 +230,25 @@ namespace CareerTrack.WebApi.Controllers
             }
         }
 
-        public async Task<IActionResult> ResetPassword(UserResetPasswordCommand userResetPasswordCommand)
+        [HttpPut]
+        [Authorize]
+        [Route("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(UserResetPasswordCommand userResetPasswordCommand, [FromHeader] string Authorization)
         {
+            var actionName = ControllerContext.ActionDescriptor.ActionName;
+
+            try
+            {
+                userResetPasswordCommand.UserManager = userManager;
+                //userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
+                return Ok(await Mediator.Send(userResetPasswordCommand));
+            }
+            catch(Exception exception)
+            {
+                _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userResetPasswordCommand), Authorization);
+                return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
+            }
+
             return null;
         }
     }
