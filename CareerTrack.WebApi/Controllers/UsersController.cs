@@ -146,10 +146,6 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
             }
-            catch (PasswordsAreNotTheSameException)
-            {
-                return StatusCode(badRequestErrorCode, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
-            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(deleteUserDeleteCommand), Authorization);
@@ -233,14 +229,13 @@ namespace CareerTrack.WebApi.Controllers
         [HttpPut]
         [Authorize]
         [Route("ResetPassword")]
-        public async Task<IActionResult> ResetPassword(UserResetPasswordCommand userResetPasswordCommand, [FromHeader] string Authorization)
+        public async Task<IActionResult> ResetPassword([FromBody] UserResetPasswordCommand userResetPasswordCommand, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
 
             try
             {
                 userResetPasswordCommand.UserManager = userManager;
-                //userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
                 return Ok(await Mediator.Send(userResetPasswordCommand));
             }
             catch(Exception exception)
@@ -248,7 +243,11 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userResetPasswordCommand), Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
+        }
 
+        public async Task<IActionResult> ChangePassword(UserResetPasswordCommand userResetPasswordCommand, [FromHeader] string Authorization)
+        {
+           // userManager.ChangePasswordAsync("");
             return null;
         }
     }

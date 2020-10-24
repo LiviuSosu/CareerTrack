@@ -1,6 +1,9 @@
-﻿using CareerTrack.Persistance;
+﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Persistance;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,8 +17,23 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ResetPassword
 
         public new async Task<Unit> Handle(UserResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-            return Unit.Value;
+            if (request.NewPassword==request.ConfirmPassword)
+            {
+                var user = await _repoWrapper.User.FindByCondition(u => u.UserName == request.Username).FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    await request.UserManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
+                    return Unit.Value;
+                }
+                else
+                {
+                    throw new NotFoundException(user.UserName, user);
+                }        
+            }
+            else
+            {
+                throw new PasswordsAreNotTheSameException();
+            }       
         }
     }
 }
