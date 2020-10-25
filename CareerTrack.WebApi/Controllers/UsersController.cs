@@ -238,6 +238,14 @@ namespace CareerTrack.WebApi.Controllers
                 userResetPasswordCommand.UserManager = userManager;
                 return Ok(await Mediator.Send(userResetPasswordCommand));
             }
+            catch (PasswordsAreNotTheSameException)
+            {
+                return StatusCode(badRequestErrorCode, _configuration.DisplayPasswordsAreNotTheSameExceptionMessage);
+            }
+            catch (NotFoundException)
+            {
+                return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
+            }
             catch(Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userResetPasswordCommand), Authorization);
