@@ -167,6 +167,8 @@ namespace CareerTrack.WebApi.Controllers
                 }
                 else
                 {
+                    var actionName = ControllerContext.ActionDescriptor.ActionName;
+                    _logger.LogException(null, actionName, token, string.Empty);
                     return StatusCode(internalServerErrorCode, _configuration.DisplayExistentUserExceptionMessage);
                 }
             }
@@ -220,8 +222,10 @@ namespace CareerTrack.WebApi.Controllers
                     return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
                 }
             }
-            catch 
+            catch (Exception exception)
             {
+                var actionName = ControllerContext.ActionDescriptor.ActionName;
+                _logger.LogException(exception, actionName, userName, Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
@@ -251,12 +255,6 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userResetPasswordCommand), Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
-        }
-
-        public async Task<IActionResult> ChangePassword(UserResetPasswordCommand userResetPasswordCommand, [FromHeader] string Authorization)
-        {
-           // userManager.ChangePasswordAsync("");
-            return null;
         }
     }
 }
