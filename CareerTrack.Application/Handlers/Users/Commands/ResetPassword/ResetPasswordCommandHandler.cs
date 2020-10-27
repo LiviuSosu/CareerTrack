@@ -15,7 +15,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ResetPassword
 
         public new async Task<Unit> Handle(UserResetPasswordCommand request, CancellationToken cancellationToken)
         {
-            if (request.NewPassword==request.ConfirmPassword)
+            if (request.NewPassword == request.ConfirmPassword)
             {
                 var user = await _repoWrapper.User.FindByCondition(u => u.UserName == request.Username).FirstOrDefaultAsync();
                 if (user != null)
@@ -26,12 +26,12 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ResetPassword
                 else
                 {
                     throw new NotFoundException(user.UserName, user);
-                }        
+                }
             }
             else
             {
                 throw new PasswordsAreNotTheSameException();
-            }       
+            }
         }
     }
 }

@@ -84,7 +84,7 @@ namespace CareerTrack.WebApi.Controllers
                 await Mediator.Send(userRegisterCommand);
 
                 var user = await userManager.FindByEmailAsync(userRegisterCommand.Email);
-                if (user!=null)
+                if (user != null)
                 {
                     var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -110,7 +110,7 @@ namespace CareerTrack.WebApi.Controllers
                 {
                     return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
                 }
-         
+
             }
             catch (ExistentUserException)
             {
@@ -158,7 +158,7 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> ConfirmAccount([FromQuery] string token, [FromQuery] string userid)
         {
             var user = await userManager.FindByIdAsync(userid);
-            if(user!=null)
+            if (user != null)
             {
                 var result = await userManager.ConfirmEmailAsync(user, token);
                 if (result.Succeeded)
@@ -212,11 +212,11 @@ namespace CareerTrack.WebApi.Controllers
             try
             {
                 var user = await userManager.FindByEmailAsync(userName);
-                if(user!=null)
+                if (user != null)
                 {
                     var code = await userManager.GeneratePasswordResetTokenAsync(user);
                     return Ok(code);
-                }     
+                }
                 else
                 {
                     return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
@@ -250,7 +250,7 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(notFoundErrorCode, _configuration.DisplayObjectNotFoundErrorMessage);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userResetPasswordCommand), Authorization);
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
