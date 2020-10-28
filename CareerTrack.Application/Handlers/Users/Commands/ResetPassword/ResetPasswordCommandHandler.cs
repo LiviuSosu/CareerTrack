@@ -1,7 +1,6 @@
 ﻿using CareerTrack.Application.Exceptions;
 using CareerTrack.Persistance;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,7 +16,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ResetPassword
         {
             if (request.NewPassword == request.ConfirmPassword)
             {
-                var user = await _repoWrapper.User.FindByCondition(u => u.UserName == request.Username).FirstOrDefaultAsync();
+                var user = await request.UserManager.FindByNameAsync(request.Username);
                 if (user != null)
                 {
                     await request.UserManager.ResetPasswordAsync(user, request.Token, request.NewPassword);
