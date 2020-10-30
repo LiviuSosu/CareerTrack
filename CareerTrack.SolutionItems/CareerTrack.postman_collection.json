@@ -6,233 +6,1127 @@
 	},
 	"item": [
 		{
-			"name": "Users",
+			"name": "DevEnv",
 			"item": [
 				{
-					"name": "Login",
+					"name": "Users",
 					"item": [
 						{
-							"name": "Admin Success",
-							"event": [
+							"name": "Commands",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"id": "af992b76-7bab-4ec0-a10c-e1082adccb84",
-										"exec": [
-											"pm.test(\"Log failed as admin user\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
+									"name": "Login",
+									"item": [
+										{
+											"name": "Admin Success",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "af992b76-7bab-4ec0-a10c-e1082adccb84",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{AdminUsername}}\",\r\n    \"Password\":\"{{AdminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Standard User Success",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "5f8ad265-c0a0-4525-ad15-0c1ebaa3c050",
+														"exec": [
+															"pm.test(\"Log succesfully as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Standard User Fail (password)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "1207ef44-dfd0-4747-ad7d-8c2322af2bc5",
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												},
+												"description": "for wrong password"
+											},
+											"response": []
+										},
+										{
+											"name": "Sandaerd User Fail (user)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "33fd0a44-d533-4d71-9ae1-f95594ab3276",
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"WrongUser\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Admin Fail (user)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "070547b2-a3dc-4e59-827c-3d5c28daa213",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"WrongAdmin\",\r\n    \"Password\":\"{{AdminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Admin Fail (password)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "3abb5603-9715-40f5-afe2-2bb1995704df",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{AdminUsername}}\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "Register",
+									"item": [
+										{
+											"name": "Register - Standard User Success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "eb46caab-addc-4f74-b548-b00491cff5a7",
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var userToRegister = pm.environment.get(\"UserToRegister\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"\r",
+															"var isValidDeleteUserRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Users/DeleteUserPermanently?Username='+userToRegister,\r",
+															"    method: 'DELETE',\r",
+															"    header: [ new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidDeleteUserRequest, function (err, response) {\r",
+															" if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "a029b7ef-4141-44f8-9abb-1163b7d0df5b",
+														"exec": [
+															"pm.test(\"Success registration as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{UserToRegister}}\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "https://localhost:44333/api/Users/Register",
+													"protocol": "https",
+													"host": [
+														"localhost"
+													],
+													"port": "44333",
+													"path": [
+														"api",
+														"Users",
+														"Register"
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
+								},
+								{
+									"name": "DeleteUserPermanently",
+									"item": [
+										{
+											"name": "Delete User Permanently - Success",
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNjAzMzkzNzUwLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6IkNhcmVlclRyYWNrIn0.6xpiQqHiQRtTMwN2EZMUzaYBpv1ajceKF1gDiubCSVQ",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "https://localhost:44333/api/Users/DeleteUserPermanently?Username={{UserToRegister}}",
+													"protocol": "https",
+													"host": [
+														"localhost"
+													],
+													"port": "44333",
+													"path": [
+														"api",
+														"Users",
+														"DeleteUserPermanently"
+													],
+													"query": [
+														{
+															"key": "Username",
+															"value": "{{UserToRegister}}"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
 								}
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"{{AdminUsername}}\",\r\n    \"Password\":\"{{AdminPassword}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Articles",
+					"item": [
+						{
+							"name": "Read",
+							"item": [
+								{
+									"name": "GetArticles",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "cc6d7c61-d463-4592-97bc-9c1672fdfe26",
+												"exec": [
+													"pm.test(\"Get articles\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "c0a07bdc-1153-44a9-96eb-a9dee6f824b4",
+												"exec": [
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+													"var username = pm.environment.get(\"StdUser\");\r",
+													"var password = pm.environment.get(\"StdUserPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?pagesize=6',\r",
+													"    method: 'GET',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ]\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
 										}
-									}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}Articles/GetArticles?Field=Title&Order=desc",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"GetArticles"
+											],
+											"query": [
+												{
+													"key": "Field",
+													"value": "Title"
+												},
+												{
+													"key": "Order",
+													"value": "desc"
+												}
+											]
+										}
+									},
+									"response": []
 								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
+								{
+									"name": "GetArticle",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "57e024fe-5cf3-49d9-8996-e8ccc069ebe9",
+												"exec": [
+													"pm.test(\"Get article by id\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "c1d7215c-48fc-48cc-b83e-ed6bd9e29ea5",
+												"exec": [
+													"//https://nicolaswidart.com/blog/automatically-set-authentication-tokens-in-postman-requests\r",
+													"//https://gist.github.com/bcnzer/073f0fc0b959928b0ca2b173230c0669\r",
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");//'https://localhost:44333/api/Users/login';\r",
+													"var username = pm.environment.get(\"StdUser\");\r",
+													"var password = pm.environment.get(\"StdUserPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/GetArticle?Id=' +pm.environment.get(\"GetArticleId\"),\r",
+													"    method: 'GET',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ]\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}Articles/GetArticle?Id={{GetArticleId}}&Authorization=Bearer {{jwttoken}}",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"GetArticle"
+											],
+											"query": [
+												{
+													"key": "Id",
+													"value": "{{GetArticleId}}"
+												},
+												{
+													"key": "Authorization",
+													"value": "Bearer {{jwttoken}}"
+												}
+											]
+										}
+									},
+									"response": []
 								}
-							},
-							"response": []
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						},
 						{
-							"name": "Standard User Success",
-							"event": [
+							"name": "Command",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"id": "5f8ad265-c0a0-4525-ad15-0c1ebaa3c050",
-										"exec": [
-											"pm.test(\"Log succesfully as standard user\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
+									"name": "Create Article - success",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"id": "4cda74df-0aa9-4b03-a78b-ae228ecbe85e",
+												"exec": [
+													"pm.test(\"Create article\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "22cd0449-6f82-45c0-a41a-333b50e0d370",
+												"exec": [
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+													"var username = pm.environment.get(\"AdminUsername\");\r",
+													"var password = pm.environment.get(\"AdminPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/AddArticle',\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            Title: \"Some article ziua 3.2\",\r",
+													"            Link: \"test link\"\r",
+													"        })\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401 || response.code === 403) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
 										],
-										"type": "text/javascript"
-									}
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Title\": \"Some article ziua 3.2\",\r\n    \"Link\": \"test link\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}Articles/AddArticle",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"AddArticle"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Article - Success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "0783a2fd-6fcb-4294-bbbb-aaf09784a9a9",
+												"exec": [
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+													"var username = pm.environment.get(\"AdminUsername\");\r",
+													"var password = pm.environment.get(\"AdminPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/UpdateArticle',\r",
+													"    method: 'PUT',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"         mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            Title: \"Some article ziua 3.2\",\r",
+													"            Link: \"test link\"\r",
+													"        })\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200 || response.code === 403) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "16e3819c-eb5a-44e2-9bbe-fc8353587ee0",
+												"exec": [
+													"pm.test(\"Update article\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Id\": \"8ED6C83A-4302-467B-C58A-08D83C75793D\",\r\n    \"Title\": \"aaa\",\r\n    \"Link\": \"test link\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}Articles/UpdateArticle",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"UpdateArticle"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Article - success",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"id": "17d1b6b5-4d04-455a-839f-b0783264c0bf",
+												"exec": [
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+													"var username = pm.environment.get(\"AdminUsername\");\r",
+													"var password = pm.environment.get(\"AdminPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"//TODO: implement Notfound case wehn serve will be ready\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/DeleteArticle',\r",
+													"    method: 'DELETE',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"         mode: 'raw',\r",
+													"         raw: JSON.stringify({\r",
+													"            Id: \"f7dfa281-b758-4d3a-66a3-08d840927ff5\"\r",
+													"        })\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401 || response.code === 403) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"    if(response.code === 400){\r",
+													"        GetLastArticleId();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"var lastArticleId = \"\";\r",
+													"var getAllArticlesRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?Field=Title&Order=desc',\r",
+													"    method: 'GET',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ]\r",
+													"});\r",
+													"\r",
+													"function GetLastArticleId(){\r",
+													"  pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+													"      console.log(response.json().articles[0]);\r",
+													"  });\r",
+													"}\r",
+													"\r",
+													"\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"id": "aa358ed8-497b-4c25-96fc-db4ea64b0a42",
+												"exec": [
+													"pm.test(\"Delete article\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Id\": \"f7dfa281-b758-4d3a-66a3-08d840927ff7\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}Articles/DeleteArticle",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"DeleteArticle"
+											]
+										}
+									},
+									"response": []
 								}
 							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"Stduser\",\r\n    \"Password\":\"StdPassword@123\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Standard User Fail (password)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "1207ef44-dfd0-4747-ad7d-8c2322af2bc5",
-										"exec": [
-											"pm.test(\"Log failed as standard user\", function () {\r",
-											"     pm.response.to.have.status(401);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"StdUser\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
-								},
-								"description": "for wrong password"
-							},
-							"response": []
-						},
-						{
-							"name": "Sandaerd User Fail (user)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "33fd0a44-d533-4d71-9ae1-f95594ab3276",
-										"exec": [
-											"pm.test(\"Log failed as standard user\", function () {\r",
-											"     pm.response.to.have.status(401);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"WrongUser\",\r\n    \"Password\":\"StdPassword@123\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Admin Fail (user)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "070547b2-a3dc-4e59-827c-3d5c28daa213",
-										"exec": [
-											"pm.test(\"Log failed as admin user\", function () {\r",
-											"     pm.response.to.have.status(401);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"WrongAdmin\",\r\n    \"Password\":\"{{AdminPassword}}\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Admin Fail (password)",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "3abb5603-9715-40f5-afe2-2bb1995704df",
-										"exec": [
-											"pm.test(\"Log failed as admin user\", function () {\r",
-											"     pm.response.to.have.status(401);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Username\":\"{{AdminUsername}}\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{authServiceUrl}}",
-									"host": [
-										"{{authServiceUrl}}"
-									]
-								}
-							},
-							"response": []
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -242,695 +1136,84 @@
 			"protocolProfileBehavior": {}
 		},
 		{
-			"name": "Articles",
+			"name": "StgEnv",
 			"item": [
 				{
-					"name": "Read",
+					"name": "Users",
 					"item": [
 						{
-							"name": "GetArticles",
-							"event": [
+							"name": "Commands",
+							"item": [
 								{
-									"listen": "test",
-									"script": {
-										"id": "cc6d7c61-d463-4592-97bc-9c1672fdfe26",
-										"exec": [
-											"pm.test(\"Get articles\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "c0a07bdc-1153-44a9-96eb-a9dee6f824b4",
-										"exec": [
-											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-											"var username = pm.environment.get(\"StdUser\");\r",
-											"var password = pm.environment.get(\"StdUserPassword\");\r",
-											"\r",
-											"var sdk = require('postman-collection');\r",
-											"\r",
-											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?pagesize=6',\r",
-											"    method: 'GET',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'Authorization',\r",
-											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
-											"        }),\r",
-											"    ]\r",
-											"});\r",
-											"\r",
-											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
-											"    if (response.code === 401) {\r",
-											"        refreshToken();\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"function refreshToken() {\r",
-											"    var tokenRequest = new sdk.Request({\r",
-											"    url: authServiceUrl,\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            username: username,\r",
-											"            password: password\r",
-											"        })\r",
-											"    } \r",
-											"  });\r",
-											"\r",
-											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
-											"      if (err) {\r",
-											"          throw err;\r",
-											"      }\r",
-											"      \r",
-											"      if (response.code !== 200) {\r",
-											"          throw new Error('Could not log in.');\r",
-											"      }\r",
-											"      \r",
-											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
-											"      console.log(`New token has been set: ${response.json().token}`);\r",
-											"  });\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
+									"name": "Login",
+									"item": [
 										{
-											"key": "token",
-											"value": "",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{jwttoken}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}Articles/GetArticles?Field=Title&Order=desc",
-									"host": [
-										"{{base_url}}Articles"
-									],
-									"path": [
-										"GetArticles"
-									],
-									"query": [
-										{
-											"key": "Field",
-											"value": "Title"
+											"name": "Login Admin - Success",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"admin2\",\r\n    \"Password\":\"Password@123\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://localhost:1400/api/Users/login",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "1400",
+													"path": [
+														"api",
+														"Users",
+														"login"
+													]
+												}
+											},
+											"response": []
 										},
 										{
-											"key": "Order",
-											"value": "desc"
+											"name": "Login Standard Administrator - Success",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"LiviuS\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "http://localhost:1400/api/Users/login",
+													"protocol": "http",
+													"host": [
+														"localhost"
+													],
+													"port": "1400",
+													"path": [
+														"api",
+														"Users",
+														"login"
+													]
+												}
+											},
+											"response": []
 										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "GetArticle",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "57e024fe-5cf3-49d9-8996-e8ccc069ebe9",
-										"exec": [
-											"pm.test(\"Get article by id\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "c1d7215c-48fc-48cc-b83e-ed6bd9e29ea5",
-										"exec": [
-											"//https://nicolaswidart.com/blog/automatically-set-authentication-tokens-in-postman-requests\r",
-											"//https://gist.github.com/bcnzer/073f0fc0b959928b0ca2b173230c0669\r",
-											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");//'https://localhost:44333/api/Users/login';\r",
-											"var username = pm.environment.get(\"StdUser\");\r",
-											"var password = pm.environment.get(\"StdUserPassword\");\r",
-											"\r",
-											"var sdk = require('postman-collection');\r",
-											"\r",
-											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/GetArticle?Id=' +pm.environment.get(\"GetArticleId\"),\r",
-											"    method: 'GET',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'Authorization',\r",
-											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
-											"        }),\r",
-											"    ]\r",
-											"});\r",
-											"\r",
-											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
-											"    if (response.code === 401) {\r",
-											"        refreshToken();\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"function refreshToken() {\r",
-											"    var tokenRequest = new sdk.Request({\r",
-											"    url: authServiceUrl,\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            username: username,\r",
-											"            password: password\r",
-											"        })\r",
-											"    } \r",
-											"  });\r",
-											"\r",
-											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
-											"      if (err) {\r",
-											"          throw err;\r",
-											"      }\r",
-											"      \r",
-											"      if (response.code !== 200) {\r",
-											"          throw new Error('Could not log in.');\r",
-											"      }\r",
-											"      \r",
-											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
-											"      console.log(`New token has been set: ${response.json().token}`);\r",
-											"  });\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
+									],
+									"protocolProfileBehavior": {},
+									"_postman_isSubFolder": true
 								}
 							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "",
-											"type": "string"
-										}
-									]
-								},
-								"method": "GET",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{jwttoken}}",
-										"type": "text"
-									}
-								],
-								"url": {
-									"raw": "{{base_url}}Articles/GetArticle?Id={{GetArticleId}}&Authorization=Bearer {{jwttoken}}",
-									"host": [
-										"{{base_url}}Articles"
-									],
-									"path": [
-										"GetArticle"
-									],
-									"query": [
-										{
-											"key": "Id",
-											"value": "{{GetArticleId}}"
-										},
-										{
-											"key": "Authorization",
-											"value": "Bearer {{jwttoken}}"
-										}
-									]
-								}
-							},
-							"response": []
-						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
-				},
-				{
-					"name": "Command",
-					"item": [
-						{
-							"name": "Create Article - success",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"id": "4cda74df-0aa9-4b03-a78b-ae228ecbe85e",
-										"exec": [
-											"pm.test(\"Create article\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "22cd0449-6f82-45c0-a41a-333b50e0d370",
-										"exec": [
-											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-											"var username = pm.environment.get(\"AdminUsername\");\r",
-											"var password = pm.environment.get(\"AdminPassword\");\r",
-											"\r",
-											"var sdk = require('postman-collection');\r",
-											"\r",
-											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/AddArticle',\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'Authorization',\r",
-											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            Title: \"Some article ziua 3.2\",\r",
-											"            Link: \"test link\"\r",
-											"        })\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
-											"    if (response.code === 401 || response.code === 403) {\r",
-											"        refreshToken();\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"function refreshToken() {\r",
-											"    var tokenRequest = new sdk.Request({\r",
-											"    url: authServiceUrl,\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            username: username,\r",
-											"            password: password\r",
-											"        })\r",
-											"    } \r",
-											"  });\r",
-											"\r",
-											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
-											"      if (err) {\r",
-											"          throw err;\r",
-											"      }\r",
-											"      \r",
-											"      if (response.code !== 200) {\r",
-											"          throw new Error('Could not log in.');\r",
-											"      }\r",
-											"      \r",
-											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
-											"      console.log(`New token has been set: ${response.json().token}`);\r",
-											"  });\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"auth": {
-									"type": "bearer",
-									"bearer": [
-										{
-											"key": "token",
-											"value": "",
-											"type": "string"
-										}
-									]
-								},
-								"method": "POST",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{jwttoken}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Title\": \"Some article ziua 3.2\",\r\n    \"Link\": \"test link\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}Articles/AddArticle",
-									"host": [
-										"{{base_url}}Articles"
-									],
-									"path": [
-										"AddArticle"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Update Article - Success",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "0783a2fd-6fcb-4294-bbbb-aaf09784a9a9",
-										"exec": [
-											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-											"var username = pm.environment.get(\"AdminUsername\");\r",
-											"var password = pm.environment.get(\"AdminPassword\");\r",
-											"\r",
-											"var sdk = require('postman-collection');\r",
-											"\r",
-											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/UpdateArticle',\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'Authorization',\r",
-											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"         mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            Title: \"Some article ziua 3.2\",\r",
-											"            Link: \"test link\"\r",
-											"        })\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
-											"    if (response.code === 401) {\r",
-											"        refreshToken();\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"function refreshToken() {\r",
-											"    var tokenRequest = new sdk.Request({\r",
-											"    url: authServiceUrl,\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            username: username,\r",
-											"            password: password\r",
-											"        })\r",
-											"    } \r",
-											"  });\r",
-											"\r",
-											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
-											"      if (err) {\r",
-											"          throw err;\r",
-											"      }\r",
-											"      \r",
-											"      if (response.code !== 200 || response.code === 403) {\r",
-											"          throw new Error('Could not log in.');\r",
-											"      }\r",
-											"      \r",
-											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
-											"      console.log(`New token has been set: ${response.json().token}`);\r",
-											"  });\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "16e3819c-eb5a-44e2-9bbe-fc8353587ee0",
-										"exec": [
-											"pm.test(\"Update article\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "PUT",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{jwttoken}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Id\": \"8ED6C83A-4302-467B-C58A-08D83C75793D\",\r\n    \"Title\": \"aaa\",\r\n    \"Link\": \"test link\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}Articles/UpdateArticle?Authorization=Bearer {{jwttoken}}",
-									"host": [
-										"{{base_url}}Articles"
-									],
-									"path": [
-										"UpdateArticle"
-									],
-									"query": [
-										{
-											"key": "Authorization",
-											"value": "Bearer {{jwttoken}}"
-										}
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Delete Article - success",
-							"event": [
-								{
-									"listen": "prerequest",
-									"script": {
-										"id": "17d1b6b5-4d04-455a-839f-b0783264c0bf",
-										"exec": [
-											"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-											"var username = pm.environment.get(\"AdminUsername\");\r",
-											"var password = pm.environment.get(\"AdminPassword\");\r",
-											"\r",
-											"var sdk = require('postman-collection');\r",
-											"\r",
-											"\r",
-											"\r",
-											"var isValidTokenRequest = new sdk.Request({\r",
-											"    url: pm.environment.get(\"base_url\")+'Articles/DeleteArticle',\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json',\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'Authorization',\r",
-											"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"         mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            Id: \"f7dfa281-b758-4d3a-66a3-08d840927ff5\"\r",
-											"        })\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
-											"    if (response.code === 401 || response.code === 403) {\r",
-											"        refreshToken();\r",
-											"    }\r",
-											"});\r",
-											"\r",
-											"function refreshToken() {\r",
-											"    var tokenRequest = new sdk.Request({\r",
-											"    url: authServiceUrl,\r",
-											"    method: 'POST',\r",
-											"    header: [\r",
-											"        new sdk.Header({\r",
-											"            key: 'content-type',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"        new sdk.Header({\r",
-											"            key: 'acccept',\r",
-											"            value: 'application/json'\r",
-											"        }),\r",
-											"    ],\r",
-											"    body: {\r",
-											"        mode: 'raw',\r",
-											"        raw: JSON.stringify({\r",
-											"            username: username,\r",
-											"            password: password\r",
-											"        })\r",
-											"    } \r",
-											"  });\r",
-											"\r",
-											"  pm.sendRequest(tokenRequest, function (err, response) {\r",
-											"      if (err) {\r",
-											"          throw err;\r",
-											"      }\r",
-											"      \r",
-											"      if (response.code !== 200) {\r",
-											"          throw new Error('Could not log in.');\r",
-											"      }\r",
-											"      \r",
-											"      pm.environment.set(\"jwttoken\", response.json().token);\r",
-											"      console.log(`New token has been set: ${response.json().token}`);\r",
-											"  });\r",
-											"}"
-										],
-										"type": "text/javascript"
-									}
-								},
-								{
-									"listen": "test",
-									"script": {
-										"id": "aa358ed8-497b-4c25-96fc-db4ea64b0a42",
-										"exec": [
-											"pm.test(\"Delete article\", function () {\r",
-											"     pm.response.to.have.status(200);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "DELETE",
-								"header": [
-									{
-										"key": "Authorization",
-										"value": "Bearer {{jwttoken}}",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"Id\": \"f7dfa281-b758-4d3a-66a3-08d840927ff5\"\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "{{base_url}}Articles/DeleteArticle?Authorization=Bearer {{jwttoken}}",
-									"host": [
-										"{{base_url}}Articles"
-									],
-									"path": [
-										"DeleteArticle"
-									],
-									"query": [
-										{
-											"key": "Authorization",
-											"value": "Bearer {{jwttoken}}"
-										}
-									]
-								}
-							},
-							"response": []
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
