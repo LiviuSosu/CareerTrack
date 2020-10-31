@@ -1,4 +1,5 @@
-﻿using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
+﻿using CareerTrack.Application.Exceptions;
+using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
 using CareerTrack.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -11,16 +12,15 @@ namespace CareerTrack.Application.Tests.Users.Command
 {
     public class ResetPasswordCommandTest : UsersTest
     {
-        [Fact]
-        public async Task ResetPasswordCommandSuccess()
+        const string token = "SomeToken";
+        User user = new User()
         {
-            const string token = "SomeToken";
-            var user = new User()
-            {
-                UserName = "user",
-                Email = "user@test.com"
-            };
+            UserName = "user",
+            Email = "user@test.com"
+        };
 
+        public ResetPasswordCommandTest()
+        {
             store = new Mock<IUserStore<User>>();
             mgr = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
 
@@ -29,7 +29,11 @@ namespace CareerTrack.Application.Tests.Users.Command
 
             mgr.Setup(x => x.FindByNameAsync(user.UserName)).ReturnsAsync(user);
             mgr.Setup(x => x.ResetPasswordAsync(user, token, It.IsAny<string>())).ReturnsAsync(IdentityResult.Success);
+        }
 
+        [Fact]
+        public async Task ResetPasswordCommandSuccess()
+        {     
             var sut = new ResetPasswordCommandHandler(db);
             var userResetPasswordCommand = new UserResetPasswordCommand
             {
@@ -41,6 +45,38 @@ namespace CareerTrack.Application.Tests.Users.Command
             };
 
             Assert.IsType<Unit>(await sut.Handle(userResetPasswordCommand, CancellationToken.None));
+        }
+
+        [Fact]
+        public async Task UserResetPasswordCommand_UserNameNotFound_Test()
+        {
+            var sut = new ResetPasswordCommandHandler(db);
+            var userResetPasswordCommand = new UserResetPasswordCommand
+            {
+                Username = "SomeUsername",
+                Token = token,
+                NewPassword = "SomePassword200/",
+                ConfirmPassword = "SomePassword200/",
+                UserManager = mgr.Object
+            };
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.Handle(userResetPasswordCommand, CancellationToken.None));
+        }
+
+        [Fact]
+        public async Task UserResetPasswordCommand_PasswordsAreNotTheSame_Test()
+        {
+            var sut = new ResetPasswordCommandHandler(db);
+            var userChangePasswordCommand = new UserResetPasswordCommand
+            {
+                Username = user.UserName,
+                Token = token,
+                NewPassword = "SomePassword200/",
+                ConfirmPassword = "SomePassword200!",
+                UserManager = mgr.Object
+            };
+
+            await Assert.ThrowsAsync<PasswordsAreNotTheSameException>(() => sut.Handle(userChangePasswordCommand, CancellationToken.None));
         }
     }
 }

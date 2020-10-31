@@ -24,7 +24,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.ResetPassword
                 }
                 else
                 {
-                    throw new NotFoundException(user.UserName, user);
+                    throw new NotFoundException(request.Username, user);
                 }
             }
             else
