@@ -65,6 +65,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(internalServerErrorCode, _configuration.NoRolesAssignedExceptionMessage);
             }
+            catch (UserEmailNotConfirmedException)
+            {
+                return Unauthorized();
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userLoginCommand), string.Empty);

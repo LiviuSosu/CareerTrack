@@ -3,6 +3,7 @@ using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -24,38 +25,45 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
             var user = await request.UserManager.FindByNameAsync(request.Username);
             if (user != null)
             {
-                if (await request.UserManager.CheckPasswordAsync(user, request.Password))
+                if (user.EmailConfirmed)
                 {
-                    var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JWTConfiguration.JwtSecretKey));
-
-                    var token = new JwtSecurityToken(
-                           issuer: request.JWTConfiguration.JwtIssuer,
-                           audience: request.JWTConfiguration.JwtAudience,
-                           expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
-                           claims: await GetRolesAsClaim(request.UserManager, user),
-                           signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-                           );
-
-                    var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                    //var tok = new IdentityUserToken<Guid>
-                    //{
-                    //    UserId = Guid.NewGuid(),
-                    //    LoginProvider = "WIF",
-                    //    Name = user.Id.ToString(),
-                    //    Value = tokenValue
-                    //};
-                    //_repoWrapper.UserToken.Create(tok);
-                    //await _repoWrapper.SaveAsync();
-
-                    return new LoginResponseDTO
+                    if (await request.UserManager.CheckPasswordAsync(user, request.Password))
                     {
-                        token = tokenValue,
-                        expiration = token.ValidTo
-                    };
+                        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JWTConfiguration.JwtSecretKey));
+
+                        var token = new JwtSecurityToken(
+                               issuer: request.JWTConfiguration.JwtIssuer,
+                               audience: request.JWTConfiguration.JwtAudience,
+                               expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
+                               claims: await GetRolesAsClaim(request.UserManager, user),
+                               signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                               );
+
+                        var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
+                        //var tok = new IdentityUserToken<Guid>
+                        //{
+                        //    UserId = Guid.NewGuid(),
+                        //    LoginProvider = "WIF",
+                        //    Name = user.Id.ToString(),
+                        //    Value = tokenValue
+                        //};
+                        //_repoWrapper.UserToken.Create(tok);
+                        //await _repoWrapper.SaveAsync();
+
+                        return new LoginResponseDTO
+                        {
+                            token = tokenValue,
+                            expiration = token.ValidTo
+                        };
+                    }
+                    else
+                    {
+                        throw new LoginFailedException();
+                    }
                 }
                 else
                 {
-                    throw new LoginFailedException();
+                    throw new UserEmailNotConfirmedException("user.EmailConfirmed", user);
                 }
             }
             else

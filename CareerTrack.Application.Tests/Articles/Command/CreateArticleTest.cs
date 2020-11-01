@@ -41,10 +41,6 @@ namespace CareerTrack.Application.Tests.Articles.Command
             //Assert.Equal(1, db.Articles.Count());
             Assert.Equal(articleTitle, newArticle.Title);
             Assert.Equal(articleLink, newArticle.Link);
-
-            db.Articles.RemoveRange(db.Articles);
-            db.SaveChanges();
-            await db.DisposeAsync();
         }
     }
 }
