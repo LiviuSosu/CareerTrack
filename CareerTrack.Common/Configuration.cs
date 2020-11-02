@@ -22,7 +22,8 @@ namespace CareerTrack.Common
         private readonly JWTConfiguration jwtConfiguration;
         string noRolesAssignedExceptionMessage { get; }
         public string NoRolesAssignedExceptionMessage { get => noRolesAssignedExceptionMessage; }
-
+        string userEmailNotConfirmedExceptionMessage { get; }
+        public string UserEmailNotConfirmedExceptionMessage { get => userEmailNotConfirmedExceptionMessage; }
         public JWTConfiguration JWTConfiguration { get => jwtConfiguration; }
 
         private readonly EmailServiceConfiguration emailServiceConfiguration;
@@ -51,6 +52,7 @@ namespace CareerTrack.Common
             displayExistentUserExceptionMessage = root.GetSection("Errors").GetSection("DisplayExistentUserExceptionMessage").Value;
             noRolesAssignedExceptionMessage = root.GetSection("Errors").GetSection("NoRolesAssignedExceptionMessage").Value;
             displayPasswordsAreNotTheSameExceptionMessage = root.GetSection("Errors").GetSection("DisplayPasswordsAreNotTheSameExceptionMessage").Value;
+            userEmailNotConfirmedExceptionMessage = root.GetSection("Errors").GetSection("DisplayUserEmailNotConfirmedExceptionMessage").Value;
 
             var emailServiceConfigurationSection = root.GetSection("EmailServiceConfiguration");
             var emailAddressConfigurationSection = emailServiceConfigurationSection.GetSection("EmailAddress");

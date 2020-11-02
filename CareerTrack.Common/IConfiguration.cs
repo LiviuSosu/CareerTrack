@@ -7,6 +7,7 @@
         string DisplayExistentUserExceptionMessage { get; }
         string DisplayPasswordsAreNotTheSameExceptionMessage { get; }
         string NoRolesAssignedExceptionMessage { get; }
+        string UserEmailNotConfirmedExceptionMessage { get; }
 
         JWTConfiguration JWTConfiguration { get; }
 

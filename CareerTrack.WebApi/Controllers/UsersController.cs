@@ -67,7 +67,7 @@ namespace CareerTrack.WebApi.Controllers
             }
             catch (UserEmailNotConfirmedException)
             {
-                return Unauthorized();
+                return Unauthorized(_configuration.UserEmailNotConfirmedExceptionMessage);
             }
             catch (Exception exception)
             {
