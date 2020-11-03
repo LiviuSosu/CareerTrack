@@ -260,7 +260,7 @@
 															"var username = pm.environment.get(\"AdminUsername\");\r",
 															"var password = pm.environment.get(\"AdminPassword\");\r",
 															"\r",
-															"var userToRegister = pm.environment.get(\"UserToRegister\");\r",
+															"var userToRegister = \"TestUser\";\r",
 															"\r",
 															"var sdk = require('postman-collection');\r",
 															"\r",
@@ -339,7 +339,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Username\":\"{{UserToRegister}}\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu2@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -356,6 +356,32 @@
 													"path": [
 														"api",
 														"Users",
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register - User already exists",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
 														"Register"
 													]
 												}
