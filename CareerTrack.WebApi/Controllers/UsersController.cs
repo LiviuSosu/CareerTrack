@@ -120,6 +120,10 @@ namespace CareerTrack.WebApi.Controllers
             {
                 return StatusCode(badRequestErrorCode, _configuration.DisplayExistentUserExceptionMessage);
             }
+            catch (ValidationException exception)
+            {
+                return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
+            }
             catch (Exception exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(userRegisterCommand), string.Empty);

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using System;
 
 namespace CareerTrack.Application.Handlers.Users.Commands.Register
 {

@@ -240,6 +240,44 @@
 												}
 											},
 											"response": []
+										},
+										{
+											"name": "Standard User Fail - Email not confirmed",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "10f28976-84b6-4d04-93a2-f106886ab6ed",
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
 										}
 									],
 									"protocolProfileBehavior": {},
@@ -370,6 +408,48 @@
 												"body": {
 													"mode": "raw",
 													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register fail - invalid password",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "ec577447-aa3b-43e1-a66c-47d2ccc1332a",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postamn bug I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"SomeUser\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"smallpwd\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
