@@ -435,7 +435,7 @@
 														"id": "ec577447-aa3b-43e1-a66c-47d2ccc1332a",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
-															"    //postamn bug I suppose\r",
+															"    //postman bug, I suppose\r",
 															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
 															"     pm.response.to.have.status(400);\r",
 															"});"
@@ -450,6 +450,90 @@
 												"body": {
 													"mode": "raw",
 													"raw": "{\r\n    \"Username\":\"SomeUser\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"smallpwd\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Regiser Fail - null username",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "587d4214-fdeb-4e0e-9e02-6fe3d508984b",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register Fail - invalid email address",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"id": "617b6f0d-ddda-4412-a2c9-321bcf238578",
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"SomeUsername\",\r\n    \"Email\":\"sosuliviugmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
