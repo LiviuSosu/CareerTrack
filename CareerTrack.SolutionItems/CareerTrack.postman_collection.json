@@ -561,17 +561,93 @@
 									"item": [
 										{
 											"name": "Delete User Permanently - Success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "e0f0d34d-3141-4096-80c9-b528ca240b9d",
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var userToDelete = pm.environment.get(\"UserToDelete\");\r",
+															"\r",
+															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
+															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"\r",
+															"//to send a request for creating a user\r",
+															"\r",
+															"\r",
+															"\r",
+															"var isValidDeleteUserRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Users/DeleteUserPermanently?Username='+userToDelete,\r",
+															"    method: 'DELETE',\r",
+															"    header: [ new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidDeleteUserRequest, function (err, response) {\r",
+															" if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();    \r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: adminUsername,\r",
+															"            password: adminPassword\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
 											"request": {
 												"method": "DELETE",
 												"header": [
 													{
 														"key": "Authorization",
-														"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNjAzMzkzNzUwLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6IkNhcmVlclRyYWNrIn0.6xpiQqHiQRtTMwN2EZMUzaYBpv1ajceKF1gDiubCSVQ",
+														"value": "Bearer {{jwttoken}}",
 														"type": "text"
 													}
 												],
 												"url": {
-													"raw": "https://localhost:44333/api/Users/DeleteUserPermanently?Username={{UserToRegister}}",
+													"raw": "https://localhost:44333/api/Users/DeleteUserPermanently?Username={{UserToDelete}}",
 													"protocol": "https",
 													"host": [
 														"localhost"
@@ -585,7 +661,7 @@
 													"query": [
 														{
 															"key": "Username",
-															"value": "{{UserToRegister}}"
+															"value": "{{UserToDelete}}"
 														}
 													]
 												}
