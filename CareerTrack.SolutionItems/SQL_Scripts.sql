@@ -1,3 +1,3 @@
 USE [CareerTrack];
 
-UPDATE [AspNetUsers] SET [EmailConfirmed]=1;
+UPDATE [Users] SET [EmailConfirmed]=1;

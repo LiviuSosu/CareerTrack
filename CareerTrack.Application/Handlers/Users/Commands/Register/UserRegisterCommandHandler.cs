@@ -41,7 +41,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
             _repoWrapper.User.Create(standardUser);
             await request.UserManager.CreateAsync(standardUser, request.Password);
 
-            var standardUSerRole = _repoWrapper.Role.FindByCondition(r => r.NormalizedName == "STANDARDUSER").FirstOrDefault();
+            var standardUSerRole = _repoWrapper.Role.FindByCondition(r => r.Name == "StandardUser").FirstOrDefault();
 
             var identityStandaerdUserRole = new IdentityUserRole<Guid>
             {

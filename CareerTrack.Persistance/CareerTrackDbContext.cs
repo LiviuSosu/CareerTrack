@@ -22,6 +22,26 @@ namespace CareerTrack.Persistance
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>(b =>
+            {
+                b.ToTable("Users");
+            });
+
+            modelBuilder.Entity<UserToken>(b =>
+            {
+                b.ToTable("UserTokens");
+            });
+
+            modelBuilder.Entity<Role>(b =>
+            {
+                b.ToTable("Roles");
+            });
+
+            modelBuilder.Entity<IdentityUserRole<Guid>>(b =>
+            {
+                b.ToTable("UserRoles");
+            });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
