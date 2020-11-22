@@ -567,33 +567,35 @@
 													"script": {
 														"id": "e0f0d34d-3141-4096-80c9-b528ca240b9d",
 														"exec": [
-															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
-															"var userToDelete = pm.environment.get(\"UserToDelete\");\r",
+															"var sdk = require('postman-collection');\r",
 															"\r",
 															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
 															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
 															"\r",
-															"var sdk = require('postman-collection');\r",
-															"\r",
-															"//to send a request for creating a user\r",
-															"\r",
-															"\r",
-															"\r",
-															"var isValidDeleteUserRequest = new sdk.Request({\r",
-															"    url: pm.environment.get(\"base_url\")+'Users/DeleteUserPermanently?Username='+userToDelete,\r",
-															"    method: 'DELETE',\r",
-															"    header: [ new sdk.Header({\r",
-															"            key: 'Authorization',\r",
-															"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+															"var registerUserToDelete = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Users/Register',\r",
+															"    method: 'POST',\r",
+															"      header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            Username: \"SomeUsername\",\r",
+															"            Email:\"someemail@gmail.com\",\r",
+															"            Password: \"SomePassword123!\"\r",
 															"        })\r",
-															"    ]\r",
-															"});\r",
-															"\r",
-															"pm.sendRequest(isValidDeleteUserRequest, function (err, response) {\r",
-															" if (response.code === 401 || response.code === 403) {\r",
-															"        refreshToken();    \r",
 															"    }\r",
 															"});\r",
+															"\r",
+															"pm.sendRequest(registerUserToDelete, function (err, response) {});\r",
 															"\r",
 															"function refreshToken() {\r",
 															"    var tokenRequest = new sdk.Request({\r",
@@ -630,8 +632,19 @@
 															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
 															"      console.log(`New token has been set: ${response.json().token}`);\r",
 															"  });\r",
-															"}\r",
-															""
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "4312c56b-5ec5-4fdc-ba30-827aee988567",
+														"exec": [
+															"pm.test(\"Success registration as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
 														],
 														"type": "text/javascript"
 													}
@@ -647,21 +660,103 @@
 													}
 												],
 												"url": {
-													"raw": "https://localhost:44333/api/Users/DeleteUserPermanently?Username={{UserToDelete}}",
-													"protocol": "https",
+													"raw": "{{base_url}}Users/DeleteUserPermanently?Username=SomeUsername",
 													"host": [
-														"localhost"
+														"{{base_url}}Users"
 													],
-													"port": "44333",
 													"path": [
-														"api",
+														"DeleteUserPermanently"
+													],
+													"query": [
+														{
+															"key": "Username",
+															"value": "SomeUsername"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete User Permanently - failed: Not Found",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"id": "150d0152-1628-4c58-9775-1cb068131060",
+														"exec": [
+															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
+															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: adminUsername,\r",
+															"            password: adminPassword\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"id": "3ca6c70c-dd12-43f9-ac97-539cfda0a576",
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base_url}}api/Users/DeleteUserPermanently?Username=NonExistingUser",
+													"host": [
+														"{{base_url}}api"
+													],
+													"path": [
 														"Users",
 														"DeleteUserPermanently"
 													],
 													"query": [
 														{
 															"key": "Username",
-															"value": "{{UserToDelete}}"
+															"value": "NonExistingUser"
 														}
 													]
 												}
@@ -984,6 +1079,7 @@
 													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 													"var username = pm.environment.get(\"AdminUsername\");\r",
 													"var password = pm.environment.get(\"AdminPassword\");\r",
+													"const articleTitleThatWillBeDeleted = \"This article Title will be created, but very soon it will be deleted\";\r",
 													"\r",
 													"var sdk = require('postman-collection');\r",
 													"\r",
@@ -1007,7 +1103,7 @@
 													"    body: {\r",
 													"        mode: 'raw',\r",
 													"        raw: JSON.stringify({\r",
-													"            Title: \"Some article ziua 3.2\",\r",
+													"            Title: articleTitleThatWillBeDeleted,\r",
 													"            Link: \"test link\"\r",
 													"        })\r",
 													"    }\r",
@@ -1016,6 +1112,9 @@
 													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
 													"    if (response.code === 401 || response.code === 403) {\r",
 													"        refreshToken();\r",
+													"    }\r",
+													"    if (response.code === 200){\r",
+													"       CleanUp();\r",
 													"    }\r",
 													"});\r",
 													"\r",
@@ -1054,6 +1153,34 @@
 													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
 													"      console.log(`New token has been set: ${response.json().token}`);\r",
 													"  });\r",
+													"}\r",
+													"\r",
+													"function CleanUp(){\r",
+													"    var getAllArticlesRequest = new sdk.Request({\r",
+													"          url: pm.environment.get(\"base_url\")+'Articles/GetArticles',\r",
+													"          method: 'GET',\r",
+													"           header: [\r",
+													"               new sdk.Header({\r",
+													"                key: 'Authorization',\r",
+													"                value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"            })\r",
+													"            ]\r",
+													"        });\r",
+													"\r",
+													"    pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+													"        var articles = response.json();\r",
+													"        articles = Object.keys(articles).map(i => articles[i]);\r",
+													"\r",
+													"        var articleThatWillBeDeleted = {}\r",
+													"        articles[0].forEach(article => {\r",
+													"            console.log(article);\r",
+													"            if(article.title == articleTitleThatWillBeDeleted){\r",
+													"                articleThatWillBeDeleted = article;\r",
+													"            }\r",
+													"        });\r",
+													"        console.log(articles)\r",
+													"        console.log(articleThatWillBeDeleted)\r",
+													"    });\r",
 													"}"
 												],
 												"type": "text/javascript"
