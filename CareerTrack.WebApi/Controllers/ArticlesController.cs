@@ -119,6 +119,10 @@ namespace CareerTrack.WebApi.Controllers
                 _logger.LogInformation(actionName, JsonConvert.SerializeObject(command), Authorization);
                 return Ok(await Mediator.Send(command));
             }
+            catch (ValidationException exception)
+            {
+                return StatusCode(badRequestErrorCode, JsonConvert.SerializeObject(exception.Failures));
+            }
             catch (DbUpdateConcurrencyException exception)
             {
                 _logger.LogException(exception, actionName, JsonConvert.SerializeObject(command) + " " + JsonConvert.SerializeObject(command), Authorization);
