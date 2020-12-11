@@ -53,7 +53,9 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                         return new LoginResponseDTO
                         {
                             token = tokenValue,
-                            expiration = token.ValidTo
+                            expiration = token.ValidTo,
+                            UserId = user.Id,
+                            Username = user.UserName
                         };
                     }
                     else
