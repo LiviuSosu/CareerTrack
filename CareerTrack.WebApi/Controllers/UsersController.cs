@@ -264,5 +264,13 @@ namespace CareerTrack.WebApi.Controllers
                 return StatusCode(internalServerErrorCode, _configuration.DisplayGenericUserErrorMessage);
             }
         }
+
+        [HttpPost]
+        [Authorize]
+        [Route("Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

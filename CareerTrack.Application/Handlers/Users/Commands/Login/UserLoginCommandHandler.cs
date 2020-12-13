@@ -3,7 +3,6 @@ using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -40,15 +39,15 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                                );
 
                         var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                        //var tok = new IdentityUserToken<Guid>
-                        //{
-                        //    UserId = Guid.NewGuid(),
-                        //    LoginProvider = "WIF",
-                        //    Name = user.Id.ToString(),
-                        //    Value = tokenValue
-                        //};
-                        //_repoWrapper.UserToken.Create(tok);
-                        //await _repoWrapper.SaveAsync();
+                        var tok = new IdentityUserToken<Guid>
+                        {
+                            UserId = user.Id,
+                            LoginProvider = "WIF",
+                            Name = user.Id.ToString(),
+                            Value = tokenValue
+                        };
+                        _repoWrapper.UserToken.Create(tok);
+                        await _repoWrapper.SaveAsync();
 
                         return new LoginResponseDTO
                         {

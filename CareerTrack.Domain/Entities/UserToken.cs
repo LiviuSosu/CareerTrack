@@ -8,5 +8,7 @@ namespace CareerTrack.Domain.Entities
     {
         [Key]
         public new Guid UserId { get; set; }
+
+        public User User { get; set; }
     }
 }

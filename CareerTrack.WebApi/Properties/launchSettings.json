@@ -14,7 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "hc",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "CareerTrack.WebApi": {

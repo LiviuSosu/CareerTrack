@@ -12,4 +12,8 @@
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TokenManager\" />
+  </ItemGroup>
+
 </Project>

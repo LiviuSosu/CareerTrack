@@ -7,21 +7,27 @@ using System;
 namespace CareerTrack.Persistance
 {
     public class CareerTrackDbContext : IdentityDbContext<User, Role, Guid>
+                                       
     {
         public CareerTrackDbContext(DbContextOptions<CareerTrackDbContext> options)
             : base(options)
         {
         }
 
-        public override DbSet<User>  Users { get; set; } //Possible bug
-        public override DbSet<Role> Roles { get; set; } //Possible bug
+        public override DbSet<User>  Users { get; set; }
+        public override DbSet<Role> Roles { get; set; } 
 
-        public override DbSet<IdentityUserRole<Guid>> UserRoles { get; set; } //Possible bug
+        public override DbSet<IdentityUserRole<Guid>> UserRoles { get; set; } 
         public DbSet<Article> Articles { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .HasMany(c => c.UserTokens)
+                .WithOne(e => e.User)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>(b =>
             {
