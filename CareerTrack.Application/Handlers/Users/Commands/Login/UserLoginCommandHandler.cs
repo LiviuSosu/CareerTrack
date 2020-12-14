@@ -46,8 +46,8 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                             Name = user.Id.ToString(),
                             Value = tokenValue
                         };
-                        _repoWrapper.UserToken.Create(tok);
-                        await _repoWrapper.SaveAsync();
+                        //_repoWrapper.UserToken.Create(tok);
+                        //await _repoWrapper.SaveAsync();
 
                         return new LoginResponseDTO
                         {

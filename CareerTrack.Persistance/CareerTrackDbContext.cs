@@ -6,7 +6,7 @@ using System;
 
 namespace CareerTrack.Persistance
 {
-    public class CareerTrackDbContext : IdentityDbContext<User, Role, Guid>
+    public class CareerTrackDbContext : IdentityDbContext<User, Role, Guid, IdentityUserClaim<Guid>,IdentityUserRole<Guid>,IdentityUserLogin<Guid>,IdentityRoleClaim<Guid>, UserToken>
                                        
     {
         public CareerTrackDbContext(DbContextOptions<CareerTrackDbContext> options)
@@ -24,10 +24,10 @@ namespace CareerTrack.Persistance
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>()
-                .HasMany(c => c.UserTokens)
-                .WithOne(e => e.User)
-                .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<User>()
+            //    .HasMany(c => c.UserTokens)
+            //    .WithOne(e => e.User)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>(b =>
             {
