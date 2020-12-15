@@ -30,7 +30,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                     {
                         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JWTConfiguration.JwtSecretKey));
 
-                        var token = new JwtSecurityToken(
+                        var jwtToken = new JwtSecurityToken(
                                issuer: request.JWTConfiguration.JwtIssuer,
                                audience: request.JWTConfiguration.JwtAudience,
                                expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
@@ -38,21 +38,30 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                                signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                                );
 
-                        var tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
-                        var tok = new IdentityUserToken<Guid>
+                        var tokenValue = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                        var responseToken = new UserToken
                         {
                             UserId = user.Id,
                             LoginProvider = "WIF",
                             Name = user.Id.ToString(),
                             Value = tokenValue
                         };
-                        //_repoWrapper.UserToken.Create(tok);
-                        //await _repoWrapper.SaveAsync();
+
+                        if (GetExistingUserToken(responseToken) == null)
+                        {
+                            _repoWrapper.UserToken.Create(responseToken);
+                        }
+                        else
+                        {
+                            _repoWrapper.UserToken.Update(responseToken);
+                        }
+
+                        await _repoWrapper.SaveAsync();
 
                         return new LoginResponseDTO
                         {
                             token = tokenValue,
-                            expiration = token.ValidTo,
+                            expiration = jwtToken.ValidTo,
                             UserId = user.Id,
                             Username = user.UserName
                         };
@@ -104,6 +113,13 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
             {
                 throw new NoRolesAssignedException(user.Email);
             }
+        }
+
+        private UserToken GetExistingUserToken(UserToken token)
+        {
+            var tokens = _repoWrapper.UserToken.FindByCondition(t=>t.UserId == token.UserId);
+
+            return tokens.FirstOrDefault(t => t.LoginProvider == token.LoginProvider);
         }
     }
 }

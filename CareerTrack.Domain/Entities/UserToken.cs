@@ -6,9 +6,5 @@ namespace CareerTrack.Domain.Entities
 {
     public class UserToken : IdentityUserToken<Guid>
     {
-        //[Key]
-        //public new Guid UserId { get; set; }
-
-        //public User User { get; set; }
     }
 }
