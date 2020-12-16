@@ -4,14 +4,16 @@ using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CareerTrack.Migrations.Migrations
 {
     [DbContext(typeof(CareerTrackDbContext))]
-    partial class CareerTrackDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201216163149_ConfigureToken")]
+    partial class ConfigureToken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
