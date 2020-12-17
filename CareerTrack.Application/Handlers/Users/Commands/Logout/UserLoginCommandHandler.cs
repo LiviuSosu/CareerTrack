@@ -1,7 +1,9 @@
 ﻿using CareerTrack.Persistance;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -19,25 +21,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Logout
         public new async Task<Unit> Handle(UserLogoutCommand request, CancellationToken cancellationToken)
         {
 
-           var userToken =  _repoWrapper.UserToken.FindByCondition(ut=>ut.Value== request.Token).FirstOrDefault() ;
-
-
-            //if (user == null)
-            //{
-            //    throw new NotImplementedException();
-            //}
-
-            //var refreshToken = user.UserTokens.Single(x => x.Value == request.Token);
-
-            //if (!refreshToken.IsActive)
-            //{
-            //    throw new NotImplementedException();
-            //}
-            userToken.Revoked = DateTime.UtcNow;
-            _repoWrapper.UserToken.Update(userToken);
-            await _repoWrapper.SaveAsync();
-            //_context.Update(user);
-            //_context.SaveChanges();
 
             return Unit.Value;
         }

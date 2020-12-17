@@ -5,15 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="SendGrid" Version="9.21.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="TokenManager\" />
   </ItemGroup>
 
 </Project>

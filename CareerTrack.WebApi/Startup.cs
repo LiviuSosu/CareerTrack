@@ -6,6 +6,7 @@ using CareerTrack.Infrastructure;
 using CareerTrack.Persistance;
 using CareerTrack.Persistance.Repository;
 using CareerTrack.Services.SendGrid;
+using CareerTrack.Services.TokenManager;
 using CareerTrack.WebApi.Filters;
 using CareerTrack.WebApi.HealthChecks;
 using FluentValidation.AspNetCore;
@@ -15,6 +16,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +48,10 @@ namespace CareerTrack.WebApi
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddTransient<ITokenManager, TokenManager>();
+           // services.AddTransient<TokenManagerMiddleware>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           // services.AddDistributedRedisCache(r => { r.Configuration = "localhost"; });
 
             services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
@@ -145,6 +151,8 @@ namespace CareerTrack.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc");
             });
+
+            //app.UseMiddleware<TokenManagerMiddleware>();
         }
 
         public void AddAuthentications(IServiceCollection services)

@@ -8,6 +8,7 @@ using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Services.SendGrid;
+using CareerTrack.Services.TokenManager;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -26,18 +27,21 @@ namespace CareerTrack.WebApi.Controllers
         private readonly IConfiguration _configuration;
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
-
+        private readonly ITokenManager _tokenManager;
         public UsersController(
             UserManager<User> userManager,
             IConfiguration configuration,
             ILogger logger,
-            IOptions<AuthMessageSenderOptions> optionsAccessor)
+            IOptions<AuthMessageSenderOptions> optionsAccessor,
+            ITokenManager tokenManager)
         {
             this.userManager = userManager;
             _configuration = configuration;
             _logger = logger;
             Options = optionsAccessor.Value;
             _emailSender = new EmailSender(Options.SendGridApiKey);
+
+            _tokenManager = tokenManager;
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
@@ -272,14 +276,17 @@ namespace CareerTrack.WebApi.Controllers
         {
             var x = Authorization.Substring(7);
 
-            var userLogoutCommand = new UserLogoutCommand()
-            { 
-                Token = x,
-                UserManager = userManager
-            };
+            //var userLogoutCommand = new UserLogoutCommand()
+            //{ 
+            //    Token = x,
+            //    UserManager = userManager,
+            //    JWTConfiguration = _configuration.JWTConfiguration
+            //};
 
-            return Ok(await Mediator.Send(userLogoutCommand));
-            throw new NotImplementedException();
+            //  return Ok(await Mediator.Send(userLogoutCommand));
+            //  throw new NotImplementedException();
+            await _tokenManager.DeactivateAsync(x);
+            return Ok();
         }
     }
 }
