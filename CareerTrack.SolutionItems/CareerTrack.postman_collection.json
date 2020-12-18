@@ -23,7 +23,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "af992b76-7bab-4ec0-a10c-e1082adccb84",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
@@ -60,7 +59,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "5f8ad265-c0a0-4525-ad15-0c1ebaa3c050",
 														"exec": [
 															"pm.test(\"Log succesfully as standard user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
@@ -97,7 +95,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "1207ef44-dfd0-4747-ad7d-8c2322af2bc5",
 														"exec": [
 															"pm.test(\"Log failed as standard user\", function () {\r",
 															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
@@ -131,12 +128,11 @@
 											"response": []
 										},
 										{
-											"name": "Sandaerd User Fail (user)",
+											"name": "Standard User Fail (user)",
 											"event": [
 												{
 													"listen": "test",
 													"script": {
-														"id": "33fd0a44-d533-4d71-9ae1-f95594ab3276",
 														"exec": [
 															"pm.test(\"Log failed as standard user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
@@ -173,7 +169,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "070547b2-a3dc-4e59-827c-3d5c28daa213",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
@@ -210,7 +205,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "3abb5603-9715-40f5-afe2-2bb1995704df",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"     pm.response.to.have.status(401);\r",
@@ -247,7 +241,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "10f28976-84b6-4d04-93a2-f106886ab6ed",
 														"exec": [
 															"pm.test(\"Log failed as standard user\", function () {\r",
 															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
@@ -279,9 +272,7 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
 								},
 								{
 									"name": "Register",
@@ -292,7 +283,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "eb46caab-addc-4f74-b548-b00491cff5a7",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -362,7 +352,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "a029b7ef-4141-44f8-9abb-1163b7d0df5b",
 														"exec": [
 															"pm.test(\"Success registration as standard user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
@@ -385,15 +374,11 @@
 													}
 												},
 												"url": {
-													"raw": "https://localhost:44333/api/Users/Register",
-													"protocol": "https",
+													"raw": "{{base_url}}Users/Register",
 													"host": [
-														"localhost"
+														"{{base_url}}Users"
 													],
-													"port": "44333",
 													"path": [
-														"api",
-														"Users",
 														"Register"
 													]
 												}
@@ -432,7 +417,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "ec577447-aa3b-43e1-a66c-47d2ccc1332a",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"    //postman bug, I suppose\r",
@@ -474,7 +458,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "587d4214-fdeb-4e0e-9e02-6fe3d508984b",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"    //postman bug, I suppose\r",
@@ -516,7 +499,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "617b6f0d-ddda-4412-a2c9-321bcf238578",
 														"exec": [
 															"pm.test(\"Log failed as admin user\", function () {\r",
 															"    //postman bug, I suppose\r",
@@ -552,9 +534,7 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
 								},
 								{
 									"name": "DeleteUserPermanently",
@@ -565,7 +545,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "e0f0d34d-3141-4096-80c9-b528ca240b9d",
 														"exec": [
 															"var sdk = require('postman-collection');\r",
 															"\r",
@@ -640,7 +619,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "4312c56b-5ec5-4fdc-ba30-827aee988567",
 														"exec": [
 															"pm.test(\"Success registration as standard user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
@@ -683,7 +661,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "150d0152-1628-4c58-9775-1cb068131060",
 														"exec": [
 															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
 															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
@@ -731,7 +708,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "3ca6c70c-dd12-43f9-ac97-539cfda0a576",
 														"exec": [
 															"pm.test(\"Log failed as standard user\", function () {\r",
 															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
@@ -763,17 +739,43 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
+								},
+								{
+									"name": "Logout",
+									"item": [
+										{
+											"name": "Logout",
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IkFkbWluIiwiZXhwIjoxNjA4MjIxMTMxLCJpc3MiOiJDYXJlZXJUcmFjayIsImF1ZCI6IkNhcmVlclRyYWNrIn0.cS71ArpZEh50Toh_DzAoqJ903ZO1T8cy0C97bCN45bE",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "https://localhost:44333/api/Users/Logout",
+													"protocol": "https",
+													"host": [
+														"localhost"
+													],
+													"port": "44333",
+													"path": [
+														"api",
+														"Users",
+														"Logout"
+													]
+												}
+											},
+											"response": []
+										}
+									]
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				},
 				{
 					"name": "Articles",
@@ -787,7 +789,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "cc6d7c61-d463-4592-97bc-9c1672fdfe26",
 												"exec": [
 													"pm.test(\"Get articles\", function () {\r",
 													"     pm.response.to.have.status(200);\r",
@@ -799,7 +800,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c0a07bdc-1153-44a9-96eb-a9dee6f824b4",
 												"exec": [
 													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 													"var username = pm.environment.get(\"StdUser\");\r",
@@ -920,7 +920,6 @@
 										{
 											"listen": "test",
 											"script": {
-												"id": "57e024fe-5cf3-49d9-8996-e8ccc069ebe9",
 												"exec": [
 													"pm.test(\"Get article by id\", function () {\r",
 													"     pm.response.to.have.status(200);\r",
@@ -932,7 +931,6 @@
 										{
 											"listen": "prerequest",
 											"script": {
-												"id": "c1d7215c-48fc-48cc-b83e-ed6bd9e29ea5",
 												"exec": [
 													"//https://nicolaswidart.com/blog/automatically-set-authentication-tokens-in-postman-requests\r",
 													"//https://gist.github.com/bcnzer/073f0fc0b959928b0ca2b173230c0669\r",
@@ -1049,9 +1047,7 @@
 									},
 									"response": []
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						},
 						{
 							"name": "Command",
@@ -1061,9 +1057,7 @@
 									"item": [
 										{
 											"name": "Delete Article",
-											"item": [],
-											"protocolProfileBehavior": {},
-											"_postman_isSubFolder": true
+											"item": []
 										},
 										{
 											"name": "Create Article - success",
@@ -1071,7 +1065,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "4cda74df-0aa9-4b03-a78b-ae228ecbe85e",
 														"exec": [
 															"pm.test(\"Create article\", function () {\r",
 															"     pm.response.to.have.status(200);\r",
@@ -1083,7 +1076,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "22cd0449-6f82-45c0-a41a-333b50e0d370",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -1266,7 +1258,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "a88e140d-1cab-4464-ae2e-33206a351187",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -1343,7 +1334,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "767d9a9c-eb08-4aa0-a65b-18c4e3a51af7",
 														"exec": [
 															"pm.test(\"Create article\", function () {\r",
 															"     pm.response.to.have.status(400);\r",
@@ -1384,9 +1374,7 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
 								},
 								{
 									"name": "Update Article",
@@ -1397,7 +1385,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "f7e8b8a2-71d2-4f5b-b023-f20b421bf11b",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -1559,7 +1546,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "36fe27cd-6413-4454-af0c-f15a716ed6e0",
 														"exec": [
 															"pm.test(\"Update article\", function () {\r",
 															"     pm.response.to.have.status(200);\r",
@@ -1605,7 +1591,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "4fcc8c48-578a-4206-8b9b-b11fde945a2e",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -1682,7 +1667,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "9c8cb61d-a816-4e44-a3b7-1c9906302065",
 														"exec": [
 															"pm.test(\"Create article\", function () {\r",
 															"     pm.response.to.have.status(400);\r",
@@ -1722,9 +1706,7 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
 								},
 								{
 									"name": "Delete Article",
@@ -1735,7 +1717,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "582fe366-2e39-4f13-aac9-2cc19293301e",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -1896,7 +1877,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "3ef76af6-df92-4cc3-b769-f74cfe5dfd8d",
 														"exec": [
 															"pm.test(\"Delete article\", function () {\r",
 															"     pm.response.to.have.status(200);\r",
@@ -1942,7 +1922,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "54d6f40c-25f9-4f79-bbfd-85ec5c25fe42",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -2019,7 +1998,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "5afd625a-a407-49a7-9ec4-4ef881911fcb",
 														"exec": [
 															"pm.test(\"Create article\", function () {\r",
 															"     pm.response.to.have.status(404);\r",
@@ -2065,7 +2043,6 @@
 												{
 													"listen": "prerequest",
 													"script": {
-														"id": "f9ce9190-6433-4083-ad12-16c11193b5f8",
 														"exec": [
 															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
 															"var username = pm.environment.get(\"AdminUsername\");\r",
@@ -2142,7 +2119,6 @@
 												{
 													"listen": "test",
 													"script": {
-														"id": "70cdea24-0f3b-43fe-9220-0f99f847950e",
 														"exec": [
 															"pm.test(\"Create article\", function () {\r",
 															"     pm.response.to.have.status(500);\r",
@@ -2182,20 +2158,13 @@
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		},
 		{
 			"name": "StgEnv",
@@ -2210,7 +2179,7 @@
 									"name": "Login",
 									"item": [
 										{
-											"name": "Login Admin - Success",
+											"name": "Admin Success",
 											"request": {
 												"method": "POST",
 												"header": [],
@@ -2224,29 +2193,22 @@
 													}
 												},
 												"url": {
-													"raw": "http://localhost:1400/api/Users/login",
-													"protocol": "http",
+													"raw": "{{authServiceUrl}}",
 													"host": [
-														"localhost"
-													],
-													"port": "1400",
-													"path": [
-														"api",
-														"Users",
-														"login"
+														"{{authServiceUrl}}"
 													]
 												}
 											},
 											"response": []
 										},
 										{
-											"name": "Login Standard Administrator - Success",
+											"name": "Standard User Success",
 											"request": {
 												"method": "POST",
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Username\":\"LiviuS\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -2254,36 +2216,316 @@
 													}
 												},
 												"url": {
-													"raw": "http://localhost:1400/api/Users/login",
-													"protocol": "http",
+													"raw": "{{authServiceUrl}}",
 													"host": [
-														"localhost"
-													],
-													"port": "1400",
-													"path": [
-														"api",
-														"Users",
-														"login"
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Standard User Fail (password)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Standard User Fail (user)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"WrongUser\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Admin Fail (user)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"WrongAdmin\",\r\n    \"Password\":\"{{AdminPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Admin Fail (password)",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{AdminUsername}}\",\r\n    \"Password\":\"WrongPassword\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Standard User Fail - Email not confirmed",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"    //pm.globals.get(\"Unauthorized\") postman bug I suppose ..\r",
+															"     pm.response.to.have.status(401);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Password\":\"{{StdUserPassword}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{authServiceUrl}}",
+													"host": [
+														"{{authServiceUrl}}"
 													]
 												}
 											},
 											"response": []
 										}
-									],
-									"protocolProfileBehavior": {},
-									"_postman_isSubFolder": true
+									]
+								},
+								{
+									"name": "Register",
+									"item": [
+										{
+											"name": "Register - Standard User Success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var userToRegister = \"TestUser\";\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"\r",
+															"var isValidDeleteUserRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Users/DeleteUserPermanently?Username='+userToRegister,\r",
+															"    method: 'DELETE',\r",
+															"    header: [ new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidDeleteUserRequest, function (err, response) {\r",
+															" if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}\r",
+															""
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Success registration as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu3@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										}
+									]
 								}
-							],
-							"protocolProfileBehavior": {},
-							"_postman_isSubFolder": true
+							]
 						}
-					],
-					"protocolProfileBehavior": {},
-					"_postman_isSubFolder": true
+					]
 				}
-			],
-			"protocolProfileBehavior": {}
+			]
 		}
-	],
-	"protocolProfileBehavior": {}
+	]
 }

@@ -22,14 +22,11 @@ namespace CareerTrack.Persistance
 
         public DbSet<Article> Articles { get; set; }
 
+        //https://stackoverflow.com/questions/65200896/how-to-update-database-via-migrations-when-i-have-two-or-more-config-files-wit/65200981#65200981
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            //modelBuilder.Entity<User>()
-            //    .HasMany(c => c.UserTokens)
-            //    .WithOne(e => e.User)
-            //    .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>(b =>
             {
