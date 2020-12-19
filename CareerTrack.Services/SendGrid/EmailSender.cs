@@ -24,7 +24,7 @@ namespace CareerTrack.Services.SendGrid
             var plainTextContent = userRegistrationEmailDTO.EmailServiceConfiguration.PlainTextContent + userRegistrationEmailDTO.ConfirmationToken;
 
             var message = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, null);
-            var response = await client.SendEmailAsync(message);
+            await client.SendEmailAsync(message);
         }
     }
 }
