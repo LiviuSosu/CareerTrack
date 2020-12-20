@@ -366,7 +366,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu2@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -387,6 +387,21 @@
 										},
 										{
 											"name": "Register - User already exists",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
 											"request": {
 												"method": "POST",
 												"header": [],
@@ -784,7 +799,7 @@
 							"name": "Read",
 							"item": [
 								{
-									"name": "GetArticles",
+									"name": "Get Articles",
 									"event": [
 										{
 											"listen": "test",
@@ -915,7 +930,7 @@
 									"response": []
 								},
 								{
-									"name": "GetArticle",
+									"name": "Get Article",
 									"event": [
 										{
 											"listen": "test",
@@ -1055,10 +1070,6 @@
 								{
 									"name": "Create Article",
 									"item": [
-										{
-											"name": "Delete Article",
-											"item": []
-										},
 										{
 											"name": "Create Article - success",
 											"event": [
@@ -1560,8 +1571,8 @@
 												"header": [
 													{
 														"key": "Authorization",
-														"value": "Bearer {{jwttoken}}",
-														"type": "text"
+														"type": "text",
+														"value": "Bearer {{jwttoken}}"
 													}
 												],
 												"body": {
@@ -2500,7 +2511,7 @@
 												"header": [],
 												"body": {
 													"mode": "raw",
-													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu3@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"raw": "{\r\n    \"Username\":\"TestUser\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
 													"options": {
 														"raw": {
 															"language": "json"
@@ -2514,6 +2525,1604 @@
 													],
 													"path": [
 														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register - User already exists",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"{{StdUser}}\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register fail - invalid password",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"SomeUser\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"smallpwd\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Regiser Fail - null username",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"\",\r\n    \"Email\":\"sosuliviu@gmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Register Fail - invalid email address",
+											"event": [
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as admin user\", function () {\r",
+															"    //postman bug, I suppose\r",
+															"     //pm.response.to.have.status(pm.globals.get(\"BadRequestError\"));\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Username\":\"SomeUsername\",\r\n    \"Email\":\"sosuliviugmail.com\",\r\n    \"Password\":\"SomePassword123!\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Users/Register",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"Register"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "DeleteUserPermanently",
+									"item": [
+										{
+											"name": "Delete User Permanently - Success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var sdk = require('postman-collection');\r",
+															"\r",
+															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
+															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var registerUserToDelete = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Users/Register',\r",
+															"    method: 'POST',\r",
+															"      header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            Username: \"SomeUsername\",\r",
+															"            Email:\"someemail@gmail.com\",\r",
+															"            Password: \"SomePassword123!\"\r",
+															"        })\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(registerUserToDelete, function (err, response) {});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: adminUsername,\r",
+															"            password: adminPassword\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Success registration as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"SuccessMessage\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"url": {
+													"raw": "{{base_url}}Users/DeleteUserPermanently?Username=SomeUsername",
+													"host": [
+														"{{base_url}}Users"
+													],
+													"path": [
+														"DeleteUserPermanently"
+													],
+													"query": [
+														{
+															"key": "Username",
+															"value": "SomeUsername"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete User Permanently - failed: Not Found",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var adminUsername = pm.environment.get(\"AdminUsername\");\r",
+															"var adminPassword = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: adminUsername,\r",
+															"            password: adminPassword\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"   pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Log failed as standard user\", function () {\r",
+															"     pm.response.to.have.status(pm.globals.get(\"NotFoundError\"));\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "{{base_url}}api/Users/DeleteUserPermanently?Username=NonExistingUser",
+													"host": [
+														"{{base_url}}api"
+													],
+													"path": [
+														"Users",
+														"DeleteUserPermanently"
+													],
+													"query": [
+														{
+															"key": "Username",
+															"value": "NonExistingUser"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Articles",
+					"item": [
+						{
+							"name": "Read",
+							"item": [
+								{
+									"name": "Get Articles",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+													"var username = pm.environment.get(\"StdUser\");\r",
+													"var password = pm.environment.get(\"StdUserPassword\");\r",
+													"\r",
+													"var sdk = require('postman-collection');\r",
+													"\r",
+													"var isValidTokenRequest = new sdk.Request({\r",
+													"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?pagesize=6',\r",
+													"    method: 'GET',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json',\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'Authorization',\r",
+													"            value: 'Bearer ' + pm.environment.get(\"jwttoken\"),\r",
+													"        }),\r",
+													"    ]\r",
+													"});\r",
+													"\r",
+													"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+													"    if (response.code === 401) {\r",
+													"        refreshToken();\r",
+													"    }\r",
+													"});\r",
+													"\r",
+													"function refreshToken() {\r",
+													"    var tokenRequest = new sdk.Request({\r",
+													"    url: authServiceUrl,\r",
+													"    method: 'POST',\r",
+													"    header: [\r",
+													"        new sdk.Header({\r",
+													"            key: 'content-type',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"        new sdk.Header({\r",
+													"            key: 'acccept',\r",
+													"            value: 'application/json'\r",
+													"        }),\r",
+													"    ],\r",
+													"    body: {\r",
+													"        mode: 'raw',\r",
+													"        raw: JSON.stringify({\r",
+													"            username: username,\r",
+													"            password: password\r",
+													"        })\r",
+													"    } \r",
+													"  });\r",
+													"\r",
+													"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+													"      if (err) {\r",
+													"          throw err;\r",
+													"      }\r",
+													"      \r",
+													"      if (response.code !== 200) {\r",
+													"          throw new Error('Could not log in.');\r",
+													"      }\r",
+													"      \r",
+													"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+													"      console.log(`New token has been set: ${response.json().token}`);\r",
+													"  });\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"pm.test(\"Get articles\", function () {\r",
+													"     pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "Bearer {{jwttoken}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}Articles/GetArticles?Field=Title&Order=desc",
+											"host": [
+												"{{base_url}}Articles"
+											],
+											"path": [
+												"GetArticles"
+											],
+											"query": [
+												{
+													"key": "Field",
+													"value": "Title"
+												},
+												{
+													"key": "Order",
+													"value": "desc"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Command",
+							"item": [
+								{
+									"name": "Create Article",
+									"item": [
+										{
+											"name": "Create Article - success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"    \r",
+															"var articleTitleThatWillBeDeleted = pm.environment.get(\"articleTitleThatWillBeDeleted\");\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var waitInterval = 3000;\r",
+															"\r",
+															"var isValidTokenRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles?Field=' + articleTitleThatWillBeDeleted,\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"setTimeout(() => {\r",
+															"    pm.sendRequest( new sdk.Request({\r",
+															"        url: pm.environment.get(\"base_url\") + 'Articles/GetArticles?Field=' + articleTitleThatWillBeDeleted,\r",
+															"        method: 'GET',\r",
+															"        header: [\r",
+															"            new sdk.Header({\r",
+															"                key: 'content-type',\r",
+															"                value: 'application/json',\r",
+															"            }),\r",
+															"            new sdk.Header({\r",
+															"                key: 'acccept',\r",
+															"                value: 'application/json',\r",
+															"            }),\r",
+															"            new sdk.Header({\r",
+															"                key: 'Authorization',\r",
+															"                value: 'Bearer ' + token\r",
+															"            })]\r",
+															"        })\r",
+															"    ,function (err, response) {\r",
+															"        var articles = response.json();\r",
+															"        articles = Object.keys(articles).map(i => articles[i]);\r",
+															"        var articleToBeDeleted = {};\r",
+															"\r",
+															"        for (var index = 0; index < articles[0].length; index++) {\r",
+															"            if (articles[0][index].title == articleTitleThatWillBeDeleted) {\r",
+															"                articleToBeDeleted = articles[0][index];\r",
+															"            }\r",
+															"        }\r",
+															"\r",
+															"        if(articleToBeDeleted.id!=undefined){\r",
+															"            var deleteArticleRequest = new sdk.Request({\r",
+															"            url: pm.environment.get(\"base_url\")+'Articles/DeleteArticle',\r",
+															"            method: 'DELETE',\r",
+															"            header: [\r",
+															"                new sdk.Header({\r",
+															"                key: 'content-type',\r",
+															"                value: 'application/json',\r",
+															"                }),\r",
+															"            new sdk.Header({\r",
+															"                key: 'acccept',\r",
+															"                value: 'application/json',\r",
+															"            }),\r",
+															"            new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"            })],\r",
+															"            body: {\r",
+															"                mode: 'raw',\r",
+															"                raw: JSON.stringify({\r",
+															"                Id: articleToBeDeleted.id\r",
+															"            })\r",
+															"        } \r",
+															"    });\r",
+															"\r",
+															"    pm.sendRequest(deleteArticleRequest, function (err, response){});\r",
+															"    }});\r",
+															"}, waitInterval);\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      token = response.json().token;\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Create article\", function () {\r",
+															"     pm.response.to.have.status(200);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Title\": \"{{articleTitleThatWillBeDeleted}}\",\r\n    \"Link\": \"test link\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/AddArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"AddArticle"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Add Article - Validation Error",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var isValidTokenRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles',\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Create article\", function () {\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Title\": \"\",\r\n    \"Link\": \"test link\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/AddArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"AddArticle"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Update Article",
+									"item": [
+										{
+											"name": "Update Article - Success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var articleTitleThatWillBeUpdated = pm.environment.get(\"articleTitleThatWillBeUpdated\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"var waitInterval = 3000;\r",
+															"\r",
+															"var getAllArticlesRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\") + 'Articles/GetArticles?Field=' + articleTitleThatWillBeUpdated,\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token\r",
+															"        }),\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"setTimeout(() => {\r",
+															"    pm.sendRequest(\r",
+															"        new sdk.Request({\r",
+															"            url: pm.environment.get(\"base_url\") + 'Articles/GetArticles?Field=' + articleTitleThatWillBeUpdated,\r",
+															"            method: 'GET',\r",
+															"            header: [\r",
+															"                new sdk.Header({\r",
+															"                    key: 'content-type',\r",
+															"                    value: 'application/json',\r",
+															"                }),\r",
+															"                new sdk.Header({\r",
+															"                    key: 'acccept',\r",
+															"                    value: 'application/json',\r",
+															"                }),\r",
+															"                new sdk.Header({\r",
+															"                    key: 'Authorization',\r",
+															"                    value: 'Bearer ' + token\r",
+															"                }),\r",
+															"            ]\r",
+															"        })\r",
+															"        ,function (err, response) {\r",
+															"            var articles = response.json();\r",
+															"            articles = Object.keys(articles).map(i => articles[i]);\r",
+															"            var articleToBeUpdated = {};\r",
+															"\r",
+															"            for (var index = 0; index < articles[0].length; index++) {\r",
+															"                if (articles[0][index].title == articleTitleThatWillBeUpdated) {\r",
+															"                    articleToBeUpdated = articles[0][index];\r",
+															"                }\r",
+															"            }\r",
+															"\r",
+															"            if (articleToBeUpdated.id != undefined) {\r",
+															"                pm.environment.set(\"articleIdThatWillBeUpdated\", articleToBeUpdated.id);\r",
+															"            }\r",
+															"            else {\r",
+															"                var createArticleRequest = new sdk.Request({\r",
+															"                    url: pm.environment.get(\"base_url\") + 'Articles/AddArticle',\r",
+															"                    method: 'POST',\r",
+															"                    header: [\r",
+															"                        new sdk.Header({\r",
+															"                            key: 'content-type',\r",
+															"                            value: 'application/json',\r",
+															"                        }),\r",
+															"                        new sdk.Header({\r",
+															"                            key: 'acccept',\r",
+															"                            value: 'application/json',\r",
+															"                        }),\r",
+															"                        new sdk.Header({\r",
+															"                            key: 'Authorization',\r",
+															"                            value: 'Bearer ' + token,\r",
+															"                        })],\r",
+															"                    body: \r",
+															"                        {\r",
+															"                        mode: 'raw',\r",
+															"                        raw: JSON.stringify({\r",
+															"                            Title: articleTitleThatWillBeUpdated,\r",
+															"                            Link: \"some link\"\r",
+															"                        })\r",
+															"                    }\r",
+															"                });\r",
+															"\r",
+															"                pm.sendRequest(createArticleRequest, function (err, response) { });\r",
+															"\r",
+															"                pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+															"                    var articles = response.json();\r",
+															"                    articles = Object.keys(articles).map(i => articles[i]);\r",
+															"\r",
+															"                    for (var index = 0; index < articles[0].length; index++) {\r",
+															"                        if (articles[0][index].title == articleTitleThatWillBeUpdated) {\r",
+															"                            articleToBeUpdated = articles[0][index];\r",
+															"                        }\r",
+															"                    }\r",
+															"\r",
+															"                    pm.environment.set(\"articleIdThatWillBeUpdated\", articleToBeUpdated.id);\r",
+															"                });\r",
+															"            }\r",
+															"        });\r",
+															"}, waitInterval)\r",
+															"\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"        url: authServiceUrl,\r",
+															"        method: 'POST',\r",
+															"        header: [\r",
+															"            new sdk.Header({\r",
+															"                key: 'content-type',\r",
+															"                value: 'application/json'\r",
+															"            }),\r",
+															"            new sdk.Header({\r",
+															"                key: 'acccept',\r",
+															"                value: 'application/json'\r",
+															"            }),\r",
+															"        ],\r",
+															"        body: {\r",
+															"            mode: 'raw',\r",
+															"            raw: JSON.stringify({\r",
+															"                username: username,\r",
+															"                password: password\r",
+															"            })\r",
+															"        }\r",
+															"    });\r",
+															"\r",
+															"    pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"        if (err) {\r",
+															"            throw err;\r",
+															"        }\r",
+															"\r",
+															"        if (response.code !== 200 || response.code === 403) {\r",
+															"            throw new Error('Could not log in.');\r",
+															"        }\r",
+															"\r",
+															"        pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"        token = response.json().token;\r",
+															"        console.log(`New token has been set: ${response.json().token}`);\r",
+															"    });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Update article\", function () {\r",
+															"     pm.response.to.have.status(200);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Id\": \"{{articleIdThatWillBeUpdated}}\",\r\n    \"Title\": \"{{articleTitleThatWillBeUpdated}}\",\r\n    \"Link\": \"test link\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/UpdateArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"UpdateArticle"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Update Article - Validation Error",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var isValidTokenRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles',\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Create article\", function () {\r",
+															"     pm.response.to.have.status(400);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Title\": \"\",\r\n    \"Link\": \"test link\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/UpdateArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"UpdateArticle"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Delete Article",
+									"item": [
+										{
+											"name": "Delete Article - Validation error",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var isValidTokenRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles',\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Create article\", function () {\r",
+															"     pm.response.to.have.status(500);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Id\": \"\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/DeleteArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"DeleteArticle"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete Article - success",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var articleTitleThatWillBeCreated = pm.environment.get(\"articleTitleThatWillBeCreated\");\r",
+															"var waitInterval = 3000;\r",
+															"\r",
+															"var getAllArticlesRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\") + 'Articles/GetArticles?Field=' + articleTitleThatWillBeCreated,\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token\r",
+															"        }),\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"setTimeout(() => {\r",
+															"     pm.sendRequest(\r",
+															"        new sdk.Request({\r",
+															"        url: pm.environment.get(\"base_url\") + 'Articles/GetArticles?Field=' + articleTitleThatWillBeCreated,\r",
+															"        method: 'GET',\r",
+															"            header: [\r",
+															"                new sdk.Header({\r",
+															"                    key: 'content-type',\r",
+															"                    value: 'application/json',\r",
+															"                }),\r",
+															"                new sdk.Header({\r",
+															"                    key: 'acccept',\r",
+															"                    value: 'application/json',\r",
+															"                }),\r",
+															"                new sdk.Header({\r",
+															"                    key: 'Authorization',\r",
+															"                    value: 'Bearer ' + token\r",
+															"                }),\r",
+															"            ]\r",
+															"     }),\r",
+															"    function (err, response) {\r",
+															"         var articles = response.json();\r",
+															"         articles = Object.keys(articles).map(i => articles[i]);\r",
+															"         var articleToBeCreated = {};\r",
+															"\r",
+															"        for (var index = 0; index < articles[0].length; index++) {\r",
+															"            if (articles[0][index].title == articleTitleThatWillBeCreated) {\r",
+															"                articleToBeCreated = articles[0][index];\r",
+															"            }\r",
+															"        }\r",
+															"\r",
+															"        if (articleToBeCreated.id != undefined) {\r",
+															"            pm.environment.set(\"articleTitleThatWillBeCreated\", articleToBeCreated.id);\r",
+															"        }\r",
+															"        else {\r",
+															"            var createArticleRequest = new sdk.Request({\r",
+															"                url: pm.environment.get(\"base_url\") + 'Articles/AddArticle',\r",
+															"                method: 'POST',\r",
+															"                header: [\r",
+															"                    new sdk.Header({\r",
+															"                        key: 'content-type',\r",
+															"                        value: 'application/json',\r",
+															"                    }),\r",
+															"                    new sdk.Header({\r",
+															"                        key: 'acccept',\r",
+															"                        value: 'application/json',\r",
+															"                    }),\r",
+															"                    new sdk.Header({\r",
+															"                        key: 'Authorization',\r",
+															"                        value: 'Bearer ' + token,\r",
+															"                    })],\r",
+															"                body: \r",
+															"                    {\r",
+															"                    mode: 'raw',\r",
+															"                    raw: JSON.stringify({\r",
+															"                        Title: articleTitleThatWillBeCreated,\r",
+															"                        Link: \"some link\"\r",
+															"                    })\r",
+															"                }\r",
+															"            });\r",
+															"\r",
+															"            pm.sendRequest(createArticleRequest, function (err, response) { });\r",
+															"\r",
+															"               pm.sendRequest(getAllArticlesRequest, function (err, response) {\r",
+															"                    var articles = response.json();\r",
+															"                    articles = Object.keys(articles).map(i => articles[i]);\r",
+															"\r",
+															"                    for (var index = 0; index < articles[0].length; index++) {\r",
+															"                        if (articles[0][index].title == articleTitleThatWillBeCreated) {\r",
+															"                            articleToBeCreated = articles[0][index];\r",
+															"                        }\r",
+															"                    }\r",
+															"\r",
+															"                    pm.environment.set(\"articleIdThatWillBeDeleted\", articleToBeCreated.id);\r",
+															"                });\r",
+															"            }\r",
+															"        });\r",
+															"    }, waitInterval)\r",
+															"\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"        }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"        }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      token = response.json().token;\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Delete article\", function () {\r",
+															"     pm.response.to.have.status(200);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Id\": \"{{articleIdThatWillBeDeleted}}\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/DeleteArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"DeleteArticle"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Delete Article - Not found",
+											"event": [
+												{
+													"listen": "prerequest",
+													"script": {
+														"exec": [
+															"var authServiceUrl = pm.environment.get(\"authServiceUrl\");\r",
+															"var username = pm.environment.get(\"AdminUsername\");\r",
+															"var password = pm.environment.get(\"AdminPassword\");\r",
+															"\r",
+															"var sdk = require('postman-collection');\r",
+															"var token = pm.environment.get(\"jwttoken\");\r",
+															"\r",
+															"var isValidTokenRequest = new sdk.Request({\r",
+															"    url: pm.environment.get(\"base_url\")+'Articles/GetArticles',\r",
+															"    method: 'GET',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json',\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'Authorization',\r",
+															"            value: 'Bearer ' + token,\r",
+															"        })\r",
+															"    ]\r",
+															"});\r",
+															"\r",
+															"pm.sendRequest(isValidTokenRequest, function (err, response) {\r",
+															"    if (response.code === 401 || response.code === 403) {\r",
+															"        refreshToken();\r",
+															"    }\r",
+															"});\r",
+															"\r",
+															"function refreshToken() {\r",
+															"    var tokenRequest = new sdk.Request({\r",
+															"    url: authServiceUrl,\r",
+															"    method: 'POST',\r",
+															"    header: [\r",
+															"        new sdk.Header({\r",
+															"            key: 'content-type',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"        new sdk.Header({\r",
+															"            key: 'acccept',\r",
+															"            value: 'application/json'\r",
+															"        }),\r",
+															"    ],\r",
+															"    body: {\r",
+															"        mode: 'raw',\r",
+															"        raw: JSON.stringify({\r",
+															"            username: username,\r",
+															"            password: password\r",
+															"        })\r",
+															"    } \r",
+															"  });\r",
+															"\r",
+															"  pm.sendRequest(tokenRequest, function (err, response) {\r",
+															"      if (err) {\r",
+															"          throw err;\r",
+															"      }\r",
+															"      \r",
+															"      if (response.code !== 200) {\r",
+															"          throw new Error('Could not log in.');\r",
+															"      }\r",
+															"      \r",
+															"      pm.environment.set(\"jwttoken\", response.json().token);\r",
+															"      console.log(`New token has been set: ${response.json().token}`);\r",
+															"  });\r",
+															"}"
+														],
+														"type": "text/javascript"
+													}
+												},
+												{
+													"listen": "test",
+													"script": {
+														"exec": [
+															"pm.test(\"Create article\", function () {\r",
+															"     pm.response.to.have.status(404);\r",
+															"});"
+														],
+														"type": "text/javascript"
+													}
+												}
+											],
+											"request": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "Authorization",
+														"value": "Bearer {{jwttoken}}",
+														"type": "text"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\r\n    \"Id\": \"e1cbd5f9-230f-44d6-b471-2460917f8e1e\"\r\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{base_url}}Articles/DeleteArticle",
+													"host": [
+														"{{base_url}}Articles"
+													],
+													"path": [
+														"DeleteArticle"
 													]
 												}
 											},
