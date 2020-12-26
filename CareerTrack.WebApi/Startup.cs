@@ -123,7 +123,7 @@ namespace CareerTrack.WebApi
                     {
                         builder.WithOrigins("http://localhost:3000")
                                 .WithMethods("PUT", "DELETE", "GET", "POST", "OPTIONS")
-                                .WithHeaders("Content-Type");
+                                .WithHeaders("Content-Type", "Authorization");
                     });
             });
         }
