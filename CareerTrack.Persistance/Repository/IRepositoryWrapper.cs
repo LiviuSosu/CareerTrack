@@ -11,7 +11,6 @@ namespace CareerTrack.Persistance.Repository
     {
         IArticleRepository Article { get; }
         IUserRepository User { get; }
-
         IUserRoleRepository UserRole { get; }
         IRoleRepository Role { get; }
         IUserTokenRepository UserToken { get; }

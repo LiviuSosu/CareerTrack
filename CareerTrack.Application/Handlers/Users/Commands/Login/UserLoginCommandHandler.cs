@@ -2,7 +2,6 @@
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -34,7 +33,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                                issuer: request.JWTConfiguration.JwtIssuer,
                                audience: request.JWTConfiguration.JwtAudience,
                                expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
-                               claims: await GetRolesAsClaim(request.UserManager, user),
+                               claims: await GetRolesAsClaim(user),
                                signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
                                );
 
@@ -82,7 +81,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
             }
         }
 
-        private async Task<List<Claim>> GetRolesAsClaim(UserManager<User> userManager, User user)
+        private async Task<List<Claim>> GetRolesAsClaim(User user)
         {
             var result = new List<Claim>();
 

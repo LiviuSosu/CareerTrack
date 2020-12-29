@@ -26,7 +26,7 @@ namespace CareerTrack.Application.Tests.Users.Command
                 Email = email,
                 EmailConfirmed = true
             };
-            mgr.Setup(x => x.CheckPasswordAsync(user, "CorrectPassword")).ReturnsAsync(true);
+            mgr.Setup(userManager => userManager.CheckPasswordAsync(user, "CorrectPassword")).ReturnsAsync(true);
 
             db.Users.Add(user);
             await mgr.Object.CreateAsync(user, email);

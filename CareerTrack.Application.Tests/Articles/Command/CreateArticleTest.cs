@@ -12,7 +12,7 @@ namespace CareerTrack.Application.Tests.Articles.Command
     public class CreateArticleTest : ArticlesTest
     {
         CreateArticleCommand createArticleCommand;
-        const string articleTitle = "My Article";
+        const string articleTitle = "Some Title";
         const string articleLink = "www.myarticle.com";
         public CreateArticleTest()
         {
@@ -38,7 +38,6 @@ namespace CareerTrack.Application.Tests.Articles.Command
             Assert.IsType<Unit>(result);
 
             Assert.NotNull(newArticle);
-            //Assert.Equal(1, db.Articles.Count());
             Assert.Equal(articleTitle, newArticle.Title);
             Assert.Equal(articleLink, newArticle.Link);
         }

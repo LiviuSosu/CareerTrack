@@ -40,7 +40,6 @@ namespace CareerTrack.WebApi
 
         public Microsoft.Extensions.Configuration.IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPreProcessorBehavior<,>));
@@ -49,15 +48,16 @@ namespace CareerTrack.WebApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<ITokenManager, TokenManager>();
-           // services.AddTransient<TokenManagerMiddleware>();
+            services.AddTransient<ITokenManager, TokenManager>();
+            // services.AddTransient<TokenManagerMiddleware>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-           // services.AddDistributedRedisCache(r => { r.Configuration = "localhost"; });
+            // services.AddDistributedRedisCache(r => { r.Configuration = "localhost"; });
 
             services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
             services.AddDbContext<CareerTrackDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")
-                , x => x.MigrationsAssembly("CareerTrack.Migrations")));
+                , migrations => migrations.MigrationsAssembly("CareerTrack.Migrations")));
 
             services.AddIdentityCore<User>()
         .AddEntityFrameworkStores<CareerTrackDbContext>();
@@ -98,7 +98,6 @@ namespace CareerTrack.WebApi
 
             AddAuthentications(services);
 
-            // Customise default API behavour
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
@@ -107,7 +106,6 @@ namespace CareerTrack.WebApi
             services.Configure<AuthMessageSenderOptions>(Configuration);
 
             services.AddHealthChecks()
-           // Add a health check for a SQL Server database
            .AddCheck(
                "OrderingDB-check",
                new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
@@ -128,7 +126,6 @@ namespace CareerTrack.WebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

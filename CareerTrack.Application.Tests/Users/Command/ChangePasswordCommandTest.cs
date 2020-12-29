@@ -18,7 +18,7 @@ namespace CareerTrack.Application.Tests.Users.Command
             store = new Mock<IUserStore<User>>();
             mgr = new Mock<UserManager<User>>(store.Object, null, null, null, null, null, null, null, null);
 
-            mgr.Setup(x => x.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success)
+            mgr.Setup(userManager => userManager.CreateAsync(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success)
                     .Callback<User, string>((userToAdd, _) => db.Users.Add(userToAdd));
 
             const string usernameToDelete = "admin4";

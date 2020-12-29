@@ -17,7 +17,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Register
         {
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public AuthMessageSenderOptions Options { get; }
 
         public new async Task<Unit> Handle(UserRegisterCommand request, CancellationToken cancellationToken)
         {
