@@ -2,7 +2,6 @@
 using CareerTrack.Application.Handlers.Users.Commands.ChangePassword;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
-using CareerTrack.Application.Handlers.Users.Commands.Logout;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
 using CareerTrack.Common;

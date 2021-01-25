@@ -5,13 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="9.3.0" />
+    <PackageReference Include="FluentValidation" Version="9.4.0" />
+    <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CareerTrack.Application\CareerTrack.Application.csproj" />
     <ProjectReference Include="..\CareerTrack.Common\CareerTrack.Common.csproj" />
+    <ProjectReference Include="..\CareerTrack.Persistance\CareerTrack.Persistance.csproj" />
   </ItemGroup>
 
 </Project>
