@@ -1,65 +1,57 @@
-﻿using CareerTrack.Application.Paging;
-using CareerTrack.Domain.Entities;
+﻿using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace CareerTrack.Application.Tests.Articles.Query
+namespace CareerTrack.Application.Tests.Articles
 {
     public class ArticlesTest
     {
-        protected CareerTrackDbContext db;
-        protected CareerTrackDbContext dbReader;
+        public CareerTrackDbContext db;
+        protected Guid firstArticleId = Guid.Parse("777ACF7F-DAF6-4DF2-B80B-F0A69248249A");
+        protected Guid secondArticleId = Guid.Parse("BB13D499-FE99-4451-B632-04D7759BD6D4");
+        protected Guid nonExistingArticleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+
         protected DbContextOptions<CareerTrackDbContext> options;
-        public PagingModel pagingModel;
-        protected Guid articleIdForTheSecondArticle;
-        protected string articleTitleForTheSecondArticle = "Article 2";
 
         public ArticlesTest()
         {
-            articleIdForTheSecondArticle = Guid.Parse("8FD637BF-53E6-41B9-7E42-08D690385B3B");
-            options = new DbContextOptionsBuilder<CareerTrackDbContext>()
-                        .UseInMemoryDatabase(databaseName: "CareerTrackArticles").Options;
-
-            pagingModel = new PagingModel
-            {
-                Field = "Username"
-            };
-            var order = new Order();
-            pagingModel.Order = order;
-            pagingModel.PageNumber = 1;
-            pagingModel.PageSize = 2;
-        }
-
-        protected CareerTrackDbContext InitializeDatabase(string databaseName)
-        {
-            var options = new DbContextOptionsBuilder<CareerTrackDbContext>()
-                            .UseInMemoryDatabase(databaseName: databaseName).Options;
+            options = new DbContextOptionsBuilder<CareerTrackDbContext>().
+            UseInMemoryDatabase(databaseName: "CareerTrackArticles").Options;
 
             db = new CareerTrackDbContext(options);
 
-            db.Articles.RemoveRange(db.Articles);
-            db.SaveChanges();
-            db.Articles.AddRange(new[] {
-                new Article {
-                    Title = "Article 1",
-                    Link = "www.link1.com"
-                    },
-                new Article {
-                    Id = articleIdForTheSecondArticle,
-                    Title = articleTitleForTheSecondArticle,
-                    Link = "www.link2.com"
-                    },
-                new Article {
-                    Title = "Article 3",
-                    Link = "www.link3.com"
-                    }
-                });
+            var article1 = new Article
+            {
+                Id = firstArticleId,
+                Title = "Article 1",
+                Source = "Source 1",
+                Link = "www.link1.com"
+            };
 
+            var article2 = new Article
+            {
+                Id = secondArticleId,
+                Title = "Article 2",
+                Source = "Source 2",
+                Link = "www.link2.com"
+            };
 
-            db.SaveChanges();
+            try
+            {
+                db.Articles.Add(article1);
+                db.Articles.Add(article2);
 
-            return db;
+                db.SaveChanges();
+            }
+            catch (ArgumentException)
+            {
+                db.Articles.RemoveRange(db.Articles);
+            }
         }
     }
 }
