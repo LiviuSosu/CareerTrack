@@ -1,11 +1,5 @@
 ﻿using CareerTrack.Application.Handlers.Articles.Queries;
 using CareerTrack.Application.Handlers.Articles.Queries.GetArticle;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
