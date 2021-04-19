@@ -107,10 +107,17 @@ namespace CareerTrack.WebApi
 
             services.AddHealthChecks()
            .AddCheck(
-               "OrderingDB-check",
+               "SqlDb-check",
                new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
                HealthStatus.Unhealthy,
                new string[] { "orderingdb" });
+
+            services.AddHealthChecks()
+        .AddCheck(
+            "RedisDB-check",
+            new RedisHealthCheck(),
+            HealthStatus.Unhealthy,
+             new string[] { "redis test" });
 
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(3));
 
