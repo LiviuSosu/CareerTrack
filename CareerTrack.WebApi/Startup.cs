@@ -115,7 +115,7 @@ namespace CareerTrack.WebApi
             services.AddHealthChecks()
         .AddCheck(
             "RedisDB-check",
-            new RedisHealthCheck(),
+            new RedisHealthCheck("localhost"),
             HealthStatus.Unhealthy,
              new string[] { "redis test" });
 
