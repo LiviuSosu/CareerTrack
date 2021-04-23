@@ -5,12 +5,12 @@ using System;
 
 namespace CareerTrack.Application.Tests.Articles
 {
-    public class ArticlesTest
+    public abstract class ArticlesTest
     {
-        public CareerTrackDbContext db;
-        protected Guid firstArticleId = Guid.Parse("777ACF7F-DAF6-4DF2-B80B-F0A69248249A");
-        protected Guid secondArticleId = Guid.Parse("BB13D499-FE99-4451-B632-04D7759BD6D4");
-        protected Guid nonExistingArticleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
+        protected internal  CareerTrackDbContext db;
+        protected internal Guid firstArticleId = Guid.Parse("777ACF7F-DAF6-4DF2-B80B-F0A69248249A");
+        protected internal Guid secondArticleId = Guid.Parse("BB13D499-FE99-4451-B632-04D7759BD6D4");
+        protected internal Guid nonExistingArticleId = Guid.Parse("FEA44EA2-1D4C-49AC-92A0-1AD6899CA220");
 
         protected DbContextOptions<CareerTrackDbContext> options;
 

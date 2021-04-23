@@ -7,13 +7,13 @@ using System;
 
 namespace CareerTrack.Application.Tests.Users
 {
-    public class UsersTest
+    public abstract class UsersTest
     {
-        public CareerTrackDbContext db;
-        protected const string username = "admin2";
-        protected const string email = "admin@b.com";
-        protected Mock<IUserStore<User>> store;
-        protected Mock<UserManager<User>> mgr;
+        protected internal CareerTrackDbContext db;
+        protected internal const string username = "admin2";
+        protected internal const string email = "admin@b.com";
+        protected internal Mock<IUserStore<User>> store;
+        protected internal Mock<UserManager<User>> mgr;
 
         public UsersTest()
         {
