@@ -17,15 +17,12 @@ namespace CareerTrack.WebApi.HealthChecks
 
         public async Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default(CancellationToken))
         {
-            //    var healthCheckResultHealthy = true;
-
             try
             {
-                ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost");
+                ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(RedisConnectionString);
             }
             catch (Exception ex)
             {
-                // Discard PingExceptions and return false;
                 return new HealthCheckResult(status: context.Registration.FailureStatus, exception: ex);
             }
 

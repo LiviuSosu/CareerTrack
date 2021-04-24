@@ -5,29 +5,30 @@ namespace CareerTrack.Common
 {
     public class Configuration : IConfiguration
     {
-        private readonly string loggingFilePath;
+        readonly string loggingFilePath;
         public string LoggingFilePath { get => loggingFilePath; }
 
-        private readonly string displayGenericUserErrorMessage;
+        readonly string displayGenericUserErrorMessage;
         public string DisplayGenericUserErrorMessage { get => displayGenericUserErrorMessage; }
 
-        private readonly string displayObjectNotFoundErrorMessage;
+        readonly string displayObjectNotFoundErrorMessage;
         public string DisplayObjectNotFoundErrorMessage { get => displayObjectNotFoundErrorMessage; }
 
-        private readonly string displayExistentUserExceptionMessage;
+        readonly string displayExistentUserExceptionMessage;
         public string DisplayExistentUserExceptionMessage { get => displayExistentUserExceptionMessage; }
 
-        private readonly string displayPasswordsAreNotTheSameExceptionMessage;
+        readonly string displayPasswordsAreNotTheSameExceptionMessage;
         public string DisplayPasswordsAreNotTheSameExceptionMessage { get => displayPasswordsAreNotTheSameExceptionMessage; }
-        private readonly JWTConfiguration jwtConfiguration;
+        readonly JWTConfiguration jwtConfiguration;
         string noRolesAssignedExceptionMessage { get; }
         public string NoRolesAssignedExceptionMessage { get => noRolesAssignedExceptionMessage; }
         string userEmailNotConfirmedExceptionMessage { get; }
         public string UserEmailNotConfirmedExceptionMessage { get => userEmailNotConfirmedExceptionMessage; }
         public JWTConfiguration JWTConfiguration { get => jwtConfiguration; }
 
-        private readonly EmailServiceConfiguration emailServiceConfiguration;
+        readonly EmailServiceConfiguration emailServiceConfiguration;
         public EmailServiceConfiguration EmailServiceConfiguration { get => emailServiceConfiguration; }
+
         public Configuration()
         {
             string path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");

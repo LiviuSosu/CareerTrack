@@ -110,14 +110,12 @@ namespace CareerTrack.WebApi
                "SqlDb-check",
                new SqlConnectionHealthCheck(Configuration.GetConnectionString("DatabaseConnection")),
                HealthStatus.Unhealthy,
-               new string[] { "orderingdb" });
-
-            services.AddHealthChecks()
-        .AddCheck(
+               new string[] { "orderingdb" })
+            .AddCheck(
             "RedisDB-check",
-            new RedisHealthCheck("localhost"),
-            HealthStatus.Unhealthy,
-             new string[] { "redis test" });
+                new RedisHealthCheck(Configuration.GetSection("RedisConnectionString").Value),
+                HealthStatus.Unhealthy,
+                new string[] { "redis test" });
 
             services.Configure<DataProtectionTokenProviderOptions>(o => o.TokenLifespan = TimeSpan.FromHours(3));
 
