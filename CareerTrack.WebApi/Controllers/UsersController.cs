@@ -55,6 +55,8 @@ namespace CareerTrack.WebApi.Controllers
             {
                 userLoginCommand.UserManager = userManager;
                 userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
+                userLoginCommand.TokenManager = _tokenManager;
+
                 return Ok(await Mediator.Send(userLoginCommand));
             }
             catch (NotFoundException)
@@ -284,7 +286,7 @@ namespace CareerTrack.WebApi.Controllers
 
             //  return Ok(await Mediator.Send(userLogoutCommand));
             //  throw new NotImplementedException();
-            await _tokenManager.DeactivateAsync(x);
+            await Task.Delay(100);//_tokenManager.DeactivateAsync(x);
             return Ok();
         }
     }

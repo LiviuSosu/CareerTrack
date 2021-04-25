@@ -19,12 +19,12 @@ namespace CareerTrack.Services.TokenManager
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            if (await _tokenManager.IsCurrentActiveToken())
-            {
-                await next(context);
+            //if (await _tokenManager.IsCurrentActiveToken())
+            //{
+            //    await next(context);
 
-                return;
-            }
+            //    return;
+            //}
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }

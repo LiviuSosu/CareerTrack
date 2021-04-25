@@ -8,12 +8,6 @@ namespace CareerTrack.Services.TokenManager
 {
     public interface ITokenManager
     {
-        Task DeactivateCurrentAsync();
-
-        Task DeactivateAsync(string token);
-
-        Task<bool> IsCurrentActiveToken();
-
-
+        void SetToken(string username, string jwtTocken);
     }
 }
