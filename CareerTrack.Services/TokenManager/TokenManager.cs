@@ -18,9 +18,9 @@ namespace CareerTrack.Services.TokenManager
             _cache = cache;
         }
 
-        public void SetToken(string username, string jwtTocken)
+        public void SetToken(string username, string jwtToken)
         {
-            _cache.SetString(username, jwtTocken);
+            _cache.SetString(username, jwtToken);
         }
     }
 }

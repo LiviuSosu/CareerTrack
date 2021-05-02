@@ -3,6 +3,7 @@ using CareerTrack.Application.Handlers.Users.Commands.Login;
 using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance.Repository.UserRoleRepository;
+using CareerTrack.Services.TokenManager;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using System;
@@ -48,15 +49,20 @@ namespace CareerTrack.Application.Tests.Users.Command
 
             var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 
-            var userLoginCommand = new UserLoginCommand
+            Mock<ITokenManager> tokenManagerMock = new Mock<ITokenManager>();
+            tokenManagerMock.Setup(x=>x.SetToken(It.IsAny<string>(), It.IsAny<string>()));
+
+           var userLoginCommand = new UserLoginCommand
             {
                 Username = username,
                 Password = "CorrectPassword",
                 UserManager = mgr.Object,
-                JWTConfiguration = jwtConfiguration
-            };
+                JWTConfiguration = jwtConfiguration,
+                TokenManager = tokenManagerMock.Object
+           };
 
             var sut = new UserLoginCommandHandler(db);
+        
             var result = await sut.Handle(userLoginCommand, CancellationToken.None);
 
             Assert.IsType<LoginResponseDTO>(result);

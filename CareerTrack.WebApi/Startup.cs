@@ -48,7 +48,6 @@ namespace CareerTrack.WebApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
             services.AddTransient<ITokenManager, TokenManager>();
-            services.AddTransient<ITokenManager, TokenManager>();
             // services.AddTransient<TokenManagerMiddleware>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             // services.AddDistributedRedisCache(r => { r.Configuration = "localhost"; });
