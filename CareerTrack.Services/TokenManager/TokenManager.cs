@@ -1,11 +1,4 @@
-﻿using CareerTrack.Common;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
-using Microsoft.Extensions.Options;
-using Microsoft.Extensions.Primitives;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.Extensions.Caching.Distributed;
 
 namespace CareerTrack.Services.TokenManager
 {
@@ -21,6 +14,11 @@ namespace CareerTrack.Services.TokenManager
         public void SetToken(string username, string jwtToken)
         {
             _cache.SetString(username, jwtToken);
+        }
+
+        public void RevokeToken(string token)
+        {
+            _cache.Remove(token);
         }
     }
 }
