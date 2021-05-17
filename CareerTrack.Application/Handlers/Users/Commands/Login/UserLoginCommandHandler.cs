@@ -57,7 +57,7 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
 
                         await _repoWrapper.SaveAsync();
 
-                        request.TokenManager.SetToken(user.UserName, tokenValue);
+                       // request.TokenManager.SetToken(user.UserName, tokenValue);
 
                         return new LoginResponseDTO
                         {

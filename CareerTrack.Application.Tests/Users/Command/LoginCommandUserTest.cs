@@ -50,7 +50,7 @@ namespace CareerTrack.Application.Tests.Users.Command
             var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 
             Mock<ITokenManager> tokenManagerMock = new Mock<ITokenManager>();
-            tokenManagerMock.Setup(x=>x.SetToken(It.IsAny<string>(), It.IsAny<string>()));
+            //tokenManagerMock.Setup(x=>x.SetToken(It.IsAny<string>(), It.IsAny<string>()));
 
            var userLoginCommand = new UserLoginCommand
             {
