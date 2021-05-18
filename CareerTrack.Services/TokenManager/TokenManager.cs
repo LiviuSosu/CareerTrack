@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Primitives;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Services.TokenManager
@@ -30,14 +32,14 @@ namespace CareerTrack.Services.TokenManager
         //private async Task<bool> IsActiveAsync(string token)
         //=> await _cache.GetStringAsync(GetKey(token)) == null;
 
-        //private string GetCurrentAsync()
-        //{
-        //    var authorizationHeader = _httpContextAccessor
-        //        .HttpContext.Request.Headers["authorization"];
+        private string GetCurrentAsync()
+        {
+            var authorizationHeader = _httpContextAccessor
+                .HttpContext.Request.Headers["authorization"];
 
-        //    return authorizationHeader == StringValues.Empty
-        //        ? string.Empty
-        //        : authorizationHeader.Single().Split(" ").Last();
-        //}
+            return authorizationHeader == StringValues.Empty
+                ? string.Empty
+                : authorizationHeader.Single().Split(" ").Last();
+        }
     }
 }
