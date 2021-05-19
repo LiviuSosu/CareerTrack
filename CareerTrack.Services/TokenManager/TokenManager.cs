@@ -11,9 +11,10 @@ namespace CareerTrack.Services.TokenManager
         private readonly IDistributedCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TokenManager(IDistributedCache cache)
+        public TokenManager(IDistributedCache cache, IHttpContextAccessor httpContextAccessor)
         {
             _cache = cache;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         //public void SetToken(string username, string jwtToken)
@@ -27,10 +28,10 @@ namespace CareerTrack.Services.TokenManager
         //}
 
         public async Task<bool> IsCurrentActiveToken()
-         => throw new System.NotImplementedException();//await IsActiveAsync(GetCurrentAsync());
+         => await IsActiveAsync(GetCurrentAsync());
 
-        //private async Task<bool> IsActiveAsync(string token)
-        //=> await _cache.GetStringAsync(GetKey(token)) == null;
+        private async Task<bool> IsActiveAsync(string token)
+        => await _cache.GetStringAsync(GetKey(token)) == null;
 
         private string GetCurrentAsync()
         {
@@ -41,5 +42,8 @@ namespace CareerTrack.Services.TokenManager
                 ? string.Empty
                 : authorizationHeader.Single().Split(" ").Last();
         }
+
+        private static string GetKey(string token)
+        => $"tokens:{token}:deactivated";
     }
 }
