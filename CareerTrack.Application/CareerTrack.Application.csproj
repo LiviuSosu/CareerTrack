@@ -15,7 +15,7 @@
     <PackageReference Include="FluentValidation" Version="10.1.0" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="5.0.6" />
   </ItemGroup>
 
   <ItemGroup>
