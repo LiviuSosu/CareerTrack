@@ -49,7 +49,7 @@ namespace CareerTrack.WebApi
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddTransient<TokenManagerMiddleware>();
-
+            //services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
 
 
             services.AddTransient<ITokenManager, TokenManager>();

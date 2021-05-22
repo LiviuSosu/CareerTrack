@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CareerTrack.Services.TokenManager
@@ -19,12 +15,12 @@ namespace CareerTrack.Services.TokenManager
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
-            //if (await _tokenManager.IsCurrentActiveToken())
-            //{
-            //    await next(context);
+            if (await _tokenManager.IsCurrentActiveToken())
+            {
+                await next(context);
 
-            //    return;
-            //}
+                return;
+            }
             context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
         }
     }
