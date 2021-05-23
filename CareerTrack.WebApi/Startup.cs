@@ -156,8 +156,6 @@ namespace CareerTrack.WebApi
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc");
             });
-
-            //app.UseMiddleware<TokenManagerMiddleware>();
         }
 
         public void AddAuthentications(IServiceCollection services)
@@ -167,7 +165,7 @@ namespace CareerTrack.WebApi
                 options.AddPolicy("IsAdmin",
                     policy => policy.AddAuthenticationSchemes("Bearer")
                         .RequireAuthenticatedUser()
-                         .RequireRole("Admin")
+                        .RequireRole("Admin")
                         .Build()
                     );
 
