@@ -47,7 +47,7 @@ namespace CareerTrack.Application.Tests.Users.Command
 
             mgr.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role", 5);
 
             Mock<ITokenManager> tokenManagerMock = new Mock<ITokenManager>();
             //tokenManagerMock.Setup(x=>x.SetToken(It.IsAny<string>(), It.IsAny<string>()));
@@ -90,7 +90,7 @@ namespace CareerTrack.Application.Tests.Users.Command
 
             mgr.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role", 5);
 
             var userLoginCommand = new UserLoginCommand
             {
@@ -125,7 +125,7 @@ namespace CareerTrack.Application.Tests.Users.Command
 
             mgr.Setup(x => x.FindByNameAsync(It.IsAny<string>())).ReturnsAsync(user);
 
-            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
+            var jwtConfiguration = new JWTConfiguration("MySuperSecureKey", "CareerTrack", "CareerTrack", "24", "http://schemas.microsoft.com/ws/2008/06/identity/claims/role", 5);
 
             var userLoginCommand = new UserLoginCommand
             {

@@ -45,7 +45,8 @@ namespace CareerTrack.Common
                 jwtSection.GetSection("issuer").Value,
                 jwtSection.GetSection("audience").Value,
                 jwtSection.GetSection("lifeteme").Value,
-                jwtSection.GetSection("expectedRoleClaim").Value
+                jwtSection.GetSection("expectedRoleClaim").Value,
+                int.Parse(jwtSection.GetSection("ExpiryMinutes").Value)
                 );
 
             displayGenericUserErrorMessage = root.GetSection("Errors").GetSection("DisplayGenericUserErrorMessage").Value;
@@ -74,13 +75,14 @@ namespace CareerTrack.Common
 
     public class JWTConfiguration
     {
-        public JWTConfiguration(string jwtSecretKey, string jwtIssuer, string jwtAudience, string jwtLifeTime, string expectedRoleClaim)
+        public JWTConfiguration(string jwtSecretKey, string jwtIssuer, string jwtAudience, string jwtLifeTime, string expectedRoleClaim, int expiryMinutes)
         {
             JwtSecretKey = jwtSecretKey;
             JwtIssuer = jwtIssuer;
             JwtAudience = jwtAudience;
             JwtLifeTime = jwtLifeTime;
             ExpectedRoleClaim = expectedRoleClaim;
+            ExpiryMinutes = expiryMinutes;
         }
 
         public readonly string JwtSecretKey;
@@ -92,6 +94,8 @@ namespace CareerTrack.Common
         public readonly string JwtLifeTime;
 
         public readonly string ExpectedRoleClaim;
+
+        public int ExpiryMinutes { get; set; }
     }
 
     public class EmailServiceConfiguration
