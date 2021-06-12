@@ -142,20 +142,18 @@ namespace CareerTrack.WebApi
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
-
             app.UseCors();
-
             app.UseAuthorization();
+            app.UseMiddleware<TokenManagerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/hc");
             });
+
+            SeedDatabase.Initialize(app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope().ServiceProvider);
         }
 
         public void AddAuthentications(IServiceCollection services)
