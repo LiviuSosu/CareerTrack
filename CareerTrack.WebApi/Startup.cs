@@ -49,12 +49,10 @@ namespace CareerTrack.WebApi
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
             services.AddTransient<TokenManagerMiddleware>();
-            //services.AddSingleton<IPasswordHasher<User>, PasswordHasher<User>>();
-
 
             services.AddTransient<ITokenManager, TokenManager>();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            // services.AddDistributedRedisCache(r => { r.Configuration = "localhost"; });
+            services.AddDistributedRedisCache(r => { r.Configuration = Configuration.GetConnectionString("RedisDbConnection"); });
 
             services.AddMediatR(typeof(BaseHandler<,>).GetTypeInfo().Assembly);
 
@@ -63,7 +61,7 @@ namespace CareerTrack.WebApi
                 , migrations => migrations.MigrationsAssembly("CareerTrack.Migrations")));
 
             services.AddIdentityCore<User>()
-        .AddEntityFrameworkStores<CareerTrackDbContext>();
+                .AddEntityFrameworkStores<CareerTrackDbContext>();
 
             services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<CareerTrackDbContext>()
