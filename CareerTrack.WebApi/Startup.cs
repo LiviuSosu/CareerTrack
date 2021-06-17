@@ -141,6 +141,7 @@ namespace CareerTrack.WebApi
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseCors();
             app.UseAuthorization();
             app.UseMiddleware<TokenManagerMiddleware>();
