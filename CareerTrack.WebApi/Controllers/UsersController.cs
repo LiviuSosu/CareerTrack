@@ -276,7 +276,7 @@ namespace CareerTrack.WebApi.Controllers
         public async Task<IActionResult> Logout([FromHeader] string Authorization)
         {
             var x = Authorization.Substring(7);
-
+            await _tokenManager.DeactivateCurrentAsync();
             //var userLogoutCommand = new UserLogoutCommand()
             //{ 
             //    Token = x,
