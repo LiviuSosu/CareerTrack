@@ -13,14 +13,20 @@ namespace CareerTrack.Services.TokenManager
     {
         private readonly IDistributedCache _cache;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly IOptions<JWTConfiguration> _jwtOptions;
+        private readonly JWTConfiguration _jwtOptions;
+        private readonly IConfiguration _configuration;
 
-        public TokenManager(IDistributedCache cache, IHttpContextAccessor httpContextAccessor, 
-            IOptions<JWTConfiguration> jwtOptions)
+        public TokenManager(IDistributedCache cache, IHttpContextAccessor httpContextAccessor,
+            /*IOptions<JWTConfiguration> jwtOptions*/
+            IConfiguration configuration)
         {
             _cache = cache;
             _httpContextAccessor = httpContextAccessor;
-            _jwtOptions = jwtOptions; //possible bug
+
+
+            //_jwtOptions = jwtOptions; //possible bug
+            _configuration = configuration;
+            _jwtOptions = configuration.JWTConfiguration;
         }
 
         public async Task<bool> IsCurrentActiveToken()
@@ -50,7 +56,7 @@ namespace CareerTrack.Services.TokenManager
                 " ", new DistributedCacheEntryOptions
                 {
                     AbsoluteExpirationRelativeToNow =
-                        TimeSpan.FromMinutes(_jwtOptions.Value.ExpiryMinutes)
+                        TimeSpan.FromMinutes(5)
                 });
     }
 }
