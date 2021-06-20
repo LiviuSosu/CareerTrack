@@ -27,12 +27,14 @@ namespace CareerTrack.WebApi.Controllers
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
         private readonly ITokenManager _tokenManager;
+        private readonly IJwtHandler _jwtHandler;
         public UsersController(
             UserManager<User> userManager,
             IConfiguration configuration,
             ILogger logger,
             IOptions<AuthMessageSenderOptions> optionsAccessor,
-            ITokenManager tokenManager)
+            ITokenManager tokenManager,
+            IJwtHandler jwtHandler)
         {
             this.userManager = userManager;
             _configuration = configuration;
@@ -40,7 +42,7 @@ namespace CareerTrack.WebApi.Controllers
             Options = optionsAccessor.Value;
             _emailSender = new EmailSender(Options.SendGridApiKey);
 
-            _tokenManager = tokenManager;
+            _jwtHandler = jwtHandler;
         }
 
         public AuthMessageSenderOptions Options { get; } //set only via Secret Manager

@@ -48,6 +48,7 @@ namespace CareerTrack.WebApi
 
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
+            services.AddSingleton<IJwtHandler, JwtHandler>();
             services.AddTransient<TokenManagerMiddleware>();
 
             services.AddTransient<ITokenManager, TokenManager>();
