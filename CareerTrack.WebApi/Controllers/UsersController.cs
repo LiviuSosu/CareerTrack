@@ -41,7 +41,7 @@ namespace CareerTrack.WebApi.Controllers
             _logger = logger;
             Options = optionsAccessor.Value;
             _emailSender = new EmailSender(Options.SendGridApiKey);
-
+            _tokenManager = tokenManager;
             _jwtHandler = jwtHandler;
         }
 
@@ -58,6 +58,7 @@ namespace CareerTrack.WebApi.Controllers
                 userLoginCommand.UserManager = userManager;
                 userLoginCommand.JWTConfiguration = _configuration.JWTConfiguration;
                 userLoginCommand.TokenManager = _tokenManager;
+                userLoginCommand.JwtHandler = _jwtHandler;
 
                 return Ok(await Mediator.Send(userLoginCommand));
             }

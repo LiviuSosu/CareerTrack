@@ -9,6 +9,6 @@ namespace CareerTrack.Application.Handlers.Users.Commands
         public string Username { get; set; }
         public UserManager<User> UserManager { get; set; }
         public ITokenManager TokenManager { get; set; }
-        //public IJwtHandler JwtHandler { get; set; }
+        public IJwtHandler JwtHandler { get; set; }
     }
 }

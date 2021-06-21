@@ -1,6 +1,7 @@
 ﻿using CareerTrack.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -13,7 +14,11 @@ namespace CareerTrack.Services.TokenManager
     public class JwtHandler : IJwtHandler
     {
         private readonly JWTConfiguration _jwtOptions;
+        private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        private readonly SecurityKey _securityKey;
         private readonly IConfiguration _configuration;
+        private readonly SigningCredentials _signingCredentials;
+        private readonly JwtHeader _jwtHeader;
 
         public JwtHandler(IConfiguration configuration)
         {
@@ -23,6 +28,9 @@ namespace CareerTrack.Services.TokenManager
             //_jwtHeader = new JwtHeader(_signingCredentials);
 
             _jwtOptions = configuration.JWTConfiguration;
+            _securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtSecretKey));
+            _signingCredentials = new SigningCredentials(_securityKey, SecurityAlgorithms.HmacSha256);
+            _jwtHeader = new JwtHeader(_signingCredentials);
         }
 
         public JsonWebToken Create(string username)
@@ -41,7 +49,14 @@ namespace CareerTrack.Services.TokenManager
                 {"unique_name", username},
             };
 
-            return null;
+            var jwt = new JwtSecurityToken(_jwtHeader, payload);
+            var token = _jwtSecurityTokenHandler.WriteToken(jwt);
+
+            return new JsonWebToken
+            {
+                AccessToken = token,
+                Expires = exp
+            };
         }
     }
 }

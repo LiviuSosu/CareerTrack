@@ -27,33 +27,36 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                 {
                     if (await request.UserManager.CheckPasswordAsync(user, request.Password))
                     {
-                        var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JWTConfiguration.JwtSecretKey));
+                        //var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(request.JWTConfiguration.JwtSecretKey));
 
-                        var jwtToken = new JwtSecurityToken(
-                               issuer: request.JWTConfiguration.JwtIssuer,
-                               audience: request.JWTConfiguration.JwtAudience,
-                               expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
-                               claims: await GetRolesAsClaim(user),
-                               signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
-                               );
+                        //var jwtToken = new JwtSecurityToken(
+                        //       issuer: request.JWTConfiguration.JwtIssuer,
+                        //       audience: request.JWTConfiguration.JwtAudience,
+                        //       expires: DateTime.UtcNow.AddHours(Convert.ToInt16(request.JWTConfiguration.JwtLifeTime)),
+                        //       claims: await GetRolesAsClaim(user),
+                        //       signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                        //       );
 
-                        var tokenValue = new JwtSecurityTokenHandler().WriteToken(jwtToken);
-                        var responseToken = new UserToken
-                        {
-                            UserId = user.Id,
-                            LoginProvider = "WIF",
-                            Name = user.Id.ToString(),
-                            Value = tokenValue
-                        };
+                        //var tokenValue = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+                        //var responseToken = new UserToken
+                        //{
+                        //    UserId = user.Id,
+                        //    LoginProvider = "WIF",
+                        //    Name = user.Id.ToString(),
+                        //    Value = tokenValue
+                        //};
 
-                        if (GetExistingUserToken(responseToken) == null)
-                        {
-                            _repoWrapper.UserToken.Create(responseToken);
-                        }
-                        else
-                        {
-                            _repoWrapper.UserToken.Update(responseToken);
-                        }
+                        //if (GetExistingUserToken(responseToken) == null)
+                        //{
+                        //    _repoWrapper.UserToken.Create(responseToken);
+                        //}
+                        //else
+                        //{
+                        //    _repoWrapper.UserToken.Update(responseToken);
+                        //}
+
+                        var tokenValue = request.JwtHandler.Create(user.UserName);
+                        
 
                         await _repoWrapper.SaveAsync();
 
@@ -61,8 +64,8 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
 
                         return new LoginResponseDTO
                         {
-                            token = tokenValue,
-                            expiration = jwtToken.ValidTo,
+                            token = tokenValue.AccessToken,
+                       //     expiration = tokenValue.Expires,
                             UserId = user.Id,
                             Username = user.UserName
                         };
