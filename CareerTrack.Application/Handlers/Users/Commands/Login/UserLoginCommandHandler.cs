@@ -60,12 +60,13 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
 
                         await _repoWrapper.SaveAsync();
 
-                       // request.TokenManager.SetToken(user.UserName, tokenValue);
+                        // request.TokenManager.SetToken(user.UserName, tokenValue);
 
                         return new LoginResponseDTO
                         {
+                            //JsonWebToken = tokenValue,
                             token = tokenValue.AccessToken,
-                       //     expiration = tokenValue.Expires,
+                            expiration = tokenValue.Expires,
                             UserId = user.Id,
                             Username = user.UserName
                         };
