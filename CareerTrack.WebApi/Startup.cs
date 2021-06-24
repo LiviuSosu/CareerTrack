@@ -74,22 +74,24 @@ namespace CareerTrack.WebApi
 
             var _configuration = new Configuration();
 
-            services.AddAuthentication(options =>
+            services.AddAuthentication
+                (options =>
             {
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
             })
                .AddJwtBearer(options =>
                {
-                   options.SaveToken = true;
-                   options.RequireHttpsMetadata = false;
+                   //options.SaveToken = true;
+                   //options.RequireHttpsMetadata = false;
                    options.TokenValidationParameters = new TokenValidationParameters
                    {
-                       ValidateIssuer = true,
-                       ValidateAudience = true,
-                       ValidAudience = _configuration.JWTConfiguration.JwtAudience,
-                       ValidIssuer = _configuration.JWTConfiguration.JwtIssuer,
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JWTConfiguration.JwtSecretKey)),
-                       ClockSkew = TimeSpan.Zero
+                       ValidIssuer = _configuration.JWTConfiguration.JwtIssuer,
+                       //ValidateIssuer = true,
+                       ValidateAudience = false,
+                       ValidateLifetime = true
+                       //ValidAudience = _configuration.JWTConfiguration.JwtAudience,
+                       //ClockSkew = TimeSpan.Zero
                    };
                });
 
@@ -144,6 +146,7 @@ namespace CareerTrack.WebApi
             app.UseRouting();
             app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseCors();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseMiddleware<TokenManagerMiddleware>();
 
