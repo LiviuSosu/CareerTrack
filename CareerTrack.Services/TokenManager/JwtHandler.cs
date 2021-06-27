@@ -42,11 +42,17 @@ namespace CareerTrack.Services.TokenManager
             var iat = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
             var payload = new JwtPayload
             {
-                {"sub", username},
-                {"iss", _jwtOptions.JwtIssuer},
-                {"iat", iat},
+                //{"sub", username},
+                //{"iss", _jwtOptions.JwtIssuer},
+                //{"iat", iat},
+                //{"exp", exp},
+                //{"unique_name", username},
+
+
+                {"issuer", _jwtOptions.JwtIssuer},
+                {"audience", _jwtOptions.JwtAudience},
                 {"exp", exp},
-                {"unique_name", username},
+                //claims  ... to be continued
             };
 
             var jwt = new JwtSecurityToken(_jwtHeader, payload);
