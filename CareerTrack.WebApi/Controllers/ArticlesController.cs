@@ -8,6 +8,7 @@ using CareerTrack.Application.Handlers.Articles.Queries.GetArticle;
 using CareerTrack.Application.Handlers.Articles.Queries.GetArticles;
 using CareerTrack.Application.Paging;
 using CareerTrack.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

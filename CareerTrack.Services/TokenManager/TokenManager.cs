@@ -4,6 +4,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,6 +16,7 @@ namespace CareerTrack.Services.TokenManager
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly JWTConfiguration _jwtOptions;
         private readonly IConfiguration _configuration;
+     //   private readonly ISet<RefreshToken> _refreshTokens = new HashSet<RefreshToken>();
 
         public TokenManager(IDistributedCache cache, IHttpContextAccessor httpContextAccessor,
             /*IOptions<JWTConfiguration> jwtOptions*/

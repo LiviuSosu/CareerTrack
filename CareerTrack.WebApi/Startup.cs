@@ -87,10 +87,10 @@ namespace CareerTrack.WebApi
                    {
                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.JWTConfiguration.JwtSecretKey)),
                        ValidIssuer = _configuration.JWTConfiguration.JwtIssuer,
-                       //ValidateIssuer = true,
-                       ValidateAudience = false,
-                       ValidateLifetime = true
-                       //ValidAudience = _configuration.JWTConfiguration.JwtAudience,
+                       ValidateIssuer = true,
+                       ValidateAudience = true,
+                       ValidateLifetime = true,
+                       ValidAudience = _configuration.JWTConfiguration.JwtAudience,
                        //ClockSkew = TimeSpan.Zero
                    };
                });

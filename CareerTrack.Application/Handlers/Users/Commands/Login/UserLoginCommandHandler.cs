@@ -1,6 +1,7 @@
 ﻿using CareerTrack.Application.Exceptions;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Persistance;
+using CareerTrack.Services.TokenManager;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -55,8 +56,9 @@ namespace CareerTrack.Application.Handlers.Users.Commands.Login
                         //    _repoWrapper.UserToken.Update(responseToken);
                         //}
 
-                        var tokenValue = request.JwtHandler.Create(user.UserName);
-                        
+                        var jwtHandlerDTO = new JwtHandlerDTO { Username = user.UserName, Claims = await GetRolesAsClaim(user)};
+                        var tokenValue = request.JwtHandler.Create(jwtHandlerDTO);
+                     //   request.TokenManager.Se
 
                         await _repoWrapper.SaveAsync();
 

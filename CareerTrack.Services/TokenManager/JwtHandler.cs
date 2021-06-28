@@ -33,13 +33,14 @@ namespace CareerTrack.Services.TokenManager
             _jwtHeader = new JwtHeader(_signingCredentials);
         }
 
-        public JsonWebToken Create(string username)
+        public JsonWebToken Create(JwtHandlerDTO jwtHandlerDTO)
         {
             var nowUtc = DateTime.UtcNow;
             var expires = nowUtc.AddMinutes(_jwtOptions.ExpiryMinutes);
             var centuryBegin = new DateTime(1970, 1, 1).ToUniversalTime();
             var exp = (long)(new TimeSpan(expires.Ticks - centuryBegin.Ticks).TotalSeconds);
             var iat = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtSecretKey));
             var payload = new JwtPayload
             {
                 //{"sub", username},
@@ -51,8 +52,9 @@ namespace CareerTrack.Services.TokenManager
 
                 {"issuer", _jwtOptions.JwtIssuer},
                 {"audience", _jwtOptions.JwtAudience},
-                {"exp", exp},
-                //claims  ... to be continued
+                {"expires", exp},
+                {"claims", jwtHandlerDTO.Claims},
+                {"signingCredentials", new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)}
             };
 
             var jwt = new JwtSecurityToken(_jwtHeader, payload);
