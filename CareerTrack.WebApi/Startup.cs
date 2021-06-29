@@ -74,11 +74,11 @@ namespace CareerTrack.WebApi
 
             var _configuration = new Configuration();
 
-            services.AddAuthentication
-                (options =>
-            {
-                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
+            services.AddAuthentication()
+            //    (options =>
+            //{
+            //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
                .AddJwtBearer(options =>
                {
                    //options.SaveToken = true;

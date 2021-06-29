@@ -19,6 +19,7 @@ namespace CareerTrack.Services.TokenManager
         private readonly IConfiguration _configuration;
         private readonly SigningCredentials _signingCredentials;
         private readonly JwtHeader _jwtHeader;
+        private readonly ISet<RefreshToken> _refreshTokens = new HashSet<RefreshToken>();
 
         public JwtHandler(IConfiguration configuration)
         {
@@ -59,6 +60,8 @@ namespace CareerTrack.Services.TokenManager
 
             var jwt = new JwtSecurityToken(_jwtHeader, payload);
             var token = _jwtSecurityTokenHandler.WriteToken(jwt);
+
+            _refreshTokens.Add(new RefreshToken { Username = jwtHandlerDTO.Username });
 
             return new JsonWebToken
             {

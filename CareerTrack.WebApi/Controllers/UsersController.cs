@@ -8,6 +8,7 @@ using CareerTrack.Common;
 using CareerTrack.Domain.Entities;
 using CareerTrack.Services.SendGrid;
 using CareerTrack.Services.TokenManager;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

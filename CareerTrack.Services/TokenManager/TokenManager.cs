@@ -16,7 +16,6 @@ namespace CareerTrack.Services.TokenManager
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly JWTConfiguration _jwtOptions;
         private readonly IConfiguration _configuration;
-     //   private readonly ISet<RefreshToken> _refreshTokens = new HashSet<RefreshToken>();
 
         public TokenManager(IDistributedCache cache, IHttpContextAccessor httpContextAccessor,
             /*IOptions<JWTConfiguration> jwtOptions*/
@@ -41,6 +40,10 @@ namespace CareerTrack.Services.TokenManager
         {
             var authorizationHeader = _httpContextAccessor
                 .HttpContext.Request.Headers["authorization"];
+
+            var x = authorizationHeader == StringValues.Empty
+                ? string.Empty
+                : authorizationHeader.Single().Split(" ").Last();
 
             return authorizationHeader == StringValues.Empty
                 ? string.Empty
