@@ -17,7 +17,6 @@ using Newtonsoft.Json;
 namespace CareerTrack.WebApi.Controllers
 {
     [Route("api/[controller]")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     public class ArticlesController : BaseController
     {
@@ -32,7 +31,7 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpGet]
         [Route("GetArticles")]
-     //   [Authorize(Policy = "IsStdUser")]
+        [Authorize(Policy = "IsStdUser")]
         public async Task<IActionResult> GetArticles([FromQuery] PagingModel paginationModel, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;
@@ -50,7 +49,7 @@ namespace CareerTrack.WebApi.Controllers
 
         [HttpGet]
         [Route("GetArticle")]
-   //     [Authorize(Policy = "IsStdUser")]
+        [Authorize(Policy = "IsStdUser")]
         public async Task<IActionResult> GetArticle([FromQuery] Guid Id, [FromHeader] string Authorization)
         {
             var actionName = ControllerContext.ActionDescriptor.ActionName;

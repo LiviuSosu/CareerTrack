@@ -42,30 +42,52 @@ namespace CareerTrack.Services.TokenManager
             var exp = (long)(new TimeSpan(expires.Ticks - centuryBegin.Ticks).TotalSeconds);
             var iat = (long)(new TimeSpan(nowUtc.Ticks - centuryBegin.Ticks).TotalSeconds);
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.JwtSecretKey));
-            var payload = new JwtPayload
-            {
-                //{"sub", username},
-                //{"iss", _jwtOptions.JwtIssuer},
-                //{"iat", iat},
-                //{"exp", exp},
-                //{"unique_name", username},
+            //var payload = new JwtPayload
+            //{
+            //    //{"sub", username},
+            //    //{"iss", _jwtOptions.JwtIssuer},
+            //    //{"iat", iat},
+            //    //{"exp", exp},
+            //    //{"unique_name", username},
 
 
-                {"issuer", _jwtOptions.JwtIssuer},
-                {"audience", _jwtOptions.JwtAudience},
-                {"expires", exp},
-                {"claims", jwtHandlerDTO.Claims},
-                {"signingCredentials", new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)}
-            };
+            //    {"issuer", _jwtOptions.JwtIssuer},
+            //    //{"audience", _jwtOptions.JwtAudience},
+            //    {"iat", iat},
+            //    {"exp", exp},
+            //    {"claims", jwtHandlerDTO.Claims},
+            //    {"signingCredentials", new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)},
+            //    {"unique_name", jwtHandlerDTO.Username},
+            //};
 
-            var jwt = new JwtSecurityToken(_jwtHeader, payload);
-            var token = _jwtSecurityTokenHandler.WriteToken(jwt);
+
+
+            var jwtToken = new JwtSecurityToken(
+                   issuer: _jwtOptions.JwtIssuer,
+                   audience: _jwtOptions.JwtAudience,
+                   expires: DateTime.UtcNow.AddHours(Convert.ToInt16(_jwtOptions.JwtLifeTime)),
+                   claims: jwtHandlerDTO.Claims,
+                   signingCredentials: new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+                   );
+
+            var tokenValue = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+            //if (GetExistingUserToken(responseToken) == null)
+            //{
+            //    _repoWrapper.UserToken.Create(responseToken);
+            //}
+            //else
+            //{
+            //    _repoWrapper.UserToken.Update(responseToken);
+            //}
+
+            //var jwt = new JwtSecurityToken(_jwtHeader, payload);
+           // var token = _jwtSecurityTokenHandler.WriteToken(jwt);
 
             _refreshTokens.Add(new RefreshToken { Username = jwtHandlerDTO.Username });
 
             return new JsonWebToken
             {
-                AccessToken = token,
+                AccessToken = tokenValue,
                 Expires = exp
             };
         }
