@@ -2,6 +2,7 @@
 using CareerTrack.Application.Handlers.Users.Commands.ChangePassword;
 using CareerTrack.Application.Handlers.Users.Commands.DeletePermanenty;
 using CareerTrack.Application.Handlers.Users.Commands.Login;
+using CareerTrack.Application.Handlers.Users.Commands.Logout;
 using CareerTrack.Application.Handlers.Users.Commands.Register;
 using CareerTrack.Application.Handlers.Users.Commands.ResetPassword;
 using CareerTrack.Common;
@@ -279,19 +280,18 @@ namespace CareerTrack.WebApi.Controllers
         [Route("Logout")]
         public async Task<IActionResult> Logout([FromHeader] string Authorization)
         {
-            var x = Authorization.Substring(7);
             await _tokenManager.DeactivateCurrentAsync();
-            //var userLogoutCommand = new UserLogoutCommand()
-            //{ 
-            //    Token = x,
-            //    UserManager = userManager,
-            //    JWTConfiguration = _configuration.JWTConfiguration
-            //};
+            var userLogoutCommand = new UserLogoutCommand()
+            {
+                Token = Authorization,
+                UserManager = userManager,
+                JWTConfiguration = _configuration.JWTConfiguration
+            };
 
-            //  return Ok(await Mediator.Send(userLogoutCommand));
+            return Ok(await Mediator.Send(userLogoutCommand));
             //  throw new NotImplementedException();
-            await Task.Delay(100);//_tokenManager.DeactivateAsync(x);
-            return Ok();
+            //await Task.Delay(100);//_tokenManager.DeactivateAsync(x);
+            //return Ok();
         }
     }
 }
