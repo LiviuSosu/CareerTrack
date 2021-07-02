@@ -284,8 +284,7 @@ namespace CareerTrack.WebApi.Controllers
             var userLogoutCommand = new UserLogoutCommand()
             {
                 Token = Authorization,
-                UserManager = userManager,
-                JWTConfiguration = _configuration.JWTConfiguration
+                TokenManager = _tokenManager
             };
 
             return Ok(await Mediator.Send(userLogoutCommand));
